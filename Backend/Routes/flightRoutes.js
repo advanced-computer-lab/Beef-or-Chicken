@@ -16,16 +16,51 @@ app.get("/allflights", async (request, response) => {
 
 app.post("/searchFlights", async (request, response) => {  //search with Criteria
   console.log("ana el request: ", request.body.From)
+  // 'From': { From },
+  //           'To': { To },
+  //           "DepartureDate": { DepartureDate },
+  //           "ArrivalDate": { ArrivalDate },
+  //           "FirstSeats": { FirstSeats },
+  //           "BusinessSeats": { BusinessSeats },
+  //           "EconomySeats": { EconomySeats },
+  //           "ArrivalTime": { ArrivalTime },
+  //           "DepartureTime": { DepartureTime },
+  //           "FlightNumber": { FlightNo }
   var q = {}
-  if (request.body.From.from != "") {
-    q.From = request.body.From.from
+  if (request.body.From.From != "") {
+    q.From = request.body.From.From
   }
-  if (request.body.To.to != "") {
-    q.To = request.body.To.to
+  if (request.body.To.To != "") {
+    q.To = request.body.To.To
   }
-  if (request.body.FlightDate.date != "") {
-    q.FlightDate = request.body.FlightDate.date + "T00:00:00.000Z"
+  if (request.body.DepartureDate.DepartureDate != "") {
+    q.DepartureDate = request.body.DepartureDate.DepartureDate + "T00:00:00.000Z"
   }
+  if (request.body.ArrivalDate.ArrivalDate != "") {
+    q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
+  }
+  if (request.body.FirstSeats.FirstSeats != null) {
+    q.FirstSeats = request.body.FirstSeats.FirstSeats
+  }
+  if (request.body.BusinessSeats.BusinessSeats != null) {
+    q.BusinessSeats = request.body.BusinessSeats.BusinessSeats
+  }
+  if (request.body.EconomySeats.EconomySeats != null) {
+    q.EconomySeats = request.body.EconomySeats.EconomySeats
+  }
+  if (request.body.ArrivalTime.ArrivalTime != "") {
+    q.ArrivalTime = request.body.ArrivalTime.ArrivalTime
+  }
+  if (request.body.DepartureTime.DepartureTime != "") {
+    q.DepartureTime = request.body.DepartureTime.DepartureTime
+  }
+  if (request.body.FlightNumber.FlightNo != '') {
+    q.FlightNumber = request.body.FlightNumber.FlightNo
+  }
+  console.log("body: ", request.body)
+  console.log("1: ", request.body.FlightNumber)
+  console.log("2: ", request.body.FlightNumber.FlightNumber)
+  console.log(request.body.FlightNumber.FlightNumber != "")
   console.log("q", q)
   let v = JSON.stringify(q)
   console.log("v", v)
@@ -49,10 +84,10 @@ app.post("/createFlight", async (request, response) => {
     'EconomySeats': request.body.EconomySeats,
     'BusinessSeats': request.body.BusinessSeats,
     'FirstSeats': request.body.FirstSeats,
-    'DepartureTime': (request.body.DepartureTime) + "" ,
+    'DepartureTime': (request.body.DepartureTime) + "",
     'ArrivalTime': (request.body.ArrivalTime) + "",
     'FlightNumber': request.body.FlightNumber,
-   
+
   });
 
   try {
