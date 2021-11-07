@@ -14,8 +14,22 @@ app.get("/allflights", async (request, response) => {
   }
 });
 
-app.get("/searchFlights", async (request, response) => {  //search with Criteria
-  const flights = await flightModel.find({});
+app.post("/searchFlights", async (request, response) => {  //search with Criteria
+  console.log("ana el request: ", request.body.From)
+  var q = {}
+  if (request.body.From.from != "") {
+    q.From = request.body.From.from
+  }
+  if (request.body.To.to != "") {
+    q.To = request.body.To.to
+  }
+  if (request.body.FlightDate.date != "") {
+    q.FlightDate = request.body.FlightDate.date + "T00:00:00.000Z"
+  }
+  console.log("q", q)
+  let v = JSON.stringify(q)
+  console.log("v", v)
+  const flights = await flightModel.find(q);
 
   try {
     response.send(flights);
