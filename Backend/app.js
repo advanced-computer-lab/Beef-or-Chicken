@@ -6,14 +6,8 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://Marky:passwordaA@cluster0.7tivt.mongodb.net/Beef-or-Chicken?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    // useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-);
+require('dotenv').config();
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(flightRouter);
 

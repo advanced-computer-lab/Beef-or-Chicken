@@ -14,22 +14,8 @@ app.get("/allflights", async (request, response) => {
   }
 });
 
-app.post("/searchFlights", async (request, response) => {  //search with Criteria
-  console.log("ana el request: ", request.body.From)
-  var q = {}
-  if (request.body.From.from != "") {
-    q.From = request.body.From.from
-  }
-  if (request.body.To.to != "") {
-    q.To = request.body.To.to
-  }
-  if (request.body.FlightDate.date != "") {
-    q.FlightDate = request.body.FlightDate.date + "T00:00:00.000Z"
-  }
-  console.log("q", q)
-  let v = JSON.stringify(q)
-  console.log("v", v)
-  const flights = await flightModel.find(q);
+app.get("/searchFlights", async (request, response) => {  //search with Criteria
+  const flights = await flightModel.find({});
 
   try {
     response.send(flights);
@@ -38,20 +24,32 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
   }
 });
 
-// ...
 
-app.post("/createFlight", async (request, response) => {  //createFlights -> currently with Json and postman
-  const flight = new flightModel();
+app.post("/createFlight", async (request, response) => {
+  console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
+  const flight = new flightModel({
+    'From': request.body.From,
+    'To': request.body.To,
+    'DepartureDate': request.body.DepartureDate,
+    'ArrivalDate': request.body.ArrivalDate,
+    'EconomySeats': request.body.EconomySeats,
+    'BusinessSeats': request.body.BusinessSeats,
+    'FirstSeats': request.body.FirstSeats,
+    'DepartureTime': (request.body.DepartureTime) + "" ,
+    'ArrivalTime': (request.body.ArrivalTime) + "",
+    'FlightNumber': request.body.FlightNumber,
+   
+  });
 
   try {
     await flight.save();
-    response.send(flight);
+    response.send("Flight sent successfully");
   } catch (error) {
     response.status(500).send(error);
   }
 });
 
-// ...
+
 
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
@@ -66,9 +64,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
 // ...
 
 
-// ...
 
-// ...
 
 app.delete("/flight/:id", async (request, response) => {
   try {
@@ -81,7 +77,6 @@ app.delete("/flight/:id", async (request, response) => {
   }
 });
 
-// ...
-// ...
+
 
 module.exports = app;
