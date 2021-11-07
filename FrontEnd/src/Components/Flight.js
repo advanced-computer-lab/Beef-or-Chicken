@@ -49,9 +49,9 @@ const useStyles = makeStyles(theme => ({
 function BasicCard(props) {
     const classes = useStyles();
     const flight = props.flight
-    const date = flight.FlightDate
+    const Adate = flight.ArrivalDate
     //let formatted_date = new Date(date.toDateString());
-    let newDate = date.toString();
+    let newDate = Adate.toString();
     newDate = newDate.substring(0, 10)
     console.log("ana hena: ", newDate)
 
@@ -89,7 +89,7 @@ function BasicCard(props) {
 
                     <span class="name">From<br /><span>{flight.From.toUpperCase()}</span></span>
                     <span class="flight">TO <br /><span>{flight.To.toUpperCase()}</span></span>
-                    <span class="gate">Date<br /><span>{newDate}</span></span>
+                    <span class="gate">Arrival Date<br /><span>{newDate}</span></span>
                     {/* <span class="seat">SEAT<br /><span>45A</span></span> */}
                     {/* <span class="boardingtime">Date<br /><span>8:25PM ON AUGUST 2013</span></span> */}
                     <Button class="seat seatslip">Show Details<br /></Button>
