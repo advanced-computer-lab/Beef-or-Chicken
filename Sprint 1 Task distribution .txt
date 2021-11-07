@@ -1,0 +1,43 @@
+Yasmine Elfares
+46-1357
+yasmine.elfares@student.guc.edu.eg
+T-22
+
+Mark Sroor
+46-5861	
+mark.sroor@student.guc.edu.eg
+T-22
+
+Carol Emad	
+46-0285	
+carol.halim@student.guc.edu.eg
+T-22
+
+Lougina Hatem
+46-13014	
+lougina.backar@student.guc.edu.eg
+T-22
+
+Dareen Mohamed	
+46-0416	
+dareen.abdelwareth@student.guc.edu.eg
+T-18
+
+Tasks assigned:
+
+Dareen, Yasmine, Carol:
+
+Front End: Search, login, update, create
+Back End: create flight, login
+
+
+Mark, Lougina:
+
+front End: view all flights, sidebar, delete
+Back End: login, search, update, view all flights, delete
+
+
+
+
+
+
