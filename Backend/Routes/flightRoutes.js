@@ -4,6 +4,7 @@ const app = express();
 var cors = require('cors')
 app.use(cors())
 
+const userModel = require("../Models/User");
 app.get("/allflights", async (request, response) => {
   const flights = await flightModel.find({});
 
@@ -13,6 +14,45 @@ app.get("/allflights", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+app.post("/searchUser", async (request, response) => {  //search with Criteria
+  console.log("ana el request:------- ")
+
+  var q = {}
+  //if (request.body.From.From != "") {
+  q.email = request.body.email.email
+  // //  }
+  // //  if (request.body.To.To != "") {
+  q.password = request.body.password.password
+  //yalahwaaaaaaaaaaaai
+  //mesh ba2ool 7aga!!!!
+  //  }
+  let body = {
+    password: "lala@la",
+    email: "hii"
+
+  };
+
+  console.log("body: ", q)
+  // console.log("1: ", request.body.FlightNumber)
+  // console.log("2: ", request.body.FlightNumber.FlightNumber)
+  // console.log(request.body.FlightNumber.FlightNumber != "")
+  console.log("q", q)
+
+  // // let v = JSON.stringify(q)
+  // console.log("v", v)
+  const user = await userModel.find(q);
+
+  try {
+    response.send(user);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+
+
+
 
 app.post("/searchFlights", async (request, response) => {  //search with Criteria
   console.log("ana el request: ", request.body.From)
@@ -132,7 +172,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
     console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
     console.log("first line");
-  //  await flightModel.save();
+    //  await flightModel.save();
     // console.log("Second line");
     response.send();
   } catch (error) {
