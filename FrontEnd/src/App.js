@@ -23,6 +23,8 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
+        <Route exact path="/CreateFlight" component={CreateFlight} />
+        <Route exact path="/UpdateFlight" component={UpdateFlight} />
       </Router>
     </div>
   )

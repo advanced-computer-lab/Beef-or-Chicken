@@ -12,7 +12,7 @@ export default function UpateFlight(prop) {
 
     const onSubmit = e => {
         console.log("flight: ", flight)
-        let url = `http://localhost:8080/flight/${flight}`;
+        let url = `http://localhost:8080/flight/${flight._id}`;
         console.log("url", url)
         axios.update(url)
             .then(async (response) => {

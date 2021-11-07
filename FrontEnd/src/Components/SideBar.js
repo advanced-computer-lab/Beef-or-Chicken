@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
+
 export default function SwipeableTemporaryDrawer() {
     const [state, setState] = React.useState({
         top: false,
@@ -25,7 +25,6 @@ export default function SwipeableTemporaryDrawer() {
     }
 
     const toggleDrawer = (anchor, open) => (event) => {
-        console.log(anchor)
         if (
             event &&
             event.type === 'keydown' &&
@@ -72,19 +71,19 @@ export default function SwipeableTemporaryDrawer() {
 
     return (
         <div>
-
-
-            <Button onClick={toggleDrawer("left", true)}><MenuIcon /></Button>
-            <SwipeableDrawer
-                anchor={anchor}
-                open={state[anchor]}
-                onClose={toggleDrawer(anchor, false)}
-                onOpen={toggleDrawer(anchor, true)}
-            >
-                {list(anchor)}
-            </SwipeableDrawer>
-
-
+            {['left'].map((anchor) => (
+                <React.Fragment key={anchor}>
+                    <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+                    <SwipeableDrawer
+                        anchor={anchor}
+                        open={state[anchor]}
+                        onClose={toggleDrawer(anchor, false)}
+                        onOpen={toggleDrawer(anchor, true)}
+                    >
+                        {list(anchor)}
+                    </SwipeableDrawer>
+                </React.Fragment>
+            ))}
         </div>
     );
 }

@@ -17,6 +17,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteButton from './DeleteButton'
+import UpdateFlight from './UpdateFlight'
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#0C2647",
@@ -109,7 +112,6 @@ export default function CustomizedTables(props) {
                                     <DeleteIcon />
                                 </IconButton> */}
                                 <DeleteButton flight={flight._id} />
-
                                 <IconButton style={{ marginRight: "20px" }} >
                                     <EditIcon />
                                 </IconButton>
