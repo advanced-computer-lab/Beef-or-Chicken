@@ -17,6 +17,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteButton from './DeleteButton'
+import UpdateFlight from './UpdateFlight'
+import { render } from 'react-dom';
+import { Link } from 'react-router-dom';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#0C2647",
@@ -57,8 +61,10 @@ export default function CustomizedTables(props) {
     console.log("hiiii", Adate)
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleSubmit = () => {
+
+        <UpdateFlight flight={flight._id} />
+
     };
 
     const handleClose = () => {
@@ -110,9 +116,11 @@ export default function CustomizedTables(props) {
                                 </IconButton> */}
                                 <DeleteButton flight={flight._id} />
 
-                                <IconButton style={{ marginRight: "20px" }} >
-                                    <EditIcon />
-                                </IconButton>
+                                <Link to={{ pathname: `/Update/${flight._id}` }}>
+                                    <IconButton style={{ marginRight: "20px" }} onClick={handleSubmit}>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Link>
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
