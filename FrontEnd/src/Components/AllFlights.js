@@ -49,7 +49,15 @@ class AllFlights extends Component {
         console.log("looo", { AllFlightsList })
 
         return (
+            // <div className="display">
 
+
+            //     <div className="allFlights" >
+            //         {AllFlightsList}
+            //     </div>
+
+
+            // </div>
             <div>
                 <GridContainer >
                     {flights.map((flight) => {
