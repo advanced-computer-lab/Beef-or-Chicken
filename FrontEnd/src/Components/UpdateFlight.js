@@ -5,44 +5,71 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import Header from './Header'
+
 
 export default function UpateFlight(prop) {
     const flight = prop.match.params
+    console.log("flight: ",flight)
     console.log("flightID: ", flight.id)
     const [open, setOpen] = React.useState(false);
+    let history = useHistory();
+
 
     const onSubmit = e => {
+        e.preventDefault();
+        e.stopPropagation();
         console.log("flight: ", flight)
         let url = `http://localhost:8080/flight/${flight.id}`;
+
+        let body = {
+            'From': { From },
+            'To': { To },
+            "DepartureDate": { DepartureDate },
+            "ArrivalDate": { ArrivalDate },
+            "FirstSeats": { FirstSeats },
+            "BusinessSeats": { BusinessSeats },
+            "EconomySeats": { EconomySeats },
+            "ArrivalTime": { ArrivalTime },
+            "DepartureTime": { DepartureTime },
+            "FlightNumber": { FlightNo }
+        }
+
         console.log("url", url)
-        axios.patch(url)
+        axios.patch(url,body)
             .then(async (response) => {
                 console.log("response ===> ", response)
+                history.push("/allFlights");
             })
             .catch((e) => {
+                
                 console.log("ana hena")
                 console.log("error ===>", e);
             });
-        window.location.reload(false);
+       // window.location.reload(false);
 
     };
 
-    const [From, setFrom] = useState(prop.From)
-    const [To, setTo] = useState(prop.To)
-    const [DepartureDate, setDepartureDate] = useState(prop.DepartureDate)
-    const [ArrivalDate, setArrivalDate] = useState(prop.ArrivalDate)
-    const [FirstSeats, setFirstSeats] = useState(prop.FirstSeats)
-    const [BusinessSeats, setBusinessSeats] = useState(prop.BusinessSeats)
-    const [EconomySeats, setEconomySeats] = useState(prop.EconomySeats)
-    const [ArrivalTime, setArrivalTime] = useState(prop.ArrivalTime)
-    const [DepartureTime, setDepartureTime] = useState(prop.DepartureTime)
-    const [FlightNo, setFlightNo] = useState(prop.FlightNo)
+    const [From, setFrom] = useState("")
+    const [To, setTo] = useState("")
+    const [DepartureDate, setDepartureDate] = useState("")
+    const [ArrivalDate, setArrivalDate] = useState("")
+    const [FirstSeats, setFirstSeats] = useState(null)
+    const [BusinessSeats, setBusinessSeats] = useState(null)
+    const [EconomySeats, setEconomySeats] = useState(null)
+    const [ArrivalTime, setArrivalTime] = useState("")
+    const [DepartureTime, setDepartureTime] = useState("")
+    const [FlightNo, setFlightNo] = useState("")
 
 
 
     return (
+        
         <div>
-            <form id='createFlightForm' class="row g-3" noValidate onSubmit={onSubmit}>
+            <Header />
+            <form id='createFlightForm2' class="row g-3" noValidate onSubmit={onSubmit}>
                 <div class="col-md-6" className='form-group'>
                     <label class="form-label">From</label>
                     <input
@@ -52,7 +79,7 @@ export default function UpateFlight(prop) {
                         name='From'
                         //className='form-control'
                         value={From}
-                        onChange={event => { setFrom(event.target.value.toLowerCase()) }}
+                        onChange={event => { setFrom(event.target.value.toUpperCase()) }}
                     />
 
                 </div>
@@ -67,7 +94,7 @@ export default function UpateFlight(prop) {
                         name='To'
                         // className='form-control'
                         value={To}
-                        onChange={event => { setTo(event.target.value.toLowerCase()) }}
+                        onChange={event => { setTo(event.target.value.toUpperCase()) }}
                     />
                 </div>
 
@@ -75,6 +102,7 @@ export default function UpateFlight(prop) {
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Departure Date</label>
                     <input
+                    onKeyDown={(e) => e.preventDefault()}
                         type='date'
                         class="form-control flex-fill"
                         placeholder='DepartureDate'
@@ -104,6 +132,7 @@ export default function UpateFlight(prop) {
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Arrival Date</label>
                     <input
+                    onKeyDown={(e) => e.preventDefault()}
                         type='date'
                         class="form-control flex-fill"
                         placeholder='ArrivalDate'
@@ -130,6 +159,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">Economy</label>
                     <input
                         type='number'
+                        min = '0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='EconomySeats'
@@ -143,6 +173,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">Business</label>
                     <input
                         type='number'
+                        min = '0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='BusinessSeats'
@@ -156,6 +187,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">First Class</label>
                     <input
                         type='number'
+                        min = '0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='FirstSeats'
@@ -179,12 +211,14 @@ export default function UpateFlight(prop) {
                     />
                 </div>
 
-
+                
                 <input
                     class="btn btn-primary"
                     type="submit"
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
+
+                 
             </form>
         </div>
     );

@@ -104,7 +104,7 @@ const SearchPage = () => {
                             name='From'
                             //className='form-control'
                             value={From}
-                            onChange={event => { setFrom(event.target.value.toLowerCase()) }}
+                            onChange={event => { setFrom(event.target.value.toUpperCase()) }}
                         />
 
                     </div>
@@ -119,7 +119,7 @@ const SearchPage = () => {
                             name='To'
                             // className='form-control'
                             value={To}
-                            onChange={event => { setTo(event.target.value.toLowerCase()) }}
+                            onChange={event => { setTo(event.target.value.toUpperCase()) }}
                         />
                     </div>
 
@@ -182,6 +182,7 @@ const SearchPage = () => {
                         <label class="form-label">Economy</label>
                         <input
                             type='number'
+                            min = '0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='EconomySeats'
@@ -195,6 +196,7 @@ const SearchPage = () => {
                         <label class="form-label">Business</label>
                         <input
                             type='number'
+                            min = '0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='BusinessSeats'
@@ -208,6 +210,7 @@ const SearchPage = () => {
                         <label class="form-label">First Class</label>
                         <input
                             type='number'
+                            min = '0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='FirstSeats'

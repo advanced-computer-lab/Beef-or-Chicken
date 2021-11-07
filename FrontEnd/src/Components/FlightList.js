@@ -116,7 +116,7 @@ export default function CustomizedTables(props) {
                                 </IconButton> */}
                                 <DeleteButton flight={flight._id} />
 
-                                <Link to={{ pathname: `/Update/${flight._id}` }}>
+                                <Link to={  { pathname: `/Update/${flight._id}`,state: { flight: {flight} } } }>
                                     <IconButton style={{ marginRight: "20px" }} onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton>
