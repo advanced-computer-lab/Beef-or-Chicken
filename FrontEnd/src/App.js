@@ -4,7 +4,6 @@ import Login from './Components/Login'
 import CreateFlight from './Components/CreateFlight'
 import AllFlights from './Components/AllFlights'
 import UpdateFlight from './Components/UpdateFlight'
-// import CreateFlight from './Components/CreateFlight'
 import './App.css';
 import { createBrowserHistory } from "history";
 //import { Route, Link } from "react-router-dom"
@@ -24,9 +23,6 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
-        <Route exact path="/Create" component={CreateFlight} />
-        <Route exact path="/Update/:id" component={UpdateFlight} />
-
       </Router>
     </div>
   )

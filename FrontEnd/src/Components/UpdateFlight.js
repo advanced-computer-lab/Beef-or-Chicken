@@ -7,15 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 
 export default function UpateFlight(prop) {
-    const flight = prop.match.params
-    console.log("flightID: ", flight.id)
+    const flight = prop.flight
     const [open, setOpen] = React.useState(false);
 
     const onSubmit = e => {
         console.log("flight: ", flight)
-        let url = `http://localhost:8080/flight/${flight.id}`;
+        let url = `http://localhost:8080/flight/${flight}`;
         console.log("url", url)
-        axios.patch(url)
+        axios.update(url)
             .then(async (response) => {
                 console.log("response ===> ", response)
             })
@@ -42,9 +41,9 @@ export default function UpateFlight(prop) {
 
     return (
         <div>
-            <form id='createFlightForm' class="row g-3" noValidate onSubmit={onSubmit}>
+            <form id = 'createFlightForm' class="row g-3" noValidate onSubmit={onSubmit}>
                 <div class="col-md-6" className='form-group'>
-                    <label class="form-label">From</label>
+                <label class="form-label">From</label>
                     <input
                         type='text'
                         class="form-control flex-fill"
@@ -54,12 +53,12 @@ export default function UpateFlight(prop) {
                         value={From}
                         onChange={event => { setFrom(event.target.value.toLowerCase()) }}
                     />
-
+                     
                 </div>
-
-
+        
+                
                 <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">To</label>
+                <label class="form-label">To</label>
                     <input
                         type='text'
                         class="form-control flex-fill"
@@ -71,9 +70,9 @@ export default function UpateFlight(prop) {
                     />
                 </div>
 
-
+       
                 <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Departure Date</label>
+                <label class="form-label">Departure Date</label>
                     <input
                         type='date'
                         class="form-control flex-fill"
@@ -84,10 +83,10 @@ export default function UpateFlight(prop) {
                         onChange={event => { setDepartureDate(event.target.value.toLowerCase()) }}
                     />
                 </div>
-
-
+          
+                
                 <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Departure Time</label>
+                <label class="form-label">Departure Time</label>
                     <input
                         type='time'
                         class="form-control flex-fill"
@@ -102,7 +101,7 @@ export default function UpateFlight(prop) {
 
 
                 <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Arrival Date</label>
+                <label class="form-label">Arrival Date</label>
                     <input
                         type='date'
                         class="form-control flex-fill"
@@ -114,7 +113,7 @@ export default function UpateFlight(prop) {
                     />
                 </div>
                 <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Arrival Time</label>
+                <label class="form-label">Arrival Time</label>
                     <input
                         type='time'
                         class="form-control flex-fill"
@@ -125,9 +124,9 @@ export default function UpateFlight(prop) {
                         onChange={event => { setArrivalTime(event.target.value.toLowerCase()) }}
                     />
                 </div>
-
+                
                 <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Economy</label>
+                <label class="form-label">Economy</label>
                     <input
                         type='number'
                         class="form-control flex-fill"
@@ -138,9 +137,9 @@ export default function UpateFlight(prop) {
                         onChange={event => { setEconomySeats(event.target.value.toLowerCase()) }}
                     />
                 </div>
-
+              
                 <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Business</label>
+                <label class="form-label">Business</label>
                     <input
                         type='number'
                         class="form-control flex-fill"
@@ -151,9 +150,9 @@ export default function UpateFlight(prop) {
                         onChange={event => { setBusinessSeats(event.target.value.toLowerCase()) }}
                     />
                 </div>
-
+              
                 <div className='form-group form-inline'>
-                    <label class="form-label">First Class</label>
+                <label class="form-label">First Class</label>
                     <input
                         type='number'
                         class="form-control flex-fill"
@@ -164,12 +163,12 @@ export default function UpateFlight(prop) {
                         onChange={event => { setFirstSeats(event.target.value.toLowerCase()) }}
                     />
                 </div>
-
+               
 
                 <div class="form-group form-inline" className='form-group'>
-                    <label class="form-label">Flight Number</label>
+                <label class="form-label">Flight Number</label>
                     <input
-                        type='text'
+                        type ='text' 
                         class="form-control flex-fill"
                         placeholder='Flight Number'
                         name='FlightNumber'
@@ -179,9 +178,9 @@ export default function UpateFlight(prop) {
                     />
                 </div>
 
-
+                
                 <input
-                    class="btn btn-primary"
+                class="btn btn-primary"
                     type="submit"
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
