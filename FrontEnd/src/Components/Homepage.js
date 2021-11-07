@@ -40,7 +40,7 @@ function HomePage() {
             {/* <AllFlights /> */}
             <Header />
             <div className={classes.page}>
-                <AllFlights />
+                {/* <AllFlights /> */}
             </div>
         </div>
 

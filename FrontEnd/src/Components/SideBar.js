@@ -13,10 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 
-// .boxhead a {
-//     color: #FFFFFF;
-//     text-decoration: none;
-// }
+
 const useStyles = makeStyles((theme) => ({
     logo: {
         // display: 'flex',
@@ -146,7 +143,7 @@ export default function SwipeableTemporaryDrawer() {
         <div>
 
 
-            <Button onClick={toggleDrawer("left", true)}><MenuIcon /></Button>
+            <Button onClick={toggleDrawer("left", true)}><MenuIcon color="error" fontSize="large" /></Button>
             <SwipeableDrawer
                 //anchor="left"
                 open={state["left"]}

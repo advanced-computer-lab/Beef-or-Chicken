@@ -3,6 +3,7 @@ import MenuList from "@material-ui/core/MenuList";
 import { makeStyles } from "@material-ui/core/styles";
 import { fabClasses } from '@mui/material';
 import { height } from '@mui/system';
+import SideBar from './SideBar'
 const useStyles = makeStyles((theme) => ({
     logo: {
         // display: 'flex',
@@ -10,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
         // flexWrap: 'wrap',
         width: "80px",
         height: "80px",
+        position: "absolute",
+        marginTop: "-5px"
 
     },
     paper: {
@@ -34,21 +37,33 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "9%"
     },
     navbar: {
-        backgroundColor: "#226AC7"
+        backgroundColor: "#226AC7",
+        height: "100px"
     },
     nav: {
         display: "flex",
+        flexDirection: "row",
         justifyContent: "space-between",
         paddingLeft: "100px",
         paddingTop: "20px",
         paddingBottom: "10px"
 
+    },
+    side: {
+        width: "80px",
+        height: "80px",
+        position: "absolute",
+        align: "left",
+        marginTop: "25px"
     }
 }));
 const Header = () => {
     const classes = useStyles();
     return (
         <div className={classes.navbar}>
+            <div className={classes.side}>
+                <SideBar />
+            </div>
             <nav className={classes.nav}>
                 <img src={logo} alt="logohear" className={classes.logo} />
 

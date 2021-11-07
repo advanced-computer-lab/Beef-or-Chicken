@@ -44,9 +44,16 @@
 width: 30%;
 position: absolute;
 left: 34.5%;
-top: 50%;
+/* top: 50%; */
 background-color: #EAF3F2;
 }
+#createFlightForm2{
+  width: 30%;
+  position: absolute;
+  left: 34.5%;
+   top: 120%; 
+  background-color: #EAF3F2;
+  }
 
 @keyframes App-logo-spin {
   from {

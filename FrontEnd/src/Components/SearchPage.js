@@ -4,17 +4,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import { fabClasses } from '@mui/material';
 import { height } from '@mui/system';
 import { useState } from "react";
+import Header from './Header'
 import axios from "axios";
+import { Link } from 'react-scroll'
+
 // import Flight from './Flight';
 import '../Components/AllFlights.css'
 import GridContainer from "../Components/Grid/GridContainer.js";
 import GridItem from "../Components/Grid/GridItem.js";
 import FlightList from '../Components/FlightList'
 const useStyles = makeStyles((theme) => ({
-    logo: {
+    root: {
 
-        width: "80px",
-        height: "80px",
+        //display: "flex",
+        flexDirection: "column"
 
     },
     paper: {
@@ -26,29 +29,12 @@ const useStyles = makeStyles((theme) => ({
         // overflowy: "auto",
         overflow: 'auto'
     },
-    down: {
-        display: "flex",
-        flexDirection: "column",
-        marginLeft: "2%",
-    },
-    b: {
-        alignItems: "Start"
-    },
-    title: {
-        textAlign: "left",
-        marginLeft: "9%"
-    },
-    navbar: {
-        backgroundColor: "#E01A6C"
-    },
-    nav: {
-        display: "flex",
-        justifyContent: "space-between",
-        paddingLeft: "100px",
-        paddingTop: "20px",
-        paddingBottom: "10px"
 
+    table: {
+        marginTop: "60px",
+        width: "80px"
     }
+
 }));
 const SearchPage = () => {
     const classes = useStyles();
@@ -90,6 +76,7 @@ const SearchPage = () => {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
                 setResult(res.data)
+                window.scroll(0, 9950)
                 //this.props.history.push('/');
             })
             .catch(error => {
@@ -97,221 +84,167 @@ const SearchPage = () => {
                 console.log(error.message);
             })
 
+        // window.scrollTo(0, document.body.scrollHeight);
 
     };
-    // function handleInputFromChange(event) {
-    //     setFrom(event.target.value);
-    // }
-    // function handleInputToChange(event) {
-    //     setTo(event.target.value);
-    // }
-    // function handleInputChange(event) {
-    //     setInputValue(event.target.value);
-    // }
+
     const flights = result;
     return (
 
         <div className={classes.root}>
-            {/* <form noValidate onSubmit={onSubmit}>
-                {/* onSubmit={this.onSubmit} */}
-            {/* <div className='form-group'>
+            <Header />
+            <div className={classes.table}>
+                <form className={classes.table} id='createFlightForm' class="row g-3" noValidate onSubmit={onSubmit}>
+                    <div class="col-md-6" className='form-group'>
+                        <label class="form-label">From</label>
+                        <input
+                            type='text'
+                            class="form-control flex-fill"
+                            placeholder='From'
+                            name='From'
+                            //className='form-control'
+                            value={From}
+                            onChange={event => { setFrom(event.target.value.toLowerCase()) }}
+                        />
+
+                    </div>
+
+
+                    <div class="col-md-6" className='form-group form-inline'>
+                        <label class="form-label">To</label>
+                        <input
+                            type='text'
+                            class="form-control flex-fill"
+                            placeholder='To'
+                            name='To'
+                            // className='form-control'
+                            value={To}
+                            onChange={event => { setTo(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+
+                    <div class="col-md-6" className='form-group form-inline'>
+                        <label class="form-label">Departure Date</label>
+                        <input
+                            type='date'
+                            class="form-control flex-fill"
+                            placeholder='DepartureDate'
+                            name='DepartureDate'
+                            //  className='form-control'
+                            value={DepartureDate}
+                            onChange={event => { setDepartureDate(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+
+                    <div class="col-md-6" className='form-group form-inline'>
+                        <label class="form-label">Departure Time</label>
+                        <input
+                            type='time'
+                            class="form-control flex-fill"
+                            placeholder='DepartureTime'
+                            name='DepartureTime'
+                            //  className='form-control'
+                            value={DepartureTime}
+                            onChange={event => { setDepartureTime(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+
+
+                    <div class="col-md-6" className='form-group form-inline'>
+                        <label class="form-label">Arrival Date</label>
+                        <input
+                            type='date'
+                            class="form-control flex-fill"
+                            placeholder='ArrivalDate'
+                            name='ArrivalDate'
+                            //  className='form-control'
+                            value={ArrivalDate}
+                            onChange={event => { setArrivalDate(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+                    <div class="col-md-4" className='form-group form-inline'>
+                        <label class="form-label">Arrival Time</label>
+                        <input
+                            type='time'
+                            class="form-control flex-fill"
+                            placeholder='ArrivalTime'
+                            name='ArrivalTime'
+                            //  className='form-control'
+                            value={ArrivalTime}
+                            onChange={event => { setArrivalTime(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+                    <div class="col-md-4" className='form-group form-inline'>
+                        <label class="form-label">Economy</label>
+                        <input
+                            type='number'
+                            class="form-control flex-fill"
+                            placeholder='Seats Available'
+                            name='EconomySeats'
+                            //  className='form-control'
+                            value={EconomySeats}
+                            onChange={event => { setEconomySeats(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+                    <div class="col-md-4" className='form-group form-inline'>
+                        <label class="form-label">Business</label>
+                        <input
+                            type='number'
+                            class="form-control flex-fill"
+                            placeholder='Seats Available'
+                            name='BusinessSeats'
+                            //  className='form-control'
+                            value={BusinessSeats}
+                            onChange={event => { setBusinessSeats(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+                    <div className='form-group form-inline'>
+                        <label class="form-label">First Class</label>
+                        <input
+                            type='number'
+                            class="form-control flex-fill"
+                            placeholder='Seats Available'
+                            name='FirstSeats'
+                            //  className='form-control'
+                            value={FirstSeats}
+                            onChange={event => { setFirstSeats(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+
+                    <div class="form-group form-inline" className='form-group'>
+                        <label class="form-label">Flight Number</label>
+                        <input
+                            type='text'
+                            class="form-control flex-fill"
+                            placeholder='Flight Number'
+                            name='FlightNumber'
+                            //  className='form-control'
+                            value={FlightNo}
+                            onChange={event => { setFlightNo(event.target.value.toLowerCase()) }}
+                        />
+                    </div>
+
+
                     <input
-                        type='text'
-                        placeholder='From'
-                        name='From'
-                        className='form-control'
-                        value={from}
-                        onChange={event => { setFrom(event.target.value) }}
-
-                    />
-                </div>
-                <br />
-
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='To'
-                        name='To'
-                        className='form-control'
-                        value={to}
-                        onChange={event => { setTo(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='date'
-                        placeholder='Date'
-                        name='date'
-                        className='form-control'
-                        value={date}
-                        onChange={event => { setDate(event.target.value) }}
-                    />
-                </div> */}
-
-            {/* <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='Describe this book'
-                        name='description'
-                        className='form-control'
-                        value={this.state.description}
-                        onChange={this.onChange}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='date'
-                        placeholder='published_date'
-                        name='published_date'
-                        className='form-control'
-                        value={this.state.published_date}
-                        onChange={this.onChange}
-                    />
-                </div>
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='Publisher of this Book'
-                        name='publisher'
-                        className='form-control'
-                        value={this.state.publisher}
-                        onChange={this.onChange}
-                    />
-                </div> */}
-
-            {/* <input
-                    type="submit"
-                    className="btn btn-outline-warning btn-block mt-4"
-                />
-            </form> */}
-            <form noValidate onSubmit={onSubmit}>
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='From'
-                        name='From'
-                        //className='form-control'
-                        value={From}
-                        onChange={event => { setFrom(event.target.value.toLowerCase()) }}
+                        class="btn btn-primary"
+                        type="submit"
+                    // className="btn btn-outline-warning btn-block mt-4"
                     />
 
-                </div>
+                </form>
+            </div>
+            <div style={{ position: "absolute", marginTop: "950px", width: "98%", marginLeft: "12px" }} >
+                <GridContainer  >
 
 
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='To'
-                        name='To'
-                        // className='form-control'
-                        value={To}
-                        onChange={event => { setTo(event.target.value.toLowerCase()) }}
-                    />
-                </div>
-
-
-                <div className='form-group'>
-                    <input
-                        type='date'
-                        placeholder='DepartureDate'
-                        name='DepartureDate'
-                        //  className='form-control'
-                        value={DepartureDate}
-                        onChange={event => { setDepartureDate(event.target.value.toLowerCase()) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='date'
-                        placeholder='ArrivalDate'
-                        name='ArrivalDate'
-                        //  className='form-control'
-                        value={ArrivalDate}
-                        onChange={event => { setArrivalDate(event.target.value.toLowerCase()) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='number'
-                        placeholder='EconomySeats'
-                        name='EconomySeats'
-                        //  className='form-control'
-                        value={EconomySeats}
-                        onChange={event => { setEconomySeats(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='number'
-                        placeholder='BusinessSeats'
-                        name='BusinessSeats'
-                        //  className='form-control'
-                        value={BusinessSeats}
-                        onChange={event => { setBusinessSeats(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='number'
-                        placeholder='FirstSeats'
-                        name='FirstSeats'
-                        //  className='form-control'
-                        value={FirstSeats}
-                        onChange={event => { setFirstSeats(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='time'
-                        placeholder='DepartureTime'
-                        name='DepartureTime'
-                        //  className='form-control'
-                        value={DepartureTime}
-                        onChange={event => { setDepartureTime(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='time'
-                        placeholder='ArrivalTime'
-                        name='ArrivalTime'
-                        //  className='form-control'
-                        value={ArrivalTime}
-                        onChange={event => { setArrivalTime(event.target.value) }}
-                    />
-                </div>
-
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='FlightNumber'
-                        name='FlightNumber'
-                        //  className='form-control'
-                        value={FlightNo}
-                        onChange={event => { setFlightNo(event.target.value.toLowerCase()) }}
-                    />
-                </div>
-
-
-                <input
-                    type="submit"
-                // className="btn btn-outline-warning btn-block mt-4"
-                />
-            </form>
-
-            <div>
-                <GridContainer >
-
-
-                    <GridItem xs={12} style={{ margin: "90px" }}>
+                    <GridItem xs={12} style={{ marginTop: "" }}>
                         <FlightList flight={result} />
                     </GridItem>
 
@@ -324,7 +257,7 @@ const SearchPage = () => {
                 </GridContainer>
             </div>
 
-        </div>
+        </div >
     )
 }
 

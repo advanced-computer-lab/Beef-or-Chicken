@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import Flight from './Flight';
 import FlightList from './FlightList'
 import '../Components/AllFlights.css'
-import SideBar from "../Components/SideBar"
+import Header from './Header'
+import { Typography } from '@material-ui/core';
 class AllFlights extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +62,8 @@ class AllFlights extends Component {
 
             // </div>
             <div>
-                <SideBar />
+                <Header />
+                <Typography align="left" style={{ color: "#0C2647", marginTop: "30px", marginBottom: "-10px", marginLeft: "100px" }} variant="h2">  All Flights</Typography>
                 <GridContainer >
                     {/* {flights.map((flight) => { */}
                     {/* return ( */}

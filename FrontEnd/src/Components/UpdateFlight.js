@@ -5,61 +5,38 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
-
-
 
 export default function UpateFlight(prop) {
     const flight = prop.match.params
     console.log("flightID: ", flight.id)
     const [open, setOpen] = React.useState(false);
-    let history = useHistory();
 
     const onSubmit = e => {
-        e.preventDefault();
-        e.stopPropagation();
         console.log("flight: ", flight)
         let url = `http://localhost:8080/flight/${flight.id}`;
-
-        let body = {
-            'From': { From },
-            'To': { To },
-            "DepartureDate": { DepartureDate },
-            "ArrivalDate": { ArrivalDate },
-            "FirstSeats": { FirstSeats },
-            "BusinessSeats": { BusinessSeats },
-            "EconomySeats": { EconomySeats },
-            "ArrivalTime": { ArrivalTime },
-            "DepartureTime": { DepartureTime },
-            "FlightNumber": { FlightNo }
-        }
-
         console.log("url", url)
-        axios.patch(url,body)
+        axios.patch(url)
             .then(async (response) => {
                 console.log("response ===> ", response)
-                history.push("/allFlights");
             })
             .catch((e) => {
-                
                 console.log("ana hena")
                 console.log("error ===>", e);
             });
-       // window.location.reload(false);
+        window.location.reload(false);
 
     };
 
-    const [From, setFrom] = useState("")
-    const [To, setTo] = useState("")
-    const [DepartureDate, setDepartureDate] = useState("")
-    const [ArrivalDate, setArrivalDate] = useState("")
-    const [FirstSeats, setFirstSeats] = useState(null)
-    const [BusinessSeats, setBusinessSeats] = useState(null)
-    const [EconomySeats, setEconomySeats] = useState(null)
-    const [ArrivalTime, setArrivalTime] = useState("")
-    const [DepartureTime, setDepartureTime] = useState("")
-    const [FlightNo, setFlightNo] = useState("")
+    const [From, setFrom] = useState(prop.From)
+    const [To, setTo] = useState(prop.To)
+    const [DepartureDate, setDepartureDate] = useState(prop.DepartureDate)
+    const [ArrivalDate, setArrivalDate] = useState(prop.ArrivalDate)
+    const [FirstSeats, setFirstSeats] = useState(prop.FirstSeats)
+    const [BusinessSeats, setBusinessSeats] = useState(prop.BusinessSeats)
+    const [EconomySeats, setEconomySeats] = useState(prop.EconomySeats)
+    const [ArrivalTime, setArrivalTime] = useState(prop.ArrivalTime)
+    const [DepartureTime, setDepartureTime] = useState(prop.DepartureTime)
+    const [FlightNo, setFlightNo] = useState(prop.FlightNo)
 
 
 
@@ -202,14 +179,12 @@ export default function UpateFlight(prop) {
                     />
                 </div>
 
-                
+
                 <input
                     class="btn btn-primary"
                     type="submit"
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
-
-                 
             </form>
         </div>
     );

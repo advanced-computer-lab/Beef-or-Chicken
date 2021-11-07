@@ -4,7 +4,7 @@ import axios from 'axios';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Header from "./Header"
 // number of Economy seats, number of Business class seats,
 class CreateFlight extends Component {
     constructor() {
@@ -27,30 +27,30 @@ class CreateFlight extends Component {
     //     let fields = this.state.fields;
     //     let errors = {};
     //     let formIsValid = true;
-    
+
     //     //Name
     //     if (!fields["From"]) {
     //       formIsValid = false;
     //       errors["name"] = "Cannot be empty";
     //     }
-    
+
     //     if (typeof fields["name"] !== "undefined") {
     //       if (!fields["name"].match(/^[a-zA-Z]+$/)) {
     //         formIsValid = false;
     //         errors["name"] = "Only letters";
     //       }
     //     }
-    
+
     //     //Email
     //     if (!fields["email"]) {
     //       formIsValid = false;
     //       errors["email"] = "Cannot be empty";
     //     }
-    
+
     //     if (typeof fields["email"] !== "undefined") {
     //       let lastAtPos = fields["email"].lastIndexOf("@");
     //       let lastDotPos = fields["email"].lastIndexOf(".");
-    
+
     //       if (
     //         !(
     //           lastAtPos < lastDotPos &&
@@ -64,21 +64,21 @@ class CreateFlight extends Component {
     //         errors["email"] = "Email is not valid";
     //       }
     //     }
-    
+
     //     this.setState({ errors: errors });
     //     return formIsValid;
     //   }
-    
+
     //   contactSubmit(e) {
     //     e.preventDefault();
-    
+
     //     if (this.handleValidation()) {
     //       alert("Form submitted");
     //     } else {
     //       alert("Form has errors.");
     //     }
     //   }
-    
+
     //   handleChange(field, e) {
     //     let fields = this.state.fields;
     //     fields[field] = e.target.value;
@@ -86,7 +86,7 @@ class CreateFlight extends Component {
     //   }
 
 
-      //////////////////////////
+    //////////////////////////
     onChange = e => {
         console.log(e.target.name)
         console.log(e.target.value)
@@ -110,7 +110,7 @@ class CreateFlight extends Component {
             DepartureTime: this.state.DepartureTime,
             ArrivalTime: this.state.ArrivalTime,
             FlightNumber: this.state.FlightNumber,
-       
+
         };
         console.log(data)
         // console.log(this.state.From)
@@ -126,35 +126,37 @@ class CreateFlight extends Component {
             .post(url, data)
             .then(res => {
                 this.setState({
-            From: '',
-            To: '',
-            DepartureDate: '',
-            ArrivalDate: '',
-            EconomySeats: '',
-            BusinessSeats: '',
-            FirstSeats: '',
-            DepartureTime: '',
-            ArrivalTime: '',
-            FlightNumber: '',
-    
-        },  console.log(res))
+                    From: '',
+                    To: '',
+                    DepartureDate: '',
+                    ArrivalDate: '',
+                    EconomySeats: '',
+                    BusinessSeats: '',
+                    FirstSeats: '',
+                    DepartureTime: '',
+                    ArrivalTime: '',
+                    FlightNumber: '',
+
+                }, console.log(res))
 
 
-                })
-              
-                //this.props.history.push('/');
-            
+            })
+
+            //this.props.history.push('/');
+
             .catch(error => {
                 console.log("idiot!");
                 console.log(error.message);
             })
+
     };
     render() {
         return (
             <div>
-                <form id = 'createFlightForm' class="row g-3" noValidate onSubmit={this.onSubmit}>
+                <Header />
+                <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit}>
                     <div class="col-md-6" className='form-group'>
-                    <label class="form-label">From</label>
+                        <label class="form-label">From</label>
                         <input
                             type='text'
                             class="form-control flex-fill"
@@ -164,12 +166,12 @@ class CreateFlight extends Component {
                             value={this.state.From}
                             onChange={this.onChange}
                         />
-                         
+
                     </div>
-            
-                    
+
+
                     <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">To</label>
+                        <label class="form-label">To</label>
                         <input
                             type='text'
                             class="form-control flex-fill"
@@ -180,10 +182,10 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-    
-           
+
+
                     <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Departure Date</label>
+                        <label class="form-label">Departure Date</label>
                         <input
                             type='date'
                             class="form-control flex-fill"
@@ -194,10 +196,10 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-              
-              
+
+
                     <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Arrival Date</label>
+                        <label class="form-label">Arrival Date</label>
                         <input
                             type='date'
                             class="form-control flex-fill"
@@ -208,9 +210,9 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                    
+
                     <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Departure Time</label>
+                        <label class="form-label">Departure Time</label>
                         <input
                             type='time'
                             class="form-control flex-fill"
@@ -225,7 +227,7 @@ class CreateFlight extends Component {
 
 
                     <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Arrival Time</label>
+                        <label class="form-label">Arrival Time</label>
                         <input
                             type='time'
                             class="form-control flex-fill"
@@ -236,9 +238,9 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                    
+
                     <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Economy</label>
+                        <label class="form-label">Economy</label>
                         <input
                             type='number'
                             class="form-control flex-fill"
@@ -249,9 +251,9 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                  
+
                     <div class="col-md-4" className='form-group form-inline'>
-                    <label class="form-label">Business</label>
+                        <label class="form-label">Business</label>
                         <input
                             type='number'
                             class="form-control flex-fill"
@@ -262,9 +264,9 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                  
+
                     <div className='form-group form-inline'>
-                    <label class="form-label">First Class</label>
+                        <label class="form-label">First Class</label>
                         <input
                             type='number'
                             class="form-control flex-fill"
@@ -275,12 +277,12 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                   
+
 
                     <div class="form-group form-inline" className='form-group'>
-                    <label class="form-label">Flight Number</label>
+                        <label class="form-label">Flight Number</label>
                         <input
-                            type ='text' 
+                            type='text'
                             class="form-control flex-fill"
                             placeholder='Flight Number'
                             name='FlightNumber'
@@ -290,9 +292,9 @@ class CreateFlight extends Component {
                         />
                     </div>
 
-                    
+
                     <input
-                    class="btn btn-primary"
+                        class="btn btn-primary"
                         type="submit"
                     // className="btn btn-outline-warning btn-block mt-4"
                     />
