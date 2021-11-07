@@ -4,9 +4,7 @@ import GridItem from "../Components/Grid/GridItem.js";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Flight from './Flight';
-import FlightList from './FlightList'
 import '../Components/AllFlights.css'
-import SideBar from "../Components/SideBar"
 class AllFlights extends Component {
     constructor(props) {
         super(props);
@@ -61,15 +59,14 @@ class AllFlights extends Component {
 
             // </div>
             <div>
-                <SideBar />
                 <GridContainer >
-                    {/* {flights.map((flight) => { */}
-                    {/* return ( */}
-                    <GridItem xs={12} style={{ margin: "90px" }}>
-                        <FlightList flight={flights} />
-                    </GridItem>
-                    {/* ); */}
-                    {/* })} */}
+                    {flights.map((flight) => {
+                        return (
+                            <GridItem xs={12} style={{ margin: "90px" }}>
+                                <Flight flight={flight} />
+                            </GridItem>
+                        );
+                    })}
                 </GridContainer>
                 <GridContainer alignItems="center" justify="center">
                     <GridItem xs style={{ marginBottom: "20px", marginTop: "20px" }}>

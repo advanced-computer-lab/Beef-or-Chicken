@@ -2,6 +2,11 @@
   text-align: center;
   color: blue;
 }
+.form-label{
+  color: black;
+  font: 10;
+  position: relative;
+}
 
 .App-logo {
   height: 40vmin;
@@ -32,7 +37,15 @@
 .form-group {
   color: #61dafb;
   font: bolder;
-  word-spacing: 999999mm;
+  display: block;
+  
+}
+#createFlightForm{
+width: 30%;
+position: absolute;
+left: 34.5%;
+top: 50%;
+background-color: #EAF3F2;
 }
 
 @keyframes App-logo-spin {

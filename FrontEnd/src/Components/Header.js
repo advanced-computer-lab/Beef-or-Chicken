@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "9%"
     },
     navbar: {
-        backgroundColor: "#226AC7"
+        backgroundColor: "#E01A6C"
     },
     nav: {
         display: "flex",
