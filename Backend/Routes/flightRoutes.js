@@ -16,16 +16,7 @@ app.get("/allflights", async (request, response) => {
 
 app.post("/searchFlights", async (request, response) => {  //search with Criteria
   console.log("ana el request: ", request.body.From)
-  // 'From': { From },
-  //           'To': { To },
-  //           "DepartureDate": { DepartureDate },
-  //           "ArrivalDate": { ArrivalDate },
-  //           "FirstSeats": { FirstSeats },
-  //           "BusinessSeats": { BusinessSeats },
-  //           "EconomySeats": { EconomySeats },
-  //           "ArrivalTime": { ArrivalTime },
-  //           "DepartureTime": { DepartureTime },
-  //           "FlightNumber": { FlightNo }
+
   var q = {}
   if (request.body.From.From != "") {
     q.From = request.body.From.From
@@ -102,9 +93,48 @@ app.post("/createFlight", async (request, response) => {
 
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
-    await flightModel.findByIdAndUpdate(request.params.id, request.body);
-    await flightModel.save();
-    response.send(flight);
+
+    console.log("ana el request: ", request.body)
+
+    var q = {}
+    if (request.body.From.From != "") {
+      q.From = request.body.From.From
+    }
+    if (request.body.To.To != "") {
+      q.To = request.body.To.To
+    }
+    if (request.body.DepartureDate.DepartureDate != "") {
+      q.DepartureDate = request.body.DepartureDate.DepartureDate + "T00:00:00.000Z"
+    }
+    if (request.body.ArrivalDate.ArrivalDate != "") {
+      q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
+    }
+    if (request.body.FirstSeats.FirstSeats != null) {
+      q.FirstSeats = request.body.FirstSeats.FirstSeats
+    }
+    if (request.body.BusinessSeats.BusinessSeats != null) {
+      q.BusinessSeats = request.body.BusinessSeats.BusinessSeats
+    }
+    if (request.body.EconomySeats.EconomySeats != null) {
+      q.EconomySeats = request.body.EconomySeats.EconomySeats
+    }
+    if (request.body.ArrivalTime.ArrivalTime != "") {
+      q.ArrivalTime = request.body.ArrivalTime.ArrivalTime
+    }
+    if (request.body.DepartureTime.DepartureTime != "") {
+      q.DepartureTime = request.body.DepartureTime.DepartureTime
+    }
+    if (request.body.FlightNumber.FlightNo != '') {
+      q.FlightNumber = request.body.FlightNumber.FlightNo
+    }
+
+    console.log(q);
+    console.log(request.params.id);
+    await flightModel.findByIdAndUpdate(request.params.id, q);
+    console.log("first line");
+  //  await flightModel.save();
+    // console.log("Second line");
+    response.send();
   } catch (error) {
     response.status(500).send(error);
   }

@@ -9,22 +9,76 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
+import { makeStyles } from "@material-ui/core/styles";
 
+// .boxhead a {
+//     color: #FFFFFF;
+//     text-decoration: none;
+// }
+const useStyles = makeStyles((theme) => ({
+    logo: {
+        // display: 'flex',
+        // justifyContent: 'center',
+        // flexWrap: 'wrap',
+        width: "80px",
+        height: "80px",
+
+    },
+    paper: {
+        marginRight: theme.spacing(2),
+        width: "100%",
+
+        height: "200px",
+        overflow: "hidden",
+        // overflowy: "auto",
+        overflow: 'auto'
+    },
+    down: {
+        display: "flex",
+        flexDirection: "column",
+        marginLeft: "2%",
+    },
+    b: {
+        alignItems: "Start"
+    },
+    title: {
+        textAlign: "left",
+        marginLeft: "9%"
+    },
+    navbar: {
+        backgroundColor: "#226AC7"
+    },
+    nav: {
+        display: "flex",
+        justifyContent: "space-between",
+        paddingLeft: "100px",
+        paddingTop: "20px",
+        paddingBottom: "10px"
+
+    },
+    link: {
+        // color: "#FFFFFF",
+        textDecoration: "none"
+    }
+}));
 export default function SwipeableTemporaryDrawer() {
+    const classes = useStyles();
     const [state, setState] = React.useState({
         top: false,
         left: false,
         bottom: false,
         right: false,
     });
-    const handleSubmit = (index) => {
-        if (index == 0) {
+    const handleSubmit = () => {
 
-        }
+
 
     }
 
     const toggleDrawer = (anchor, open) => (event) => {
+        console.log(anchor)
         if (
             event &&
             event.type === 'keydown' &&
@@ -44,16 +98,35 @@ export default function SwipeableTemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['View All Flights', 'Search For Flights'].map((text, index) => (
-                    <ListItem button key={text} onClick={handleSubmit(index)}>
+
+                <Link to="/allflights">
+
+
+                    <ListItem className={classes.link} style={{ textDecoration: "none" }} button key='View All Flights' onClick={handleSubmit()}>
                         {/* <ListItemIcon>
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                             
                         </ListItemIcon> */}
 
-                        <ListItemText primary={text} />
+                        <ListItemText primary='View All Flights' />
                     </ListItem>
-                ))}
+                </Link>
+                <Link to="/Search">
+
+
+                    <ListItem button key='Search for Flights' onClick={handleSubmit()}>
+
+
+                        <ListItemText primary='Search for Flights' />
+                    </ListItem>
+                </Link>
+                <Link to="/Create">
+                    <ListItem button key='Create Flights' onClick={handleSubmit()}>
+
+
+                        <ListItemText primary='Create Flights' />
+                    </ListItem>
+                </Link>
             </List>
             <Divider />
             {/* <List>
@@ -71,19 +144,19 @@ export default function SwipeableTemporaryDrawer() {
 
     return (
         <div>
-            {['left'].map((anchor) => (
-                <React.Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-                    <SwipeableDrawer
-                        anchor={anchor}
-                        open={state[anchor]}
-                        onClose={toggleDrawer(anchor, false)}
-                        onOpen={toggleDrawer(anchor, true)}
-                    >
-                        {list(anchor)}
-                    </SwipeableDrawer>
-                </React.Fragment>
-            ))}
+
+
+            <Button onClick={toggleDrawer("left", true)}><MenuIcon /></Button>
+            <SwipeableDrawer
+                //anchor="left"
+                open={state["left"]}
+                onClose={toggleDrawer("left", false)}
+                onOpen={toggleDrawer("left", true)}
+            >
+                {list("left")}
+            </SwipeableDrawer>
+
+
         </div>
     );
 }
