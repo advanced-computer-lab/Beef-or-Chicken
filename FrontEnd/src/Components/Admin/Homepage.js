@@ -1,13 +1,13 @@
 
-import Drawer from '../Components/Drawer';
-import Tabs from '../Components/Tabs'
-import Navbar from '../Components/Navbar';
+import Drawer from './Drawer';
+import Tabs from './Tabs'
+import Navbar from './Navbar';
 //import CreateFlight from "../Components/CreateFlight";
-import FlightCard from "../Components/Flight";
+import FlightCard from "./Flight";
 import AllFlights from './AllFlights';
 import Header from './Header'
 import Login from './Login';
-import Home from '../Components/User/Home.js'
+// import Home from '../Components/User/Home.js'
 
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,7 @@ function HomePage() {
             <Header />
             {/* <div className={classes.page}> */}
             {/* <AllFlights /> */}
-            <Home />
+            <Login />
             {/* </div> */}
         </div>
 

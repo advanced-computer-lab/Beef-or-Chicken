@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import "../Components/Flight.css"
+import "./Flight.css"
 // margin-left: 100
 // px
 // ;

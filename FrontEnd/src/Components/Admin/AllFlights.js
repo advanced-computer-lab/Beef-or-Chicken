@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import GridContainer from "../Components/Grid/GridContainer.js";
-import GridItem from "../Components/Grid/GridItem.js";
+import GridContainer from "../../Components/Grid/GridContainer.js";
+import GridItem from "../../Components/Grid/GridItem.js";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Flight from './Flight';
 import FlightList from './FlightList'
-import '../Components/AllFlights.css'
+import './AllFlights.css'
 import Header from './Header'
 import { Typography } from '@material-ui/core';
 class AllFlights extends Component {

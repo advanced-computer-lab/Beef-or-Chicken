@@ -9,10 +9,10 @@ import axios from "axios";
 import { Link } from 'react-scroll'
 
 // import Flight from './Flight';
-import '../Components/AllFlights.css'
-import GridContainer from "../Components/Grid/GridContainer.js";
-import GridItem from "../Components/Grid/GridItem.js";
-import FlightList from '../Components/FlightList'
+import './AllFlights.css'
+import GridContainer from "../../Components/Grid/GridContainer.js";
+import GridItem from "../../Components/Grid/GridItem.js";
+import FlightList from '../../Components/Admin/FlightList'
 const useStyles = makeStyles((theme) => ({
     root: {
 
@@ -182,7 +182,7 @@ const SearchPage = () => {
                         <label class="form-label">Economy</label>
                         <input
                             type='number'
-                            min = '0'
+                            min='0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='EconomySeats'
@@ -196,7 +196,7 @@ const SearchPage = () => {
                         <label class="form-label">Business</label>
                         <input
                             type='number'
-                            min = '0'
+                            min='0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='BusinessSeats'
@@ -210,7 +210,7 @@ const SearchPage = () => {
                         <label class="form-label">First Class</label>
                         <input
                             type='number'
-                            min = '0'
+                            min='0'
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='FirstSeats'

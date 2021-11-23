@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import "../Components/Login.css";
+import "./Login.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 export default function Login() {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import '../App.css';
+import '../../App.css';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +12,7 @@ import Header from './Header'
 
 export default function UpateFlight(prop) {
     const flight = prop.match.params
-    console.log("flight: ",flight)
+    console.log("flight: ", flight)
     console.log("flightID: ", flight.id)
     const [open, setOpen] = React.useState(false);
     let history = useHistory();
@@ -38,17 +38,17 @@ export default function UpateFlight(prop) {
         }
 
         console.log("url", url)
-        axios.patch(url,body)
+        axios.patch(url, body)
             .then(async (response) => {
                 console.log("response ===> ", response)
                 history.push("/allFlights");
             })
             .catch((e) => {
-                
+
                 console.log("ana hena")
                 console.log("error ===>", e);
             });
-       // window.location.reload(false);
+        // window.location.reload(false);
 
     };
 
@@ -66,7 +66,7 @@ export default function UpateFlight(prop) {
 
 
     return (
-        
+
         <div>
             <Header />
             <form id='createFlightForm2' class="row g-3" noValidate onSubmit={onSubmit}>
@@ -102,7 +102,7 @@ export default function UpateFlight(prop) {
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Departure Date</label>
                     <input
-                    onKeyDown={(e) => e.preventDefault()}
+                        onKeyDown={(e) => e.preventDefault()}
                         type='date'
                         class="form-control flex-fill"
                         placeholder='DepartureDate'
@@ -132,7 +132,7 @@ export default function UpateFlight(prop) {
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Arrival Date</label>
                     <input
-                    onKeyDown={(e) => e.preventDefault()}
+                        onKeyDown={(e) => e.preventDefault()}
                         type='date'
                         class="form-control flex-fill"
                         placeholder='ArrivalDate'
@@ -159,7 +159,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">Economy</label>
                     <input
                         type='number'
-                        min = '0'
+                        min='0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='EconomySeats'
@@ -173,7 +173,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">Business</label>
                     <input
                         type='number'
-                        min = '0'
+                        min='0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='BusinessSeats'
@@ -187,7 +187,7 @@ export default function UpateFlight(prop) {
                     <label class="form-label">First Class</label>
                     <input
                         type='number'
-                        min = '0'
+                        min='0'
                         class="form-control flex-fill"
                         placeholder='Seats Available'
                         name='FirstSeats'
@@ -211,14 +211,14 @@ export default function UpateFlight(prop) {
                     />
                 </div>
 
-                
+
                 <input
                     class="btn btn-primary"
                     type="submit"
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
 
-                 
+
             </form>
         </div>
     );
