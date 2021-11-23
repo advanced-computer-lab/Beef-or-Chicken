@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "9%"
     },
     navbar: {
-        backgroundColor: "#226AC7",
+        // backgroundColor: "#226AC7",
         height: "100px"
     },
     nav: {
@@ -61,9 +61,9 @@ const Header = () => {
     const classes = useStyles();
     return (
         <div className={classes.navbar}>
-            <div className={classes.side}>
+            {/* <div className={classes.side}>
                 <SideBar />
-            </div>
+            </div> */}
             <nav className={classes.nav}>
                 <img src={logo} alt="logohear" className={classes.logo} />
 
