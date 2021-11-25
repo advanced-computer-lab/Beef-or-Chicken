@@ -3,6 +3,13 @@ const Schema = mongoose.Schema;
 
 
 const flightSchema = new Schema({
+
+  FlightNumber: {
+    unique:true,
+    type: String,
+    required: true
+  },
+
   From: {
     type: String,
     required: true,
@@ -32,6 +39,22 @@ const flightSchema = new Schema({
     type: Number,
     required: true
   },
+
+  
+  PriceEconomy: {
+    type: mongoose.Decimal128,
+    required: false
+  },
+
+  PriceBusiness: {
+    type: mongoose.Decimal128,
+    required: false
+  },
+  PriceFirst: {
+    type: mongoose.Decimal128,
+    required: false
+  },
+
   DepartureTime: {
     type: String,
     required: true
@@ -40,10 +63,28 @@ const flightSchema = new Schema({
     type: String,
     required: true
   },
-  FlightNumber: {
-    type: String,
-    required: true
+
+  
+  RemEconomy: {
+    type: Number,
+    required: false
   },
+
+  RemBusiness: {
+    type: Number,
+    required: false
+  },
+  RemFirst: {
+    type: Number,
+    required: false
+  },
+
+  Duration: {
+    type: String,
+    required: false
+  },
+
+
 
 }, { timestamps: true });
 
