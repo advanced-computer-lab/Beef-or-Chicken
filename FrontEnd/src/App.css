@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  color: blue;
+}
+.form-label{
+  color: black;
+  font: 10;
+  position: relative;
 }
 
 .App-logo {
@@ -27,6 +33,27 @@
 .App-link {
   color: #61dafb;
 }
+
+.form-group {
+  color: #61dafb;
+  font: bolder;
+  display: block;
+  
+}
+#createFlightForm{
+width: 30%;
+position: absolute;
+left: 34.5%;
+/* top: 50%; */
+background-color: #EAF3F2;
+}
+#createFlightForm2{
+  width: 30%;
+  position: absolute;
+  left: 34.5%;
+   top: 120%; 
+  background-color: #EAF3F2;
+  }
 
 @keyframes App-logo-spin {
   from {
