@@ -63,12 +63,12 @@ function IconLabelButtons({ details }) {
             'To': details.destination,
             "DepartureDate": details.departure_date,
             "ArrivalDate": details.return_date,
-            // "FirstSeats":null,
-            // "BusinessSeats": null,
-            // "EconomySeats": null,
-            // "ArrivalTime": "",
-            // "DepartureTime": "",
-            // "FlightNumber": ""
+            "FirstSeats":{FirstSeats: null},
+            "BusinessSeats": {BusinessSeats: null},
+            "EconomySeats": {EconomySeats: null},
+            "ArrivalTime": { ArrivalTime:"" },
+            "DepartureTime": { DepartureTime:"" },
+            "FlightNumber": { FlightNumber:"" }
         }
 
         console.log(body)

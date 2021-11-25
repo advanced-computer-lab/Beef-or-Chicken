@@ -1,36 +1,31 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    email: {
+const reservationSchema = new Schema({
+    UserID: {
         type: String,
         required: true,
     },
-    password: {
+    DepartureFlightID: {
         type: String,
         required: true
     },
-    type: {
-        type: Number,
-        required: true
-    },
-    firstName: {
+    ReturnFlightID: {
         type: String,
         required: true
     },
-    lastName: {
+    CabinType: {
         type: String,
         required: true
     },
-    passportNumber: {
-        type: String,
-        required: true
-    },
-    reservations: {
+    TakenSeats: {
         type: Array,
-        required: true
+        required: true,
     },
-
+    TotalPrice: {
+        type: mongoose.Decimal128,
+        required: true,
+    },
 
 }, { timestamps: true });
 
