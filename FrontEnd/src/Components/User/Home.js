@@ -160,18 +160,7 @@ function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_
             key: 'selection'
         }
     ]);
-    // const renderCalender = () => {
-    //     console.log("hiiiiii", option)
-    //     if (option.value === t) {
-    //         console.log("ana gwaaaa")
-    //         return <DatePicker />
 
-    //     }
-    //     else {
-
-    //         return <BasicDateRangePicker />
-    //     }
-    // };
     const changeValue = (text) => {
         setdropDownValue(text)
         // setTripType(dr)
@@ -179,12 +168,6 @@ function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_
     const changeValueClass = (text) => {
         setclassValue(text)
     }
-
-
-
-    // handleCount(value) {
-    //   this.setState((prevState) => ({ count: prevState.count + value }));
-    // }
 
     const handleOptions = (value) => {
         option = { value }
@@ -212,22 +195,11 @@ function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_
     return (
 
         <div style={{ backgroundImage: `url(${bg2})`, height: "100vh", backgroundSize: "cover" }}>
-            {/* <img src={mountain} alt="" className="mountain" /> */}
+
             <div className={classes.search}>
                 <div className={classes.bottomSheet}>
                     <div className={classes.rectangle}>
                         <div className={classes.selectors}>
-                            {/* <Dropdown >
-                                <div className='selectedItem'>
-                                    <Dropdown.Toggle calssName="selected" variant="out-secontary" color='#818181'>
-                                       
-                                        {tripType}
-
-                                    </Dropdown.Toggle></div>
-                                
-                            </Dropdown> */}
-
-
 
                             <div className="">
                                 <div className="test"></div>

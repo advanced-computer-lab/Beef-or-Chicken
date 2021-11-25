@@ -6,6 +6,7 @@ import AllFlights from './Components/Admin/AllFlights'
 import UpdateFlight from './Components/Admin/UpdateFlight'
 import Home from './Components/User/HomePage'
 import Admin from './Components/Admin/Homepage'
+import DepartingResults from './Components/User/DepartingResults'
 // import CreateFlight from './Components/CreateFlight'
 import './App.css';
 import { createBrowserHistory } from "history";
@@ -24,6 +25,7 @@ function App() {
       {/* <Tabs /> */}
       <Router history={hist}>
         <Route exact path="/" component={Home} />
+        <Route exact path="/DepartingFlights" component={DepartingResults} />
         <Route exact path="/Admin" component={Admin} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
