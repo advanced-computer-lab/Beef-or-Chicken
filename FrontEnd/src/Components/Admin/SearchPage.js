@@ -50,6 +50,10 @@ const SearchPage = () => {
     const [BusinessPrice, setBusinessPrice] = useState(null)
     const [EconomyPrice, setEconomyPrice] = useState(null)
 
+    const [FirstBags, setFirstBags] = useState(null)
+    const [BusinessBags, setBusinessBags] = useState(null)
+    const [EconomyBags, setEconomyBags] = useState(null)
+
     const [ArrivalTime, setArrivalTime] = useState("")
     const [DepartureTime, setDepartureTime] = useState("")
     const [FlightNo, setFlightNo] = useState("")
@@ -73,6 +77,12 @@ const SearchPage = () => {
             "EconomyPrice":{EconomyPrice},
             "BusinessPrice":{BusinessPrice},
             "FirstPrice":{FirstPrice},
+
+            "EconomyBags":{EconomyBags},
+            "BusinessBags":{BusinessBags},
+            "FirstBags":{FirstBags},
+
+
         }
 
         console.log(body)
@@ -188,7 +198,8 @@ const SearchPage = () => {
 
                     <div className='form-labelGroup' >
                     <label class="form-labelLeft">Economy</label>
-                    <label class="form-labelRight">Price</label>
+                    <label class="form-labelCenter">Price</label>
+                    <label class="form-labelRight">Bags</label>
                     </div>
 
                     <div class="col-md-4" className='form-group2 form-inline'>
@@ -213,11 +224,22 @@ const SearchPage = () => {
                             value={EconomyPrice}
                             onChange={event => { setEconomyPrice(event.target.value.toLowerCase()) }}
                         />
+                        <input
+                            type='number'
+                            min='0'
+                            class="form-control flex-fill"
+                            placeholder='Bags Allowed'
+                            name='EconomyBags'
+                            //  className='form-control'
+                            value={EconomyBags}
+                            onChange={event => { setEconomyBags(event.target.value.toLowerCase()) }}
+                        />
                     </div>
 
                     <div className='form-labelGroup' >
                     <label class="form-labelLeft">Business</label>
-                    <label class="form-labelRight">Price</label>
+                    <label class="form-labelCenter">Price</label>
+                    <label class="form-labelRight">Bags</label>
                     </div>
                     <div class="col-md-4" className='form-group2 form-inline'>
                         
@@ -241,11 +263,22 @@ const SearchPage = () => {
                             value={BusinessPrice}
                             onChange={event => { setBusinessPrice(event.target.value.toLowerCase()) }}
                         />
+                         <input
+                            type='number'
+                            min='0'
+                            class="form-control flex-fill"
+                            placeholder='Bags Allowed'
+                            name='BusinessBags'
+                            //  className='form-control'
+                            value={BusinessBags}
+                            onChange={event => { setBusinessBags(event.target.value.toLowerCase()) }}
+                        />
                     </div>
 
                     <div className='form-labelGroup' >
                     <label class="form-labelLeft">First Class</label>
-                    <label class="form-labelRight">Price</label>
+                    <label class="form-labelCenter">Price</label>
+                    <label class="form-labelRight">Bags</label>
                     </div>
                     <div className='form-group2 form-inline'>
                        
@@ -268,6 +301,16 @@ const SearchPage = () => {
                             //  className='form-control'
                             value={FirstPrice}
                             onChange={event => { setFirstPrice(event.target.value.toLowerCase()) }}
+                        />
+                        <input
+                            type='number'
+                            min='0'
+                            class="form-control flex-fill"
+                            placeholder='Bags Allowed'
+                            name='FirstBags'
+                            //  className='form-control'
+                            value={FirstBags}
+                            onChange={event => { setFirstBags(event.target.value.toLowerCase()) }}
                         />
                     </div>
 

@@ -79,15 +79,21 @@ export default function CustomizedTables(props) {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell align="center">Flight Number</StyledTableCell>
-                        <StyledTableCell>From</StyledTableCell>
+                        <StyledTableCell align="center">From</StyledTableCell>
                         <StyledTableCell align="center">To</StyledTableCell>
                         <StyledTableCell align="center">Departure Date</StyledTableCell>
                         <StyledTableCell align="center">Arrival Date</StyledTableCell>
                         <StyledTableCell align="center">Departure Time</StyledTableCell>
                         <StyledTableCell align="center">Arrival Time</StyledTableCell>
                         <StyledTableCell align="center">First Seats</StyledTableCell>
+                        <StyledTableCell align="center">First Price</StyledTableCell>
+                        <StyledTableCell align="center">Bags</StyledTableCell>
                         <StyledTableCell align="center">Business Seats</StyledTableCell>
+                        <StyledTableCell align="center">Business Price</StyledTableCell>
+                        <StyledTableCell align="center">Bags</StyledTableCell>
                         <StyledTableCell align="center">Economy Seats</StyledTableCell>
+                        <StyledTableCell align="center">Economy Price</StyledTableCell>
+                        <StyledTableCell align="center">Bags</StyledTableCell>
                         <StyledTableCell align="center">       </StyledTableCell>
 
 
@@ -107,8 +113,15 @@ export default function CustomizedTables(props) {
                             <StyledTableCell align="center">{flight.DepartureTime}</StyledTableCell>
                             <StyledTableCell align="center">{flight.ArrivalTime}</StyledTableCell>
                             <StyledTableCell align="center">{flight.FirstSeats}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.PriceFirst.$numberDecimal}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.FirstBags}</StyledTableCell>
                             <StyledTableCell align="center">{flight.BusinessSeats}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.PriceBusiness.$numberDecimal}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.BusinessBags}</StyledTableCell>
                             <StyledTableCell align="center">{flight.EconomySeats}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.PriceEconomy.$numberDecimal}</StyledTableCell>
+                            <StyledTableCell align="center">{flight.EconomyBags}</StyledTableCell>
+                            
                             <StyledTableCell align="right" style={{ display: "flex" }}>
 
                                 {/* <IconButton aria-label="delete" onClick={handleClickOpen}>
@@ -117,7 +130,7 @@ export default function CustomizedTables(props) {
                                 <DeleteButton flight={flight._id} />
 
                                 <Link to={  { pathname: `/Update/${flight._id}`,state: { flight: {flight} } } }>
-                                    <IconButton style={{ marginRight: "20px" }} onClick={handleSubmit}>
+                                    <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton>
                                 </Link>

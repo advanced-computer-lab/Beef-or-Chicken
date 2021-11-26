@@ -21,7 +21,7 @@
   font: 10;
   display: flex;
   position: relative;
-  left: 20%;
+  left: 15%;
   right: 30px;
   text-align: left;
 }
@@ -33,6 +33,15 @@
   left: -20%;
   right: 30px;
   text-align: right;
+}
+
+.form-labelCenter{
+  color: black;
+  font: 10;
+  display: flex;
+  position: relative;
+ 
+  text-align: Center;
 }
 
 

@@ -70,23 +70,33 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
   if (request.body.ArrivalDate.ArrivalDate != "") {
     q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
   }
-  if (request.body.FirstSeats.FirstSeats != null) {
+  if (request.body.FirstSeats.FirstSeats != null && request.body.FirstSeats.FirstSeats != "") {
     q.FirstSeats = request.body.FirstSeats.FirstSeats
   }
-  if (request.body.BusinessSeats.BusinessSeats != null) {
+  if (request.body.BusinessSeats.BusinessSeats != null && request.body.BusinessSeats.BusinessSeats != "") {
     q.BusinessSeats = request.body.BusinessSeats.BusinessSeats
   }
-  if (request.body.EconomySeats.EconomySeats != null) {
+  if (request.body.EconomySeats.EconomySeats != null && request.body.EconomySeats.EconomySeats != "") {
     q.EconomySeats = request.body.EconomySeats.EconomySeats
   }
 
-  if (request.body.EconomyPrice.EconomyPrice != null) {
+  if (request.body.FirstBags.FirstBags != null && request.body.FirstBags.FirstBags != "") {
+    q.FirstBags = request.body.FirstBags.FirstBags
+  }
+  if (request.body.BusinessBags.BusinessBags != null && request.body.BusinessBags.BusinessBags != "" ) {
+    q.BusinessBags = request.body.BusinessBags.BusinessBags
+  }
+  if (request.body.EconomyBags.EconomyBags != null && request.body.EconomyBags.EconomyBags != "") {
+    q.EconomyBags = request.body.EconomyBags.EconomyBags
+  }
+
+  if (request.body.EconomyPrice.EconomyPrice != null && request.body.EconomyPrice.EconomyPrice != "") {
     q.PriceEconomy = request.body.EconomyPrice.EconomyPrice
   }
-  if (request.body.BusinessPrice.BusinessPrice != null) {
+  if (request.body.BusinessPrice.BusinessPrice != null && request.body.BusinessPrice.BusinessPrice != "") {
     q.PriceBusiness = request.body.BusinessPrice.BusinessPrice
   }
-  if (request.body.FirstPrice.FirstPrice != null) {
+  if (request.body.FirstPrice.FirstPrice != null && request.body.FirstPrice.FirstPrice != "") {
     q.PriceFirst = request.body.FirstPrice.FirstPrice
   }
 
@@ -135,6 +145,9 @@ app.post("/createFlight", async (request, response) => {
     'PriceEconomy':request.body.EconomyPrice,
     'PriceBusiness':request.body.BusinessPrice,
     'PriceFirst':request.body.FirstPrice,
+    'EconomyBags':request.body.EconomyBags,
+    'BusinessBags':request.body.BusinessBags,
+    'FirstBags':request.body.FirstBags,
   });
 
   try {
@@ -165,22 +178,33 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.ArrivalDate.ArrivalDate != "") {
       q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
     }
-    if (request.body.FirstSeats.FirstSeats != null) {
+    if (request.body.FirstSeats.FirstSeats != null && request.body.FirstSeats.FirstSeats != "") {
       q.FirstSeats = request.body.FirstSeats.FirstSeats
     }
-    if (request.body.BusinessSeats.BusinessSeats != null) {
+    if (request.body.BusinessSeats.BusinessSeats != null && request.body.BusinessSeats.BusinessSeats != "") {
       q.BusinessSeats = request.body.BusinessSeats.BusinessSeats
     }
-    if (request.body.EconomySeats.EconomySeats != null) {
+    if (request.body.EconomySeats.EconomySeats != null && request.body.EconomySeats.EconomySeats != "") {
       q.EconomySeats = request.body.EconomySeats.EconomySeats
     }
-    if (request.body.EconomyPrice.EconomyPrice != null) {
+  
+    if (request.body.FirstBags.FirstBags != null && request.body.FirstBags.FirstBags != "") {
+      q.FirstBags = request.body.FirstBags.FirstBags
+    }
+    if (request.body.BusinessBags.BusinessBags != null && request.body.BusinessBags.BusinessBags != "" ) {
+      q.BusinessBags = request.body.BusinessBags.BusinessBags
+    }
+    if (request.body.EconomyBags.EconomyBags != null && request.body.EconomyBags.EconomyBags != "") {
+      q.EconomyBags = request.body.EconomyBags.EconomyBags
+    }
+  
+    if (request.body.EconomyPrice.EconomyPrice != null && request.body.EconomyPrice.EconomyPrice != "") {
       q.PriceEconomy = request.body.EconomyPrice.EconomyPrice
     }
-    if (request.body.BusinessPrice.BusinessPrice != null) {
+    if (request.body.BusinessPrice.BusinessPrice != null && request.body.BusinessPrice.BusinessPrice != "") {
       q.PriceBusiness = request.body.BusinessPrice.BusinessPrice
     }
-    if (request.body.FirstPrice.FirstPrice != null) {
+    if (request.body.FirstPrice.FirstPrice != null && request.body.FirstPrice.FirstPrice != "") {
       q.PriceFirst = request.body.FirstPrice.FirstPrice
     }
     if (request.body.ArrivalTime.ArrivalTime != "") {

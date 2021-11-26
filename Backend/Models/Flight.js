@@ -40,6 +40,20 @@ const flightSchema = new Schema({
     required: true
   },
 
+  EconomyBags: {
+    type: Number,
+    required: true
+  },
+
+  BusinessBags: {
+    type: Number,
+    required: true
+  },
+  FirstBags: {
+    type: Number,
+    required: true
+  },
+
   
   PriceEconomy: {
     type: mongoose.Decimal128,
