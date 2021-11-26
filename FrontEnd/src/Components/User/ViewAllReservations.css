@@ -11,8 +11,38 @@
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .accordionHeader{
-    padding-left: 6%;
-    padding-right: 9%;
+    padding-left: 5.5%;
+    padding-right: 8.5%;
     font-size: larger;
     font-weight: 500;
 }
+
+.container {
+    padding: 2.5% 0.5%;
+}
+
+
+.inputbox {
+    border: none;
+    outline: none
+}
+
+.h-blue {
+    color: #226AC7;
+    margin-bottom: 5px;
+    padding-left: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.outline-none {
+    outline: none
+}
+
+Button {
+    font-size: medium;
+    float: left;
+    
+}
+
+
