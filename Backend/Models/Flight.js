@@ -93,6 +93,11 @@ const flightSchema = new Schema({
     required: true
   },
 
+  Seats:{  // economy then business then first
+    type:Array,
+    required:true
+  }
+
 
 
 

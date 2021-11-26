@@ -50,6 +50,15 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
   }
 });
 
+app.get("/flightById/:id", async (request, response) => {
+ const flight = await flightModel.findById(request.params.id);
+
+  try {
+    response.send(flight);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 
 
@@ -128,6 +137,28 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
 
 app.post("/createFlight", async (request, response) => {
   console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
+
+  var EconomySeats =  request.body.EconomySeats;
+  var BusinessSeats = request.body.BusinessSeats;
+  var FirstSeats = request.body.FirstSeats;
+  var seats = [];
+  var tmpEconomy = [];
+  var tmpBusiness = [];
+  var tmpFirst = [];
+  for (let i = 0; i<EconomySeats; i++){
+    tmpEconomy.push(0);
+  }
+  seats.push(tmpEconomy);
+  for (let i = 0; i<BusinessSeats; i++){
+    tmpBusiness.push(0);
+  }
+  seats.push(tmpBusiness);
+  for (let i = 0; i<FirstSeats; i++){
+    tmpFirst.push(0);
+  }
+  seats.push(tmpFirst);
+
+
   const flight = new flightModel({
     'From': request.body.From,
     'To': request.body.To,
@@ -148,6 +179,7 @@ app.post("/createFlight", async (request, response) => {
     'EconomyBags':request.body.EconomyBags,
     'BusinessBags':request.body.BusinessBags,
     'FirstBags':request.body.FirstBags,
+    'Seats':seats,
   });
 
   try {
