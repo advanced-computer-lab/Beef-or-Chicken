@@ -79,6 +79,17 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
   if (request.body.EconomySeats.EconomySeats != null) {
     q.EconomySeats = request.body.EconomySeats.EconomySeats
   }
+
+  if (request.body.EconomyPrice.EconomyPrice != null) {
+    q.PriceEconomy = request.body.EconomyPrice.EconomyPrice
+  }
+  if (request.body.BusinessPrice.BusinessPrice != null) {
+    q.PriceBusiness = request.body.BusinessPrice.BusinessPrice
+  }
+  if (request.body.FirstPrice.FirstPrice != null) {
+    q.PriceFirst = request.body.FirstPrice.FirstPrice
+  }
+
   if (request.body.ArrivalTime.ArrivalTime != "") {
     q.ArrivalTime = request.body.ArrivalTime.ArrivalTime
   }
