@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import '../../App.css';
+import CheckBox from './CheckBox'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -44,7 +45,7 @@ export default function UpateFlight(prop) {
 
 
     return (
-        <div><h1>{currFlight}</h1></div>
+        <CheckBox></CheckBox>
         
     );
 }
