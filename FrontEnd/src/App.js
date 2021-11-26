@@ -7,12 +7,14 @@ import UpdateFlight from './Components/Admin/UpdateFlight'
 import Home from './Components/User/HomePage'
 import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
+// import SeatPicker from './Components/User/SeatPicker'
 // import CreateFlight from './Components/CreateFlight'
 import './App.css';
 import { createBrowserHistory } from "history";
 //import { Route, Link } from "react-router-dom"
 import Tabs from './Components/Admin/Tabs'
 import SearchPage from './Components/Admin/SearchPage'
+
 import { Router, Route, Switch } from "react-router-dom";
 function App() {
   var hist = createBrowserHistory();
@@ -31,7 +33,7 @@ function App() {
         <Route exact path="/Search" component={SearchPage} />
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
-
+        {/* <Route exact path="/Seats" component={SeatPicker} /> */}
       </Router>
     </div>
   )

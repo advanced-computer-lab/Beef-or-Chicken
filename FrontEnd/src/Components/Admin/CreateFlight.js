@@ -38,6 +38,9 @@ class CreateFlight extends Component {
             CurrentDate: new Date(),
             DateString: date,
             CurrentDeparture: '',
+            EconomyPrice:'',
+            BusinessPrice:'',
+            FirstPrice:'',
             open: false,
             fail: false,
             // flag : false,
@@ -191,6 +194,9 @@ class CreateFlight extends Component {
             DepartureTime: this.state.DepartureTime,
             ArrivalTime: this.state.ArrivalTime,
             FlightNumber: this.state.FlightNumber,
+            EconomyPrice: this.state.EconomyPrice,
+            BusinessPrice: this.state.BusinessPrice,
+            FirstPrice: this.state.FirstPrice
 
         };
         console.log(data)
@@ -217,7 +223,9 @@ class CreateFlight extends Component {
                     DepartureTime: '',
                     ArrivalTime: '',
                     FlightNumber: '',
-
+                    EconomyPrice: '',
+                    BusinessPrice: '',
+                    FirstPrice: '',
                     open: true,
                     fail: false
                 },
@@ -300,7 +308,7 @@ class CreateFlight extends Component {
                             onKeyDown={(e) => e.preventDefault()}
                             type='date'
                             // min = {new Date(this.state.DepartureDate).getDate()-1 }
-                            min={this.state.DateString}
+                            min={this.state.DepartureDate}
                             class="form-control flex-fill"
                             placeholder='ArrivalDate'
                             name='ArrivalDate'
@@ -337,13 +345,13 @@ class CreateFlight extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-
-                    <div class="col-md-4" className='form-group form-inline'>
-                        <label class="form-label">Economy</label>
+                    <div className='form-labelGroup' >
+                    <label class="form-labelLeft">Economy</label>
+                    <label class="form-labelRight">Price</label>
+                    </div>
+                    <div class="col-md-4" className='form-group2 form-inline'>
                         <input
-
                             type='number'
-
                             class="form-control flex-fill"
                             placeholder='Seats Available'
                             name='EconomySeats'
@@ -352,10 +360,25 @@ class CreateFlight extends Component {
                             value={this.state.EconomySeats}
                             onChange={this.onChange2}
                         />
+                       
+                        <input
+                            type='number'
+                            class="form-control flex-fill"
+                            placeholder='Price Per Seat'
+                            name='EconomyPrice'
+                            min='0'
+                            //  className='form-control'
+                            value={this.state.EconomyPrice}
+                            onChange={this.onChange2}
+                        />
                     </div>
 
-                    <div class="col-md-4" className='form-group form-inline'>
-                        <label class="form-label">Business</label>
+                    <div className='form-labelGroup' >
+                    <label class="form-labelLeft">Business</label>
+                    <label class="form-labelRight">Price</label>
+                    </div>
+                    <div class="col-md-4" className='form-group2 form-inline'>
+                       
                         <input
                             type='number'
                             min='0'
@@ -366,10 +389,24 @@ class CreateFlight extends Component {
                             value={this.state.BusinessSeats}
                             onChange={this.onChange2}
                         />
+                         <input
+                            type='number'
+                            min='0'
+                            class="form-control flex-fill"
+                            placeholder='Price Per Seat'
+                            name='BusinessPrice'
+                            //  className='form-control'
+                            value={this.state.BusinessPrice}
+                            onChange={this.onChange2}
+                        />
                     </div>
 
-                    <div className='form-group form-inline'>
-                        <label class="form-label">First Class</label>
+                    <div className='form-labelGroup' >
+                    <label class="form-labelLeft">First Class</label>
+                    <label class="form-labelRight">Price</label>
+                    </div>
+                    <div className='form-group2 form-inline'>
+                        
                         <input
                             type='number'
                             min='0'
@@ -378,6 +415,16 @@ class CreateFlight extends Component {
                             name='FirstSeats'
                             //  className='form-control'
                             value={this.state.FirstSeats}
+                            onChange={this.onChange2}
+                        />
+                        <input
+                            type='number'
+                            min='0'
+                            class="form-control flex-fill"
+                            placeholder='Price Per Seat'
+                            name='FirstPrice'
+                            //  className='form-control'
+                            value={this.state.FirstPrice}
                             onChange={this.onChange2}
                         />
                     </div>

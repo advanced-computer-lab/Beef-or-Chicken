@@ -43,16 +43,16 @@ const flightSchema = new Schema({
   
   PriceEconomy: {
     type: mongoose.Decimal128,
-    required: false
+    required: true
   },
 
   PriceBusiness: {
     type: mongoose.Decimal128,
-    required: false
+    required: true
   },
   PriceFirst: {
     type: mongoose.Decimal128,
-    required: false
+    required: true
   },
 
   DepartureTime: {
@@ -67,22 +67,18 @@ const flightSchema = new Schema({
   
   RemEconomy: {
     type: Number,
-    required: false
+    required: true
   },
 
   RemBusiness: {
     type: Number,
-    required: false
+    required: true
   },
   RemFirst: {
     type: Number,
-    required: false
+    required: true
   },
 
-  Duration: {
-    type: String,
-    required: false
-  },
 
 
 

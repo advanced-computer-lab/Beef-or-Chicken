@@ -7,6 +7,34 @@
   font: 10;
   position: relative;
 }
+.form-label{
+  color: black;
+  font: 10;
+  position: relative;
+}
+.form-labelGroup{
+  display: flex;
+  justify-content: space-between;
+}
+.form-labelLeft{
+  color: black;
+  font: 10;
+  display: flex;
+  position: relative;
+  left: 20%;
+  right: 30px;
+  text-align: left;
+}
+.form-labelRight{
+  color: black;
+  font: 10;
+  display: flex;
+  position: relative;
+  left: -20%;
+  right: 30px;
+  text-align: right;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -38,6 +66,12 @@
   color: #61dafb;
   font: bolder;
   display: block;
+  
+}
+.form-group2 {
+  color: #61dafb;
+  font: bolder;
+  display: flex;
   
 }
 #createFlightForm{

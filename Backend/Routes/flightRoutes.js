@@ -113,12 +113,17 @@ app.post("/createFlight", async (request, response) => {
     'DepartureDate': request.body.DepartureDate,
     'ArrivalDate': request.body.ArrivalDate,
     'EconomySeats': request.body.EconomySeats,
+    'RemEconomy':request.body.EconomySeats,
     'BusinessSeats': request.body.BusinessSeats,
+    'RemBusiness': request.body.BusinessSeats,
     'FirstSeats': request.body.FirstSeats,
+    'RemFirst': request.body.FirstSeats,
     'DepartureTime': (request.body.DepartureTime) + "",
     'ArrivalTime': (request.body.ArrivalTime) + "",
     'FlightNumber': request.body.FlightNumber,
-
+    'PriceEconomy':request.body.EconomyPrice,
+    'PriceBusiness':request.body.BusinessPrice,
+    'PriceFirst':request.body.FirstPrice,
   });
 
   try {
