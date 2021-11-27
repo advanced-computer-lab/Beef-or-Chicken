@@ -5,7 +5,6 @@ import CreateFlight from './Components/Admin/CreateFlight'
 import AllFlights from './Components/Admin/AllFlights'
 import UpdateFlight from './Components/Admin/UpdateFlight'
 import Home from './Components/User/HomePage'
-import ViewAllReservations from './Components/User/ViewAllReservations'
 import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
@@ -38,9 +37,6 @@ function App() {
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:id" component={SeatPicker} />
-
-        <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
-
 
       </Router>
     </div>
