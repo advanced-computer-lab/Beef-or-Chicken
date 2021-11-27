@@ -15,6 +15,9 @@ app.get("/allflights", async (request, response) => {
   }
 });
 
+
+
+
 app.post("/searchUser", async (request, response) => {  //search with Criteria
   console.log("ana el request:------- ")
 
@@ -133,6 +136,61 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
     response.status(500).send(error);
   }
 });
+
+
+
+app.post("/searchAvailableFlights", async (request, response) => {  //search with Criteria
+  console.log("ana el request: ", request.body.From)
+
+  var q = {}
+  if (request.body.From != "") {
+    q.From = request.body.From
+  }
+  if (request.body.To != "") {
+    q.To = request.body.To
+  }
+  if (request.body.DepartureDate != "") {
+    q.DepartureDate = request.body.DepartureDate + "T00:00:00.000Z"
+  }
+  if (request.body.ArrivalDate != "") {
+    q.ArrivalDate = request.body.ArrivalDate + "T00:00:00.000Z"
+  }
+  if (request.body.FirstSeats != null) {
+    q.FirstSeats = request.body.FirstSeats
+  }
+  if (request.body.BusinessSeats != null) {
+    q.BusinessSeats = request.body.BusinessSeats
+  }
+  if (request.body.EconomySeats != null) {
+    q.EconomySeats = request.body.EconomySeats
+  }
+  if (request.body.ArrivalTime != "") {
+    q.ArrivalTime = request.body.ArrivalTime
+  }
+  if (request.body.DepartureTime != "") {
+    q.DepartureTime = request.body.DepartureTime
+  }
+  if (request.body.FlightNumber != '') {
+    q.FlightNumber = request.body.FlightNumber
+  }
+  console.log("body: ", request.body)
+  console.log("1: ", request.body.FlightNumber)
+  console.log("2: ", request.body.FlightNumber.FlightNumber)
+  console.log(request.body.FlightNumber.FlightNumber != "")
+  console.log("q", q)
+  let v = JSON.stringify(q)
+  console.log("v", v)
+  const flights = await flightModel.find(q);
+
+  try {
+    response.send(flights);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+
+
 
 
 app.post("/createFlight", async (request, response) => {

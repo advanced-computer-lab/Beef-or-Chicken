@@ -9,7 +9,9 @@ import ViewAllReservations from './Components/User/ViewAllReservations'
 import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
+import ReturningResults from './Components/User/ReturningResults'
 // import CreateFlight from './Components/CreateFlight'
+import Seats from './Components/User/Seats'
 import './App.css';
 import { createBrowserHistory } from "history";
 //import { Route, Link } from "react-router-dom"
@@ -29,6 +31,7 @@ function App() {
       <Router history={hist}>
         <Route exact path="/" component={Home} />
         <Route exact path="/DepartingFlights" component={DepartingResults} />
+        <Route exact path="/ReturningingFlights" component={ReturningResults} />
         <Route exact path="/Admin" component={Admin} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />

@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
     rectangle: {
         /* position: absolute; */
-        marginTop: "-80px",
+        marginTop: "-9%",
         width: "1010px",
         height: "143px",
         justifyContent: "left",
@@ -146,7 +146,7 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(Home);
 
 
-function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_lap, infants_in_seat, setTotalPassengers, totalPassengers, Adults }) {
+function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, children, infants_on_lap, infants_in_seat, setTotalPassengers, totalPassengers, Adults }) {
     const classes = useStyles();
 
     const [dropDownValue, setdropDownValue] = useState("Round Trip");
@@ -187,6 +187,11 @@ function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_
         // return newcount1 + newcount2 + newcount3 + newcount4
     }
 
+    const cabin = (e) => {
+        changeValueClass(e.target.textContent)
+        setCabinClass(e.target.textContent)
+        console.log("cabin: ", cabin_class)
+    }
     // render() { 
     const [newcount1, setnewCount1] = useState(0);
     const [newcount2, setnewCount2] = useState(0);
@@ -210,12 +215,12 @@ function Home({ tripType, setTripType, cabin_class, Adult, children, infants_on_
                                         {classValue}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item as='button'><div className="buss" onClick={(e) => changeValueClass(e.target.textContent)}>Economy</div>
+                                        <Dropdown.Item as='button'><div className="buss" onClick={(e) => cabin(e)}>Economy</div>
 
                                         </Dropdown.Item>
-                                        <Dropdown.Item as='button'><div className="eco" onClick={(e) => changeValueClass(e.target.textContent)}>Business</div>
+                                        <Dropdown.Item as='button'><div className="eco" onClick={(e) => cabin(e)}>Business</div>
                                         </Dropdown.Item>
-                                        <Dropdown.Item as='button'><div className="fclass" onClick={(e) => changeValueClass(e.target.textContent)}>First Class</div>
+                                        <Dropdown.Item as='button'><div className="fclass" onClick={(e) => cabin(e)}>First Class</div>
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
