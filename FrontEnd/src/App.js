@@ -16,7 +16,7 @@ import { createBrowserHistory } from "history";
 //import { Route, Link } from "react-router-dom"
 import Tabs from './Components/Admin/Tabs'
 import SearchPage from './Components/Admin/SearchPage'
-
+import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
 function App() {
   var hist = createBrowserHistory();
