@@ -20,9 +20,49 @@ const initState = {
         infants_in_seat: 0,
         totalPassengers: 0,
         allOffers: [],
+        selectedDepartingFlightID: "",
+        selectedReturningFlightID: "",
+        UserID: "",
+        TakenSeats: [],
+        TotalPrice: 0,
+
     },
 };
 const DetailsReducer = (state = initState, action) => {
+    if (action.type == 'setTotalPrice') {
+        state.details.TotalPrice = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setTakenSeats') {
+        state.details.TakenSeats = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setUserID') {
+        state.details.UserID = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setSelectedDepartingFlightID') {
+        state.details.selectedDepartingFlightID = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setSelectedReturningFlightID') {
+        state.details.selectedReturningFlightID = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+
+
     if (action.type == 'setOrigin') {
         state.details.origin = action.payload;
         return {
