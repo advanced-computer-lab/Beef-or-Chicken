@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import '../../App.css';
 import CheckBox from './CheckBox'
 import { experimentalStyled as styled } from '@mui/material/styles';
@@ -15,7 +15,35 @@ import { grid } from '@mui/system';
 
 export default function UpateFlight(prop) {
     const flight = prop.match.params
-   
+    //const [seats, setseats] = useState([])
+    const [seatsEcon, setseatsEcon] = useState([])
+    const [seatsBusiness, setseatsBusiness] = useState([])
+    const [seatsFirst, setseatsFirst] = useState([])
+
+    useEffect(() => {
+        let url = `http://localhost:8080/flightById/${flight.id}`;
+
+        console.log("url", url)
+        axios.get(url)
+            .then((response) => {
+                console.log("currFlight ===> ", response)
+              
+                setseatsEcon(response.data.Seats[0]);
+                setseatsBusiness(response.data.Seats[1]);
+                setseatsFirst(response.data.Seats[2]);
+                console.log("Seats1 =>", seatsEcon);
+                console.log("Seats2 =>", seatsBusiness);
+                console.log("Seats3 =>", seatsFirst);
+
+            })
+            .catch((e) => {
+
+                console.log("ana hena")
+                console.log("error ===>", e);
+            });
+        // do stuff here...
+    }, []) // <-- empty dependency array
+
     let history = useHistory();
 
     const Item = styled(Paper)(({ theme }) => ({
@@ -23,65 +51,43 @@ export default function UpateFlight(prop) {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-      }));
+    }));
 
-    var seats = [];
-    var seatsEcon=[];
-    var seatsBusiness=[];
-    var seatsFirst=[];
 
-    const getFlight =e  => {
-        // e.preventDefault();
-        // e.stopPropagation();
-        console.log("flight: ", flight)
-        let url = `http://localhost:8080/flightById/${flight.id}`;
-
-       
-
-        console.log("url", url)
-        axios.get(url)
-            .then(async (response) => {
-                console.log("currFlight ===> ", response)
-                seats = response.data.Seats;
-                seatsEcon = seats[0];
-                seatsBusiness = seats[1];
-                seatsFirst = seats[2];
-                console.log("Seats1 =>", seatsEcon);
-                console.log("Seats2 =>", seatsBusiness);
-                console.log("Seats3 =>", seatsFirst);
-               
-            })
-            .catch((e) => {
-
-                console.log("ana hena")
-                console.log("error ===>", e);
-            });
-        // window.location.reload(false);
-        };
-  
     
-    getFlight();
 
-    const printArray =(value)  =>{
-        console.log("ana el value",seatsEcon)
-    }
     
+
+
     return (
         <div>
-        <h1>hi</h1>
-        <h1>{getFlight}</h1>
-        <h1>{printArray(seatsEcon)}</h1>
-        {seatsEcon.map((value) => (
-          
-            <h1>{printArray(value)}</h1>
-          
-        ))}
-           
+            <Grid container spacing={{ xs: 3 }} >
+                {Array.from(seatsEcon).map((_, index) => (
+                    <Grid item xs={3} key={index}>
+                        <Item><CheckBox /></Item>
+                    </Grid>
+                ))}
+            </Grid>
+            <h1>-------------------------</h1>
+            <Grid container spacing={{ xs: 3 }}  >
+                {Array.from(seatsBusiness).map((_, index) => (
+                    <Grid item xs={3} key={index}>
+                        <Item><CheckBox /></Item>
+                    </Grid>
+                ))}
+            </Grid>
+            <h1>-------------------------</h1>
+            <Grid container spacing={{ xs: 3 }}  >
+                {Array.from(seatsFirst).map((_, index) => (
+                    <Grid item xs={3} key={index}>
+                        <Item><CheckBox /></Item>
+                    </Grid>
+                ))}
+            </Grid>
 
-      
-       
-   
+
+
         </div>
-      
+
     );
 }
