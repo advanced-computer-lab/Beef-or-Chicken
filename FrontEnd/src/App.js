@@ -37,6 +37,7 @@ function App() {
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:id" component={SeatPicker} />
+        <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
 
       </Router>
     </div>
