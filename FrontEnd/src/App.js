@@ -9,6 +9,7 @@ import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
 import ReturningResults from './Components/User/ReturningResults'
+import ViewAllReservations from './Components/User/ViewAllReservations'
 // import CreateFlight from './Components/CreateFlight'
 import Seats from './Components/User/Seats'
 import './App.css';
@@ -34,6 +35,7 @@ function App() {
         <Route exact path="/Admin" component={Admin} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
+        <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:id" component={SeatPicker} />
