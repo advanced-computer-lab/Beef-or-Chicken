@@ -29,6 +29,7 @@ function ViewAllReservations() {
     return (
         <div>
             <Header />
+            
             <div class="accordions">
                 <Accordion class="accordion" >
                     <Accordion.Item eventKey="0">
