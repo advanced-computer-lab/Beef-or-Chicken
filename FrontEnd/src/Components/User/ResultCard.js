@@ -224,6 +224,27 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
     console.log("testtty: ", props.offer.allOffers.data)
     let history = useHistory();
     console.log("ffff: ", details)
+
+    const price = (offer) => {
+        // if(details.cabin_class=="")
+        console.log("offersssss: ", offer)
+        let sum = details.Adults + details.children
+        switch (details.cabin_class) {
+            case "Economy":
+                console.log("adults: ", details.Adults)
+                return offer.PriceEconomy.$numberDecimal * sum
+                break;
+            case "Bussiness":
+                return offer.PriceBusiness.$numberDecimal * sum
+                break;
+            case "First":
+                return offer.PriceFirst.$numberDecimal * sum
+                break;
+            default:
+            // code block
+        }
+    }
+
     const handleSubmit = async (offer) => {
         let body = {
             'From': details.destination,
@@ -251,7 +272,8 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
                 // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
                 console.log("offersssss291: ", offer)
                 console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
-
+                let DeparturePrice = price(offer)
+                props.details.DeparturePrice = DeparturePrice
                 props.details.selectedDepartingFlightID = offer._id
                 console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
                 history.push("/ReturningingFlights");
@@ -271,6 +293,8 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
         let duration = f.substring(0, 2) + " hr " + f.substring(3, 5) + " min"
         return duration
     }
+
+
     const bags = (offer) => {
         // if(details.cabin_class=="")
         console.log("offersssss: ", offer)
@@ -337,7 +361,7 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
                                 <Typography className={classes.column2}>Flight Number </Typography>
                             </div>
                             <div className={classes.column}>
-                                <Typography className={classes.heading1} color="green">EGP {offers.PriceEconomy.$numberDecimal}</Typography>
+                                <Typography className={classes.heading1} color="green">EGP {price(offers)}</Typography>
                                 <Typography className={classes.column2}>round trip  </Typography>
                             </div>
 

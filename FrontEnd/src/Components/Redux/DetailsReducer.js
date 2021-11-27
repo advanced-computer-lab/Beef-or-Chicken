@@ -24,13 +24,20 @@ const initState = {
         selectedReturningFlightID: "",
         UserID: "",
         TakenSeats: [],
-        TotalPrice: 0,
+        DeparturePrice: 0,
+        ReturnPrice: 0,
 
     },
 };
 const DetailsReducer = (state = initState, action) => {
-    if (action.type == 'setTotalPrice') {
-        state.details.TotalPrice = action.payload;
+    if (action.type == 'setReturnPrice') {
+        state.details.ReturnPrice = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setDeparturePrice') {
+        state.details.DeparturePrice = action.payload;
         return {
             ...state,
         };

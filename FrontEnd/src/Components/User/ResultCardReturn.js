@@ -179,7 +179,8 @@ const useStyles = makeStyles((theme) => ({
 export default function DetailedAccordion(props) {
     const classes = useStyles();
     const details = props.details
-    const offer = props.offer.allOffers.data.data
+    console.log("OFFRAAATTTAAA: ", props.offer.data.data)
+    const offer = props.offer.data.data
     //const departuretime = offer[0].DepartureTime
 
     console.log("RETURN: ", details.Adults)
@@ -222,12 +223,12 @@ export default function DetailedAccordion(props) {
             // code block
         }
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (offer) => {
         // let body = {
         //     'From': details.destination,
         //     'To': details.origin,
-        //     "DepartureDate": details.departure_date,
-        //     "ArrivalDate": details.return_date,
+        //     "DepartureDate": details.return_date,
+        //     "ArrivalDate": "",
         //     "FirstSeats": null,
         //     "BusinessSeats": null,
         //     "EconomySeats": null,
@@ -236,7 +237,7 @@ export default function DetailedAccordion(props) {
         //     "FlightNumber": ""
         // }
 
-        // console.log(body)
+        // console.log("220 ", body)
         // let url = "http://localhost:8080/searchAvailableFlights"
 
         // axios
@@ -244,16 +245,34 @@ export default function DetailedAccordion(props) {
         //     .then(res => {
         //         console.log("respnose: ", res)
         //         console.log("gamed louji!")
-        //         setAllOffers(res);
-        //         console.log("allOffres: ", allOffers)
-        //         //this.props.history.push('/');
-        //         history.push("/DepartingFlights");
-        //     })
-        //     .catch(error => {
-        //         console.log("idiot!");
-        //         console.log(error.message);
-        //     })
-        // <UpdateFlight flight={flight._id} />
+        //         props.offer.allOffers.data = res;
+        // props.details.selectedDepartingFlightID.data = offer._id
+        // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
+        console.log("offersssss291: ", props.details.TotalPrice)
+        console.log("selecteeeeeddddddd292: ", details)
+
+        props.details.selectedReturningFlightID = offer._id
+        let ReturnPrice = price(offer)
+        props.details.ReturnPrice = ReturnPrice
+        console.log("selecteeeeeddddddd: ", props.details.ReturnPrice)
+
+
+        // let body = {
+        //     'UserID': 1,
+        //     'DepartureFlightID': props.details.selectedDeparturingFlightID,
+        //     'ReturnFlightID': props.details.selectedReturningFlightID,
+        //     'CabinType': props.details.selectedReturningFlightID,
+        //     'TakenSeats': [],
+        //     'TotalPrice': request.body.EconomySeats,
+        // }
+
+        //   history.push("/ReturningingFlights");
+        // })
+        // .catch(error => {
+        //     console.log("idiot!");
+        //     console.log(error.message);
+        // })
+
 
     };
     const duration = (DepartureTime, DepartureDate, ArrivalTime, ArrivalDate) => {
@@ -347,7 +366,7 @@ export default function DetailedAccordion(props) {
                         </AccordionDetails>
                         <AccordionActions className={classes.action}>
 
-                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" >Select flight</Button>
+                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button>
 
                         </AccordionActions>
                         <Divider />
