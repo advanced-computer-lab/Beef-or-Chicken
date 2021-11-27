@@ -14,6 +14,8 @@ import { createBrowserHistory } from "history";
 import Tabs from './Components/Admin/Tabs'
 import SearchPage from './Components/Admin/SearchPage'
 import { Router, Route, Switch } from "react-router-dom";
+import UpdateUserInfo from './Components/User/UpdateUserInfo'
+
 function App() {
   var hist = createBrowserHistory();
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route exact path="/Search" component={SearchPage} />
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
+        <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
 
       </Router>
     </div>
