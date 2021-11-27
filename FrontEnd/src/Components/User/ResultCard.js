@@ -13,11 +13,15 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 // import LH from '../images/LH.png';
 // import LX from '../images/LX.png';
-// import OS from '../images/OS.png';
+import MS from '../../images/MS.png';
 import TripOriginIcon from '@material-ui/icons/TripOrigin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
-
+import { connect } from 'react-redux';
+import moment, { duration } from 'moment'
+import axios from 'axios';
+import { useHistory } from "react-router-dom";
+import { Select } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '65%',
@@ -31,11 +35,12 @@ const useStyles = makeStyles((theme) => ({
     },
 
     title: {
-        fontSize: theme.typography.pxToRem(22),
-        horizontalAlign: "left",
-        marginLeft: "-61%",
+        fontSize: theme.typography.pxToRem(40),
+        //horizontalAlign: "center",
+        marginLeft: "15%",
         // color: '#202124',
-        color: "#FFFFFF"
+        color: "#f8c89d",
+        textAlign: "center",
     },
     title1: {
         fontSize: theme.typography.pxToRem(12),
@@ -147,9 +152,18 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "left",
 
     },
+    text4: {
+        marginLeft: "20%",
+        marginTop: "-8%",
+        fontSize: theme.typography.pxToRem(14),
+        // color:'#70757A',
+        textAlign: "left",
+
+    },
 
     action: {
-        marginTop: "-11%",
+        marginTop: "0%",
+
     },
     accordion: {
         boxShadow: "0px 0px 4px 1px rgba(0, 0, 0, 0.25)",
@@ -162,9 +176,95 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function DetailedAccordion() {
-    const classes = useStyles();
+const mapStateToProps = (state) => {
+    //console.log(state.DetailsReducer.details.destination)
+    return {
+        details: state.DetailsReducer.details,
+        allOffers: state.DetailsReducer.details.allOffers
+    };
+};
 
+const mapDispatchToState = (dispatch) => {
+    return {
+
+        setAllOffers: (allOffers) => {
+            dispatch({ type: 'setAllOffers', payload: allOffers });
+        },
+
+
+    };
+};
+export default connect(mapStateToProps, mapDispatchToState)(DetailedAccordion);
+function DetailedAccordion(props, setAllOffers, allOffers) {
+    const classes = useStyles();
+    const details = props.details
+    const offer = props.offer.allOffers.data
+    //const departuretime = offer[0].DepartureTime
+    // setAllOffers([]);
+    console.log("testtty: ", props.offer.allOffers.data)
+    let history = useHistory();
+    console.log("ffff: ", details)
+    const handleSubmit = async () => {
+        let body = {
+            'From': details.destination,
+            'To': details.origin,
+            "DepartureDate": details.return_date,
+            "ArrivalDate": "",
+            "FirstSeats": null,
+            "BusinessSeats": null,
+            "EconomySeats": null,
+            "ArrivalTime": "",
+            "DepartureTime": "",
+            "FlightNumber": ""
+        }
+
+        console.log("220 ", body)
+        let url = "http://localhost:8080/searchAvailableFlights"
+
+        axios
+            .post(url, body)
+            .then(res => {
+                console.log("respnose: ", res)
+                console.log("gamed louji!")
+                props.offer.allOffers.data = res;
+
+                console.log("allOffres: ", props.offer.allOffers.data)
+
+                history.push("/ReturningingFlights");
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+    };
+    const duration = (DepartureTime, DepartureDate, ArrivalTime, ArrivalDate) => {
+        let start = moment(DepartureDate.substring(0, 10) + " " + DepartureTime + ":00");
+        let end = moment(ArrivalDate.substring(0, 10) + " " + ArrivalTime + ":00");
+        let diff = end.diff(start);
+        let f = moment.utc(diff).format("HH:mm");
+        let duration = f.substring(0, 2) + " hr " + f.substring(3, 5) + " min"
+        return duration
+    }
+    const bags = (offer) => {
+        // if(details.cabin_class=="")
+        console.log("offersssss: ", offer)
+        switch (details.cabin_class) {
+            case "Economy":
+
+                return offer.EconomyBags
+                break;
+            case "Business":
+                return offer.BusinessBags
+                break;
+            case "First Class":
+                return offer.FirstBags
+                break;
+            default:
+            // code block
+        }
+    }
     return (
 
 
@@ -172,103 +272,108 @@ export default function DetailedAccordion() {
 
         <div className={classes.root}>
             <div className={classes.column}>
-                {/* <Typography className={classes.title}>Departing flights</Typography> */}
+                <Typography className={classes.title}>Departing flights</Typography>
                 {/* <Typography className={classes.title1}>Total price includes taxes + fees for 1 adult. Additional bag fees and other fees may apply.</Typography> */}
             </div>
-            <div className={classes.accordion}>
-                <Accordion style={{ backgroundcolor: "#415a5c" }}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1c-content"
-                        id="panel1c-header"
-                    // style={{ backgroundcolor: "#415a5c" }}
-                    >
+            {offer.map((offers) => (
+                <div className={classes.accordion}>
+                    <Accordion style={{ backgroundcolor: "#415a5c" }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1c-content"
+                            id="panel1c-header"
+                        // style={{ backgroundcolor: "#415a5c" }}
+                        >
 
-                        <div className={classes.column}>
-                            {/* <img src={LH} alt="" /> */}
-                        </div>
-                        <div className={classes.column}>
-                            <Typography className={classes.heading}>9:00 AM - 8:45 PM</Typography>
-                            <Typography className={classes.column2}>Lufthansa . EgyptAir </Typography>
-                        </div>
-                        <div className={classes.column}>
-                            <Typography className={classes.heading}>10 hr 45 min</Typography>
-                            <Typography className={classes.column2}> LHR-CIA  </Typography>
-                        </div>
-                        <div className={classes.column}>
-                            <Typography className={classes.heading}>1 stop</Typography>
-                            <Typography className={classes.column2}>5 hr 10 min MUC </Typography>
-                        </div>
-                        <div className={classes.column}>
-                            <Typography className={classes.heading1} color="green">EGP 6,505</Typography>
-                            <Typography className={classes.column2}>round trip  </Typography>
-                        </div>
+                            <div className={classes.column}>
+                                <img src={MS} alt="" />
+                            </div>
+                            <div className={classes.column}>
+                                <Typography className={classes.heading}>{offers.DepartureTime} - {offers.ArrivalTime}</Typography>
+                                <Typography className={classes.column2}> {offers.From}-{offers.To}  </Typography>
+                            </div>
+                            <div className={classes.column}>
+                                <Typography className={classes.heading}>{duration(offers.DepartureTime, offers.DepartureDate, offers.ArrivalTime, offers.ArrivalDate)}</Typography>
+                                <Typography className={classes.column2}> duration  </Typography>
+                            </div>
+                            <div className={classes.column}>
+                                <Typography className={classes.heading}>{offers.FlightNumber}</Typography>
+                                <Typography className={classes.column2}>Flight Number </Typography>
+                            </div>
+                            <div className={classes.column}>
+                                <Typography className={classes.heading1} color="green">EGP {offers.PriceEconomy.$numberDecimal}</Typography>
+                                <Typography className={classes.column2}>round trip  </Typography>
+                            </div>
 
-                        <div className={classes.column2}>
-                            {/* <Typography className={classes.secondaryHeading}>Select trip destination</Typography> */}
-                        </div>
-                        {/* Lufthansa . EgyptAir Operated by Lufthansa CityLine            LHR-CIA                                          5 hr 10 min MUC                      round trip */}
-                    </AccordionSummary>
+                            <div className={classes.column2}>
+                                {/* <Typography className={classes.secondaryHeading}>Select trip destination</Typography> */}
+                            </div>
+                            {/* Lufthansa . EgyptAir Operated by Lufthansa CityLine            LHR-CIA                                          5 hr 10 min MUC                      round trip */}
+                        </AccordionSummary>
 
-                    <AccordionDetails className={classes.details}>
-                        <div className={classes.TripIcon}>
-                            <TripOriginIcon
-                                fontSize="small"
-                                color="disabled"
-                                label="Female"
-                            />
+                        <AccordionDetails className={classes.details}>
+                            <div className={classes.TripIcon}>
+                                <TripOriginIcon
+                                    fontSize="small"
+                                    color="disabled"
+                                    label="Female"
+                                />
 
-                            <MoreVertIcon
-                                fontSize="small"
-                                color="disabled" />
-                            <TripOriginIcon
-                                fontSize="small"
+                                <MoreVertIcon
+                                    fontSize="small"
+                                    color="disabled" />
+                                <TripOriginIcon
+                                    fontSize="small"
 
-                                color="disabled"
-                            />
-                        </div>
-                        {/* <div className={classes.column} /> */}
-                        <div className={classes.text}>
-                            <Typography className={classes.text1}> 9:00 AM . Heathrow Airport (LHR)</Typography>
-                            <Typography className={classes.text2}> Travel time: 1 hr 50 min</Typography>
-                            <Typography className={classes.text1}> 11:50 AM . Munich International Airport (MUC)</Typography>
+                                    color="disabled"
+                                />
+                            </div>
+                            {/* <div className={classes.column} /> */}
+                            <div className={classes.text}>
+                                <Typography className={classes.text1}> {offers.DepartureTime} . {details.origin_name}</Typography>
+                                <Typography className={classes.text2}> Travel time: {duration(offers.DepartureTime, offers.DepartureDate, offers.ArrivalTime, offers.ArrivalDate)}</Typography>
+                                <Typography className={classes.text1}> {offers.ArrivalTime} . {details.destination_name}</Typography>
 
-                        </div>
-
-
-                        <hr className={classes.line}></hr>
-
-                        <Typography className={classes.text3}> 5 hr 10 min layover . Munich (MUC)</Typography>
+                            </div>
 
 
-                        <hr className={classes.line2}></hr>
-                        <div className={classes.TripIcon}>
-                            <TripOriginIcon
-                                fontSize="small"
-                                color="disabled"
-                                label="Female"
-                            />
+                            <hr className={classes.line}></hr>
 
-                            <MoreVertIcon
-                                fontSize="small"
-                                color="disabled" />
-                            <TripOriginIcon
-                                fontSize="small"
+                            <Typography className={classes.text3}> Cabin Class : {details.cabin_class}</Typography>
 
-                                color="disabled"
-                            />
-                        </div>
-                        {/* <div className={classes.column} /> */}
-                        <div className={classes.text}>
-                            <Typography className={classes.text1}> 5:00 PM . Munich International Airport (MUC)</Typography>
-                            <Typography className={classes.text2}> Travel time: 3 hr 45 min</Typography>
-                            <Typography className={classes.text1}> 8:45 AM . Cairo International Airport (CAI)</Typography>
-
-                        </div>
+                            <Typography className={classes.text4}> Baggage Allowance : {bags(offers)} Kg</Typography>
+                            <hr className={classes.line2}></hr>
 
 
 
-                        {/* <div className={clsx(classes.column, classes.helper)}> 
+
+                            {/* <div className={classes.TripIcon}>
+                                <TripOriginIcon
+                                    fontSize="small"
+                                    color="disabled"
+                                    label="Female"
+                                />
+
+                                <MoreVertIcon
+                                    fontSize="small"
+                                    color="disabled" />
+                                <TripOriginIcon
+                                    fontSize="small"
+
+                                    color="disabled"
+                                />
+                            </div>
+                            <div className={classes.column} />
+                            <div className={classes.text}>
+                                <Typography className={classes.text1}> 5:00 PM . Munich International Airport (MUC)</Typography>
+                                <Typography className={classes.text2}> Travel time: 3 hr 45 min</Typography>
+                                <Typography className={classes.text1}> 8:45 AM . Cairo International Airport (CAI)</Typography>
+
+                            </div> */}
+
+
+
+                            {/* <div className={clsx(classes.column, classes.helper)}> 
              <Typography variant="caption">
               Select your destination of choice
               <br />
@@ -277,15 +382,21 @@ export default function DetailedAccordion() {
               </a>
             </Typography> 
           </div> */}
-                    </AccordionDetails>
-                    <AccordionActions className={classes.action}>
+                        </AccordionDetails>
+                        <AccordionActions className={classes.action}>
 
-                        <Button variant="outlined" size="medium" color="primary" >Select flight</Button>
+                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={handleSubmit} >Select flight</Button>
 
-                    </AccordionActions>
-                    <Divider />
-                </Accordion>
-            </div>
+                        </AccordionActions>
+                        <Divider />
+                    </Accordion>
+
+
+
+                </div>
+            )
+            )
+            }
 
         </div>
     );

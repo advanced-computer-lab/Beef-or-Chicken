@@ -11,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -42,45 +43,59 @@ const useStyles = makeStyles((theme) => ({
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
-        details: state.DetailsReducer.details
+        details: state.DetailsReducer.details,
+        allOffers: state.DetailsReducer.details.allOffers
+    };
+};
+
+const mapDispatchToState = (dispatch) => {
+    return {
+
+        setAllOffers: (allOffers) => {
+            dispatch({ type: 'setAllOffers', payload: allOffers });
+        },
+
 
     };
 };
 
 
-export default connect(mapStateToProps)(IconLabelButtons);
+export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details }) {
+function IconLabelButtons({ details, setAllOffers, allOffers }) {
 
-
+    let history = useHistory();
     const classes = useStyles();
+
     const func = async () => {
-
-
+        console.log("detailsssssss: ", details)
+        //console.log("allahu akbar", details.allOffers)
         let body = {
             'From': details.origin,
             'To': details.destination,
             "DepartureDate": details.departure_date,
-            "ArrivalDate": details.return_date,
-            "FirstSeats":{FirstSeats: null},
-            "BusinessSeats": {BusinessSeats: null},
-            "EconomySeats": {EconomySeats: null},
-            "ArrivalTime": { ArrivalTime:"" },
-            "DepartureTime": { DepartureTime:"" },
-            "FlightNumber": { FlightNumber:"" }
+            "ArrivalDate": "",
+            "FirstSeats": null,
+            "BusinessSeats": null,
+            "EconomySeats": null,
+            "ArrivalTime": "",
+            "DepartureTime": "",
+            "FlightNumber": ""
         }
 
-        console.log(body)
-        let url = "http://localhost:8080/searchFlights"
+        console.log("body: ", body)
+        let url = "http://localhost:8080/searchAvailableFlights"
 
         axios
             .post(url, body)
             .then(res => {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
-
+                setAllOffers(res);
+                //console.log("allOffres: ", allOffers)
                 //this.props.history.push('/');
+                history.push("/DepartingFlights");
             })
             .catch(error => {
                 console.log("idiot!");

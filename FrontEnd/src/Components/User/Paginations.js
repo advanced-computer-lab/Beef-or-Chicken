@@ -204,8 +204,21 @@ import Pagination from "@material-ui/lab/Pagination";
 import ResultCard from './ResultCard'
 import { connect } from "react-redux";
 
-function Paginations() {
+const mapStateToProps = (state) => {
+    //console.log(state.DetailsReducer.details.destination)
+    return {
+        details: state.DetailsReducer.details,
+        allOffers: state.DetailsReducer.details.allOffers
+    };
+};
 
+
+
+
+export default connect(mapStateToProps)(Paginations);
+function Paginations(allOffers, details) {
+
+    console.log("ANAAA ELOFFFFERRR: ", allOffers)
 
     // this.state = {
     //     page: 1,
@@ -238,17 +251,19 @@ function Paginations() {
 
 
     const currentPage = page;
-    const offersPerPage = 2;
+    const offersPerPage = 1;
     const indexOfLastOffer = offersPerPage * currentPage;
     const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
 
-    //const currentArray = offers.slice(indexOfFirstOffer, indexOfLastOffer);
-
+    console.log("FUNCCCCTTTT", Math.ceil(allOffers.allOffers.data.length / offersPerPage))
+    // const currentArray = allOffers.slice(indexOfFirstOffer, indexOfLastOffer);
+    console.log("OFFFFFF: ", allOffers)
+    console.log("Detailss: ", allOffers.details)
     return (
         <div>
             <GridContainer >
                 {/* {currentArray.map((offer) => { */}
-                {/* return ( */}
+
                 <GridItem xs={12} style={{ marginTop: "100px" }}>
                     {/* <Offer
                   offer={offer}
@@ -258,24 +273,26 @@ function Paginations() {
                   children={this.props.children}
                   history={this.props.history}
                 /> */}
+                    <ResultCard offer={allOffers} details={allOffers.details} />
+                    {/* <ResultCard />
                     <ResultCard />
-                    <ResultCard />
-                    <ResultCard />
-                    <ResultCard />
+                    <ResultCard /> */}
                     {/* <ResultCard />
                     <ResultCard /> */}
                 </GridItem>
-                {/* ); */}
-                {/* } */}
+                {/* );
+                }
                 )
-                {/* } */}
+                } */}
             </GridContainer>
             <GridContainer alignItems="center" justify="center">
                 <GridItem xs style={{ marginBottom: "20px", marginTop: "20px" }}>
                     <Pagination
                         //style={{ background: "#10404c ", color: "wheat" }}
                         style={{ marginLeft: "47%", color: "wheat" }}
-                        //count={Math.ceil(offers.length / offersPerPage)}
+                        count={Math.ceil(allOffers.allOffers.data.length / offersPerPage)}
+
+                        //{Math.ceil(allOffers.data / offersPerPage)}
                         page={currentPage}
                         onChange={handleChange}
                         color="secondary"
@@ -287,4 +304,3 @@ function Paginations() {
 }
 
 
-export default Paginations;

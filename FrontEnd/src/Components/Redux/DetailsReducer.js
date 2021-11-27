@@ -1,11 +1,17 @@
+import moment from 'moment'
+const today = new Date()
+const date = moment(today).format().toString().substring(0, 10);
+console.log("REDDDUXXX: ", date)
 const initState = {
+
     details: {
         origin: "",
         origin_name: "",
         destination: "",
         destination_name: "",
-        departure_date: '',
-        return_date: '',
+        // today: new Date(),
+        departure_date: date,
+        return_date: date,
         tripType: "Round Trip",
         cabin_class: 'Economy',
         Adults: 1,
@@ -13,12 +19,18 @@ const initState = {
         infants_on_lap: 0,
         infants_in_seat: 0,
         totalPassengers: 0,
-
+        allOffers: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
     if (action.type == 'setOrigin') {
         state.details.origin = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setAllOffers') {
+        state.details.allOffers = action.payload;
         return {
             ...state,
         };
