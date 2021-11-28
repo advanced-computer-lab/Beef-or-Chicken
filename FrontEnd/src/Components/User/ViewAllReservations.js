@@ -20,7 +20,25 @@ class ViewAllReservations extends Component {
         this.state = {
             reservations: []
         };
+
+        //this.GetAllAsync();
+
     }
+   /* async GetAllAsync() {
+        const response = await axios.get('http://localhost:8080/allReservations');
+        const result = await response.data;
+        this.state.reservations = [result] ;
+      }
+    */
+
+    async componentDidMount() {
+        const response = await axios.get('http://localhost:8080/allReservations');
+        const result = await response.data;
+        this.setState({ reservations: result });
+      }
+      
+  
+    /*  
     componentDidMount() {
         let url =
             axios.get('http://localhost:8080/allReservations')
@@ -29,9 +47,12 @@ class ViewAllReservations extends Component {
                  .catch(err => { console.log('Backend Error Occured When Getting All Reservations');
                 })
     };
-
+*/
     render() {
         const reservations = this.state.reservations;
+        console.log("render be da");
+       console.log(reservations);
+       
        
         return (
             <div>
@@ -45,6 +66,7 @@ class ViewAllReservations extends Component {
 
           </div>
         );
-    }
+    
+}  
 }
 export default ViewAllReservations;

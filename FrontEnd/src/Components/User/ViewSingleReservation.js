@@ -65,8 +65,7 @@ class ViewSingleReservation extends Component {
     
     //<ViewAllReservationsHook reservation={r} key={r._id} />
 /*
-    <ViewAllReservationsHook reservation={this.state.reservation} departureFlight = {this.state.departureFlight} 
-     returnFlight = {this.state.returnFlight}  />
+   
   */  
     render() {
 
@@ -74,7 +73,8 @@ class ViewSingleReservation extends Component {
         return (
             <div>
 
-        
+<ViewAllReservationsHook reservation={this.state.reservation} departureFlight = {this.state.departureFlight} 
+     returnFlight = {this.state.returnFlight}  />     
 
           </div>
         );
