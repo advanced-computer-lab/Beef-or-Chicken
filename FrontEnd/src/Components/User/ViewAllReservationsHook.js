@@ -1,30 +1,69 @@
 import React, { Component, useState, useEffect } from 'react';
-import axios from 'axios';
 import './ViewAllReservations.css'
-import Header from '../Admin/Header'
 import Accordion from 'react-bootstrap/Accordion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
-
+import LuggageIcon from '@mui/icons-material/Luggage';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import FlightLandIcon from '@mui/icons-material/FlightLand';
+import EventIcon from '@mui/icons-material/Event';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
+import moment, { duration } from 'moment'
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
 export default function ViewAllReservations(props) {
-
+    
     const [flightType, setFlightType] = React.useState(0);
-   // const [departure, setDeparture] = useState();
-   // const [returnFlight, setReturnFlight] = useState();
+    // const [departure, setDeparture] = useState();
+    // const [returnFlight, setReturnFlight] = useState();
     const reservation = props.reservation; 
     const departure =props.departureFlight; 
     const returnFlight = props.returnFlight; 
-    
-    console.log("nuovo");
-    console.log(props.reservation);
-    console.log(departure);
-    console.log(returnFlight);
-   
+    const baggageReturn  = {baggage: 0 };
+    const baggageDeparture = {baggage: 0 };
+   const cabin = reservation.CabinType;
 
+
+   const flightDuration = ( initDate, finalDate ,initTime, finalTime) => {
+    let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
+    let final = moment(finalDate.substring(0, 10) + " " + finalTime + ":00");
+    var ms = moment(final,"DD/MM/YYYY HH:mm:ss").diff(moment(init,"DD/MM/YYYY HH:mm:ss"));
+    var d = moment.duration(ms);
+    return Math.floor(d.asHours())+" hrs" + moment.utc(ms).format(":mm") +" mins";
+}
+
+
+    const fixBaggages = () => {
+        if (departure.length !== 0) {
+            if (cabin === "Economy") {
+                Object.assign(baggageDeparture, { baggage: departure[0].EconomyBags })
+            }
+            else {
+                if (cabin === "First") {
+                    Object.assign(baggageDeparture, { baggage: departure[0].FirstBags })
+                }
+                else {
+                    Object.assign(baggageDeparture, { baggage: departure[0].BusinessBags })
+                }
+            }
+        }
+        if (returnFlight.length !== 0) {
+            if (cabin === "Economy") {
+                Object.assign(baggageReturn, { baggage: returnFlight[0].EconomyBags })
+            }
+            else {
+                if (cabin === "First") {
+                    Object.assign(baggageReturn, { baggage: returnFlight[0].FirstBags })
+                }
+                else {
+                    Object.assign(baggageReturn, { baggage: returnFlight[0].BusinessBags })
+                }
+            }
+        }
+    }
     /*useEffect(() => {
         
         axios.get('http://localhost:8080/flightById/' + props.reservation.DepartureFlightID).then(
@@ -50,8 +89,9 @@ export default function ViewAllReservations(props) {
     const handleChange = (event, newValue) => {
         setFlightType(newValue);
     };
-    console.log("hook return");
     if(departure.length !== 0){
+        fixBaggages();
+
     return (
         <div>
                     <Accordion className="accordion" >
@@ -81,10 +121,11 @@ export default function ViewAllReservations(props) {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-tags" viewBox="0 0 16 16">
                                     <path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z" />
                                     <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z" />
-                                </svg>&nbsp;DECIMAL $
+                                </svg>&nbsp;
+                                {reservation.TotalPrice.$numberDecimal} $
                             </div>
                             <div className="accordionHeader">
-                                {reservation.TakenSeats}
+                                {reservation.TakenSeats.length}
                                 &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                                 </svg>
@@ -98,8 +139,6 @@ export default function ViewAllReservations(props) {
                                 <Tab label="Return Flight" />
                             </Tabs>
                             {flightType ? (
-                                <div>return</div>
-                            ) : (
                                 <div>
                                     <div className="container rounded">
                                         <form action="">
@@ -110,58 +149,49 @@ export default function ViewAllReservations(props) {
                                                         <p className="h-blue">
                                                             Flight Code</p>
                                                         <div>
-                                                        {departure.FlightNumber}
+                                                        {returnFlight[0].FlightNumber}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pin-map-fill" viewBox="0 0 16 16">
-                                                                <path fillRule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z" />
-                                                                <path fillRule="evenodd" d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
-                                                            </svg>&nbsp;
+                                                        <FlightTakeoffIcon />&nbsp;
                                                             Departing From</p>
                                                         <div>
-                                                        {departure.From}
+                                                        {returnFlight[0].From}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pin-map-fill" viewBox="0 0 16 16">
-                                                                <path fillRule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z" />
-                                                                <path fillRule="evenodd" d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
-                                                            </svg>&nbsp;
-                                                            Arriving to</p>
-                                                        <div>
-                                                        {departure.To}
+                                                        <FlightLandIcon />
+                                                        &nbsp;
+                                                        Arriving to</p>
+                                                    <div>
+                                                        {returnFlight[0].To}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row">
-                                                <div className="col-md-6 col-12 mb-4">
-                                                    <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-event" viewBox="0 0 16 16">
-                                                                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
-                                                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                                            </svg>&nbsp;
-                                                            Departure Date</p>
-                                                        <div>{departure[0].DepartureDate}</div>
-                                                    </div>
+                                        <div className="row">
+                                            <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
+                                                    <p className="h-blue">
+                                                        <EventIcon />
+                                                        &nbsp;
+                                                        Departure Date</p>
+                                                    <div>  {returnFlight[0].DepartureDate.substring(0, 10)}</div>
                                                 </div>
-                                                <div className="col-md-6 col-12 mb-4">
-                                                    <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-event" viewBox="0 0 16 16">
-                                                                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
-                                                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                                            </svg>&nbsp;
+                                            </div>
+                                            <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
+                                                    <p className="h-blue">
+                                                        <EventIcon />
+                                                        &nbsp;
                                                             Arrival Date</p>
-                                                            <div>{departure[0].ArrivalDate}</div>
+                                                            <div>  {returnFlight[0].ArrivalDate.substring(0, 10)}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,10 +200,125 @@ export default function ViewAllReservations(props) {
                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clock" viewBox="0 0 16 16">
-                                                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                                            </svg>&nbsp;
+                                                        <AccessTimeIcon />
+                                                            &nbsp;
+                                                            Departure Time</p>
+                                                            <div>{returnFlight[0].DepartureTime}</div>
+
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6 col-12 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <AccessTimeIcon />
+                                                            &nbsp;
+                                                            Arrival Time</p>
+                                                            <div>{returnFlight[0].ArrivalTime}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                            <p className="h-blue">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hourglass-split" viewBox="0 0 16 16">
+                                                                    <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z" />
+                                                                </svg>&nbsp;
+                                                                Flight Duration</p>
+                                                            <div>
+                                                            {flightDuration(returnFlight[0].DepartureDate  , returnFlight[0].ArrivalDate, returnFlight[0].DepartureTime , returnFlight[0].ArrivalTime)}
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            <LuggageIcon />
+                                                            Baggage Per Person</p>
+                                                        <div>
+                                                        {baggageReturn.baggage}
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <AirlineSeatReclineExtraIcon />
+                                                            Seats</p>
+                                                        <div>1A 2A 3A 4A 5A 6A 7A</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <DeleteButton reservation = {reservation._id} />
+
+                                        </form>
+                                    </div>
+
+                                </div>                            ) : (
+                                <div>
+                                    <div className="container rounded">
+                                        <form action="">
+
+                                            <div className="row">
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            Flight Code</p>
+                                                        <div>
+                                                        {departure[0].FlightNumber}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <FlightTakeoffIcon />&nbsp;
+                                                            Departing From</p>
+                                                        <div>
+                                                        {departure[0].From}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            <FlightLandIcon />
+                                                            &nbsp;
+                                                            Arriving to</p>
+                                                        <div>
+                                                            {departure[0].To}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            <EventIcon />
+                                                            &nbsp;
+                                                            Departure Date</p>
+                                                        <div>  {departure[0].DepartureDate.substring(0, 10)}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6 col-12 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <EventIcon />
+                                                            &nbsp;
+                                                            Arrival Date</p>
+                                                            <div>  {departure[0].ArrivalDate.substring(0, 10)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <AccessTimeIcon />
+                                                            &nbsp;
                                                             Departure Time</p>
                                                             <div>{departure[0].DepartureTime}</div>
 
@@ -182,10 +327,8 @@ export default function ViewAllReservations(props) {
                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clock" viewBox="0 0 16 16">
-                                                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                                            </svg>&nbsp;
+                                                        <AccessTimeIcon />
+                                                            &nbsp;
                                                             Arrival Time</p>
                                                             <div>{departure[0].ArrivalTime}</div>
                                                     </div>
@@ -194,22 +337,37 @@ export default function ViewAllReservations(props) {
 
 
                                             <div className="row">
-                                                <div className="col-md-6 col-12 mb-4">
+                                            <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                             <p className="h-blue">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hourglass-split" viewBox="0 0 16 16">
                                                                     <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z" />
                                                                 </svg>&nbsp;
                                                                 Flight Duration</p>
-                                                            <div>NOT IN FLIGHTS SCHEME</div>
+                                                            <div>
+                                                            {flightDuration(departure[0].DepartureDate  , departure[0].ArrivalDate, departure[0].DepartureTime , departure[0].ArrivalTime)}
+                                                            </div>
                                                         </div>
                                                 </div>
-                                                <div className="col-md-6 col-12 mb-4">
+                                                <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">Seats</p>
+                                                        <p className="h-blue">
+                                                            <LuggageIcon />
+                                                            Baggage Per Person</p>
+                                                        <div>
+                                                        {baggageDeparture.baggage}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <AirlineSeatReclineExtraIcon />
+                                                            Seats</p>
                                                         <div>1A 2A 3A 4A 5A 6A 7A</div>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                             <DeleteButton reservation = {reservation._id} />
 

@@ -1,9 +1,11 @@
+
 .accordions{
     width: 76%;
     position: absolute;
     left: 12%;
-    top: 180%; 
+    top: 130%; 
     font-weight: bolder;
+    padding-bottom:200px ;
 }
 
 .accordion{
@@ -12,8 +14,10 @@
 }
 .accordionHeader{
     padding-left: 5%;
-    padding-right: 8%;
-    font-size: larger;
+    width : 30%;
+/*    padding-right: 8%;
+*/  
+font-size: larger;
     font-weight: 500;
 }
 

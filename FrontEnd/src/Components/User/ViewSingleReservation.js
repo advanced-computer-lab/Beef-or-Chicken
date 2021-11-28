@@ -15,68 +15,58 @@ import ViewAllReservations from './ViewAllReservations';
 
 
 class ViewSingleReservation extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
-                reservation : props.reservation,
-                departureFlight: [] ,
-                returnFlight: [],
-                flightType :0,
+            reservation: props.reservation,
+            departureFlight: [],
+            returnFlight: [],
+            flightType: 0,
         };
-        console.log("helllp");
-        console.log(props.reservation.DepartureFlightID);
+
 
     }
 
     componentDidMount() {
-        
+
         axios.get('http://localhost:8080/flightById/' + this.props.reservation.DepartureFlightID).then(
             Result => {
-                console.log("no problem getting departure flight");
-                this.setState({ departureFlight: [...this.state.departureFlight, Result.data ] })
-                
-                console.log( this.state.departureFlight[0].From); }
-                ).catch(err => { console.log(err) })
-        
-      
-            axios.get('http://localhost:8080/flightById/' + this.props.reservation.ReturnFlightID).then(
-            Result => {
-                    this.setState({ returnFlight: [...this.state.returnFlight, Result.data ] })
-                    console.log( this.state.returnFlight[0].From); 
-                    console.log("no problem getting return flight");
+                this.setState({ departureFlight: [...this.state.departureFlight, Result.data] })
+            }
+        ).catch(err => { console.log(err) })
 
-                    console.log("-----------");
-                }
-                    ).catch(err => { console.log(err) })
-            
+
+        axios.get('http://localhost:8080/flightById/' + this.props.reservation.ReturnFlightID).then(
+            Result => {
+                this.setState({ returnFlight: [...this.state.returnFlight, Result.data] })
+            }
+        ).catch(err => { console.log(err) })
+
     };
 
-    
-    handleChange = (event, newValue) => {
-        console.log(newValue);
 
+    handleChange = (event, newValue) => {
         this.state.flightType = newValue;
-        console.log(this.state.flightType);
         //setFlightType(newValue);
     };
 
 
-    
+
     //<ViewAllReservationsHook reservation={r} key={r._id} />
-/*
-   
-  */  
+    /*
+       
+      */
     render() {
 
-        console.log(this.state.departureFlight);
         return (
             <div>
 
-<ViewAllReservationsHook reservation={this.state.reservation} departureFlight = {this.state.departureFlight} 
-     returnFlight = {this.state.returnFlight}  />     
 
-          </div>
+                <ViewAllReservationsHook reservation={this.state.reservation} departureFlight={this.state.departureFlight}
+                    returnFlight={this.state.returnFlight} />
+
+            </div>
         );
     }
 }
@@ -145,7 +135,7 @@ export default ViewSingleReservation;
                             </div>
                         </Accordion.Header>
 
-                        
+
                         <Accordion.Body>
                             <Tabs class="tabs" value={this.state.flightType} onChange={this.handleChange} centered>
                                 <Tab label="Departure Flight" />
