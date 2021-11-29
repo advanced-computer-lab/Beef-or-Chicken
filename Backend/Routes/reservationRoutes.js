@@ -18,6 +18,54 @@ app.get("/allReservations", async (request, response) => {
   }
 });
 
+app.post("/createReservation", async (request, response) => {
+  //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
+
+  // var EconomySeats = request.body.EconomySeats;
+  // var BusinessSeats = request.body.BusinessSeats;
+  // var FirstSeats = request.body.FirstSeats;
+  // var seats = [];
+  // var tmpEconomy = [];
+  // var tmpBusiness = [];
+  // var tmpFirst = [];
+  // for (let i = 0; i < EconomySeats; i++) {
+  //   tmpEconomy.push(0);
+  // }
+  // seats.push(tmpEconomy);
+  // for (let i = 0; i < BusinessSeats; i++) {
+  //   tmpBusiness.push(0);
+  // }
+  // seats.push(tmpBusiness);
+  // for (let i = 0; i < FirstSeats; i++) {
+  //   tmpFirst.push(0);
+  // }
+  // seats.push(tmpFirst);
+
+
+  const reservation = new reservationModel({
+    'UserID': request.body.UserID,
+    'DepartureFlightID': request.body.DepartureFlightID,
+    'ReturnFlightID': request.body.ReturnFlightID,
+    'CabinType': request.body.CabinType,
+    'TakenSeats': request.body.TakenSeats,
+    'TotalPrice': request.body.TotalPrice,
+    'Children': request.body.Children,
+    'Adults': request.body.Adults,
+
+  });
+
+
+
+  try {
+    await reservation.save();
+    response.send("reserved successfully");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+
+
 
 app.delete("/reservation/:id", async (request, response) => {
   try {
@@ -106,5 +154,6 @@ app.delete("/reservation/:id", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
 
 module.exports = app;

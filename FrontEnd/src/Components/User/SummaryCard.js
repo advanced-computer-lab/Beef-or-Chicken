@@ -9,6 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { connect } from "react-redux";
 import FlightIcon from '@mui/icons-material/Flight';
 import moment, { duration } from 'moment'
+import ConfirmButton from './ConfirmButton.js'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -227,7 +228,10 @@ function SimplePaper({ details }) {
                     <hr className={classes.line}></hr>
 
                     <Typography className={classes.text3}> {layOverTime} . {layOverCity}</Typography>
+
+
                     <hr className={classes.line2}></hr>
+                    <ConfirmButton />
 
                 </CardContent>
             </Card>

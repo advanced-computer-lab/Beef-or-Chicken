@@ -232,13 +232,13 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
         switch (details.cabin_class) {
             case "Economy":
                 console.log("adults: ", details.Adults)
-                return offer.PriceEconomy.$numberDecimal * sum
+                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
                 break;
             case "Bussiness":
-                return offer.PriceBusiness.$numberDecimal * sum
+                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
             case "First":
-                return offer.PriceFirst.$numberDecimal * sum
+                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
                 break;
             default:
             // code block

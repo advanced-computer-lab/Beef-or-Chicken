@@ -75,7 +75,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "30px",
         display: "flex",
         flexDirection: "column"
-    }
+    },
+    adult: {
+
+    },
+
 
 
 
@@ -237,7 +241,7 @@ function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, childr
                                         {totalPassengers}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu className="DropDownResults">
-                                        <Dropdown.Item as='text'><div className="adult"> Adult</div>
+                                        <Dropdown.Item as='text'><div className={classes.adult}> Adult</div>
                                             <Counter count={newcount1} setCount={setnewCount1} />
 
                                         </Dropdown.Item>

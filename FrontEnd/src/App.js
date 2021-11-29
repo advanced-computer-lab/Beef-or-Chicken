@@ -20,7 +20,7 @@ import SummaryPage from "./Components/User/SummaryPage"
 import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
-
+import UserLogin from "./Components/User/Login"
 function App() {
   var hist = createBrowserHistory();
   return (
@@ -43,6 +43,7 @@ function App() {
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
+        <Route exact path="/login" component={UserLogin} />
 
       </Router>
     </div>
