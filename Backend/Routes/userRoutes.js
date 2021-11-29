@@ -74,8 +74,9 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
   //TO BE TESTEEEDDDDDD test test test
 
   app.get("/usersflight/:id", async (request, response) => {
-    const user = await userModel.findById(request.params.id);
-    const reservedFlights= await reservationModel.findById(user);
+    var user={};
+    user.UserID=request.params.id;
+    const reservedFlights= await reservationModel.find(user);
 
     try {
       response.send(reservedFlights);
