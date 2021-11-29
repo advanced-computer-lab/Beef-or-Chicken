@@ -100,7 +100,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                     console.log("gamed louji!")
 
 
-                    history.push(`/Seats/${details.DepartingFlight._id}`);
+                    history.push('/Seats/1');
                 })
                 .catch(error => {
                     console.log("idiot!");

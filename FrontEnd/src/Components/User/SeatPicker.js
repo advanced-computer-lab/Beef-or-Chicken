@@ -18,13 +18,14 @@ import CardContent from '@mui/material/CardContent';
 import { useHistory } from "react-router-dom";
 import { grid } from '@mui/system';
 import { connect } from "react-redux";
+import Button from '@material-ui/core/Button';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 
 
 
 
 
-
+var currFlight = []
 class SeatPicker extends Component {
 
 
@@ -37,6 +38,7 @@ class SeatPicker extends Component {
 
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
+            flight: this.props.match.params,
             //initEcon: [],
             //initBusiness: [],
             //initFirst: [],
@@ -45,7 +47,7 @@ class SeatPicker extends Component {
             chosenSeats: [],
             currSeats: 0,
             maxSeats: this.props.details.Adults + this.props.details.children,
-            cabin: 1,  // 0 for econ, 1 for business, 2 first
+            //cabin: 1,  // 0 for econ, 1 for business, 2 first
             maxReached: false,
             // flag : false,
 
@@ -80,22 +82,50 @@ class SeatPicker extends Component {
 
 
     componentDidMount = () => {
-        let url = `http://localhost:8080/flightById/${this.state.id.id}`;
-        console.log("componentdidmount")
-        console.log("url", url)
-        axios.get(url)
-            .then((response) => {
+        //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
+        if (this.state.flight == 1) {
+            currFlight = this.props.details.DepartingFlight
+        }
+        else
+            currFlight = this.props.details.ReturnFlight
 
-                console.log("currFlight ===> ", response)
-                this.setState({ seats: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
-                this.setState({ initial: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
+        switch (this.props.details.cabin_class) {
+            case "Economy":
+               // this.setState({ cabin: 0 })
+                
+                    this.setState({ seats: JSON.parse(JSON.stringify(currFlight[0])) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(currFlight[0])) })
+                
+                break;
+            case "Bussiness":
+                this.setState({ seats: JSON.parse(JSON.stringify(currFlight[1])) })
+                this.setState({ initial: JSON.parse(JSON.stringify(currFlight[1])) })
+                break;
+            case "First":
+                this.setState({ seats: JSON.parse(JSON.stringify(currFlight[2])) })
+                this.setState({ initial: JSON.parse(JSON.stringify(currFlight[2])) })
+                break;
+            default:
+            // code block
+        }
+       // this.setState({ seats: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
+        //this.setState({ initial: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
+        // if we want to get flight from database
+        // console.log("componentdidmount")
+        // console.log("url", url)
+        // axios.get(url)
+        //     .then((response) => {
 
-            })
-            .catch((e) => {
+        //         // console.log("currFlight ===> ", response)
+        //         this.setState({ seats: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
+        //         this.setState({ initial: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
 
-                console.log("ana hena")
-                console.log("error ===>", e);
-            });
+        //     })
+        //     .catch((e) => {
+
+        //         console.log("ana hena")
+        //         console.log("error ===>", e);
+        //     });
 
     }
 
@@ -124,7 +154,9 @@ class SeatPicker extends Component {
 
         }
     };
+    handleSubmit = () => {
 
+    };
 
 
 
@@ -162,6 +194,9 @@ class SeatPicker extends Component {
                                 ))}
                             </Grid>
                         </CardContent>
+                        <Button style={{ background: "#10404c ", color: "wheat" }}
+                            variant="outlined" size="medium" color="primary"
+                            onClick={() => { this.handleSubmit() }} >Confirm</Button>
                     </Card>
                 </div>
 
