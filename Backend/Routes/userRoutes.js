@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const userModel = require("../Models/User");
+const reservationModel= require ("../Models/Reservation");
 var cors = require('cors');
 app.use(cors())
 
@@ -61,6 +62,23 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
       console.log(request.params.id);
       await userModel.findByIdAndUpdate(request.params.id, q);
       response.send();
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  });
+
+
+
+
+  //pure habdddddd
+  //TO BE TESTEEEDDDDDD test test test
+
+  app.get("/usersflight/:id", async (request, response) => {
+    const user = await userModel.findById(request.params.id);
+    const reservedFlights= await reservationModel.findById(user);
+
+    try {
+      response.send(reservedFlights);
     } catch (error) {
       response.status(500).send(error);
     }

@@ -19,28 +19,6 @@ app.get("/allReservations", async (request, response) => {
 });
 
 
-app.post("/confirmReservation", async (request, response) => {
-  const reservation = new reservationModel({
-    'UserID': request.body.From,
-    'DepartureFlightID': request.body.To,
-    'ReturnFlightID': request.body.DepartureDate,
-    'CabinType': request.body.ArrivalDate,
-    'TakenSeats': request.body.EconomySeats,
-    'TotalPrice': request.body.EconomySeats,
-  });
-
-  try {
-    await reservation.save();
-    response.send("Reserved Successfully!");
-  } catch (error) {
-    response.status(500).send(error);
-  }
-
-
-
-});
-
-
 app.delete("/reservation/:id", async (request, response) => {
   try {
     const reservation = await reservationModel.findByIdAndDelete(request.params.id);
@@ -72,7 +50,7 @@ app.delete("/reservation/:id", async (request, response) => {
       let mailOptions = {
 
         from: "BeefOrChickenACL@gmail.com",
-        to: "yasmine14699@gmail.com",
+        to: User.email,
         subject: "Your reservation has been canceled",
         text: "Dear " + User.firstName + ", your reservation with Beef or Chicken airlines has been canceled successfully, your refund amount is " + totalPrice + " EGP",
       };
