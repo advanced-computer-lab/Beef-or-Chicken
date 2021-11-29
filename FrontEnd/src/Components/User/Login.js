@@ -3,6 +3,7 @@ import ResultCard from './ResultCard'
 import { makeStyles } from "@material-ui/core/styles";
 import ResultBack from "../../images/Results2.png";
 import Pagination from './Paginations'
+import LoginCard from './LoginCard'
 const useStyles = makeStyles((theme) => ({
     root: {
         // display: 'flex',
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         // height: "100%"
         // marginTop: "30%",
         // top: "100px",
+        paddingTop: "10%"
     }
 
 }));
@@ -35,7 +37,7 @@ function DepartingResults() {
 
             <div className={classes.page}>
                 <div className={classes.results}>
-                    <Pagination />
+                    <LoginCard />
 
                 </div>
             </div>

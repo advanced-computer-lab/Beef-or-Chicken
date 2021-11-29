@@ -43,7 +43,7 @@ function App() {
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
-        <Route exact path="/login" component={UserLogin} />
+        <Route exact path="/Userlogin" component={UserLogin} />
 
       </Router>
     </div>

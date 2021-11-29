@@ -68,12 +68,13 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
     let history = useHistory();
     const classes = useStyles();
 
-    const func = async () => {
+    const func = async (e) => {
+        e.preventDefault();
         // console.log("detailsssssss: ", details)
         // //console.log("allahu akbar", details.allOffers)
         if (details.UserID == "") {
             alert("Log in please!")
-            history.push("/login");
+            history.push("/UserLogin");
 
         }
         else {
@@ -98,7 +99,8 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                     console.log("respnose: ", res)
                     console.log("gamed louji!")
 
-                    // history.push("/DepartingFlights");
+
+                    history.push(`/Seats/${details.DepartingFlight._id}`);
                 })
                 .catch(error => {
                     console.log("idiot!");
@@ -130,7 +132,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                             size="medium"
                             className={classes.button}
                             // startIcon={<SearchIcon />}
-                            onClick={func}
+                            onClick={(e) => { func(e) }}
                         >
                             Confirm
                         </Button>
