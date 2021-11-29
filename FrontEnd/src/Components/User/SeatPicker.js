@@ -1,14 +1,20 @@
 import axios from 'axios';
 import React, { Component, useState, useEffect } from 'react';
+import ResultBack from "../../images/Results2.png";
+import Typography from '@material-ui/core/Typography';
 import { withRouter } from "react-router";
 import '../../App.css';
+import './SeatPicker.css'
 import Checkbox from '@mui/material/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { Card } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useHistory } from "react-router-dom";
 import { grid } from '@mui/system';
 
@@ -25,7 +31,9 @@ class SeatPicker extends Component {
 
         super(props);
         this.state = {
-            id: this.props.match.params,
+            
+            // id: this.props.id,
+            id:this.props.match.params,
             //initEcon: [],
             //initBusiness: [],
             //initFirst: [],
@@ -122,7 +130,14 @@ class SeatPicker extends Component {
     render() {
 
         return (
-            <div>
+            <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+                <div style={ {paddingTop:"100px" } }>
+                <Card className="paper" sx={{ minWidth: 275 }}>
+                <Typography style={ {marginTop:"10px", fontSize: "18" }} variant="h5" component="h2">
+                Please pick your desired seats
+                    </Typography>
+                    <hr />
+                <CardContent raised>
                 <Grid container spacing={{ xs: 3 }} >
                     {Array.from(this.state.seats).map((_, index) => (
                         <Grid item xs={3} key={index}>
@@ -143,8 +158,9 @@ class SeatPicker extends Component {
 
                     ))}
                 </Grid>
-               
-
+                </CardContent>
+                </Card>
+                </div>
 
 
             </div>
