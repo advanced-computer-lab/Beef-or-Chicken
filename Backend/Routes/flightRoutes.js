@@ -54,7 +54,6 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
 });
 
 app.get("/flightById/:id", async (request, response) => {
- console.log("bawsal backend" + request.params.id);
   const flight = await flightModel.findById(request.params.id);
 
   try {

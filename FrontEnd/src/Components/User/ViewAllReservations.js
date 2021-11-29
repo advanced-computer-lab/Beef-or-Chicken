@@ -18,7 +18,8 @@ class ViewAllReservations extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            reservations: []
+            reservations: [],
+            userId : "61a518d86046ece4ba9ff27c"
         };
 
         //this.GetAllAsync();
@@ -32,9 +33,11 @@ class ViewAllReservations extends Component {
     */
 
     async componentDidMount() {
-        const response = await axios.get('http://localhost:8080/allReservations');
+        console.log(this.state.userId);
+        const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
         const result = await response.data;
         this.setState({ reservations: result });
+        console.log(this.state.reservations);
       }
       
   
@@ -68,12 +71,16 @@ class ViewAllReservations extends Component {
                     </Card.ImgOverlay>
                 </Card>
 
+                {reservations.length === 0 ?(
+                <div className="accordions" styles={{fontWeight:"bold", color:"#000000"}}>You don't have any reservations!</div>
+                ):(
                 <div className="accordions">
                     {this.state.reservations.map(r =>
                         <ViewSingleReservation reservation={r} key={r._id} />
                     )}
                 </div>
-
+                )
+    }
             </div>
         );
     
