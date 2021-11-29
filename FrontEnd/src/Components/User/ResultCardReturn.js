@@ -19,6 +19,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment, { duration } from 'moment'
+import { useHistory } from "react-router-dom";
 import { Select } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -179,6 +180,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DetailedAccordion(props) {
     const classes = useStyles();
     const details = props.details
+    let history = useHistory();
     console.log("OFFRAAATTTAAA: ", props.offer.data.data)
     const offer = props.offer.data.data
     //const departuretime = offer[0].DepartureTime
@@ -250,7 +252,7 @@ export default function DetailedAccordion(props) {
         // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
         console.log("offersssss291: ", props.details.TotalPrice)
         console.log("selecteeeeeddddddd292: ", details)
-
+        props.details.ReturnFlight = offer
         props.details.selectedReturningFlightID = offer._id
         let ReturnPrice = price(offer)
         props.details.ReturnPrice = ReturnPrice
@@ -266,7 +268,7 @@ export default function DetailedAccordion(props) {
         //     'TotalPrice': request.body.EconomySeats,
         // }
 
-        //   history.push("/ReturningingFlights");
+        history.push("/Summary");
         // })
         // .catch(error => {
         //     console.log("idiot!");

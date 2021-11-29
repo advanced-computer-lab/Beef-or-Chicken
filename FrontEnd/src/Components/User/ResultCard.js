@@ -273,6 +273,7 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
                 console.log("offersssss291: ", offer)
                 console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
                 let DeparturePrice = price(offer)
+                props.details.DepartingFlight = offer
                 props.details.DeparturePrice = DeparturePrice
                 props.details.selectedDepartingFlightID = offer._id
                 console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
