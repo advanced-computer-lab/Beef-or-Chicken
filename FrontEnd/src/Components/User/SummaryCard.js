@@ -116,16 +116,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(SimplePaper);
 function SimplePaper({ details }) {
     const classes = useStyles();
-    const [departureDate, setdepartureDate] = React.useState("Departure Time");
-    const [departureAirport, setdepartureAirport] = React.useState("Departure Airport");
-    const [ArrivaleDate, setArrivaleDate] = React.useState("Arrival Time");
-    const [ArrivalAirport, setArrivalAirport] = React.useState("Arrival Airport");
-    const [travelTime, settravelTime] = React.useState("");
-    const [departureDate2, setdepartureDate2] = React.useState("Departure Time");
-    const [departureAirport2, setdepartureAirport2] = React.useState("Departure Airport");
-    const [ArrivaleDate2, setArrivaleDate2] = React.useState("Arrival Time");
-    const [ArrivalAirport2, setArrivalAirport2] = React.useState("Arrival Airport");
-    const [travelTime2, settravelTime2] = React.useState("");
+
     const [layOverTime, setlayOverTime] = React.useState("Layover");
     const [layOverCity, setlayOverCity] = React.useState("City");
 

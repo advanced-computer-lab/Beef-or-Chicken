@@ -17,8 +17,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useHistory } from "react-router-dom";
 import { grid } from '@mui/system';
-
+import { connect } from "react-redux";
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
+
+
+
 
 
 
@@ -31,23 +34,23 @@ class SeatPicker extends Component {
 
         super(props);
         this.state = {
-            
-            // id: this.props.id,
-            id:this.props.match.params,
+
+            //  id: this.details.DepartingFlight._id,
+            id: this.props.details.DepartingFlight._id,
             //initEcon: [],
             //initBusiness: [],
             //initFirst: [],
             seats: [],
             initial: [],
-            chosenSeats:[],
+            chosenSeats: [],
             currSeats: 0,
-            maxSeats: 2,
-            cabin:1,  // 0 for econ, 1 for business, 2 first
+            maxSeats: this.props.details.Adults + this.props.details.children,
+            cabin: 1,  // 0 for econ, 1 for business, 2 first
             maxReached: false,
             // flag : false,
 
         };
-        //  console.log(this.state.CurrentDate.getFullYear() + '-' + (this.state.CurrentDate.getMonth() + 1) + '-' + this.state.CurrentDate.getDate())
+        console.log("ddddddddddd: ", this.props.details)
     }
 
 
@@ -82,11 +85,11 @@ class SeatPicker extends Component {
         console.log("url", url)
         axios.get(url)
             .then((response) => {
-                
+
                 console.log("currFlight ===> ", response)
                 this.setState({ seats: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
                 this.setState({ initial: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
-               
+
             })
             .catch((e) => {
 
@@ -96,29 +99,29 @@ class SeatPicker extends Component {
 
     }
 
-   
+
 
 
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
         if (event.target.checked) {
-            this.setState({choosenSeats: this.state.chosenSeats.push(event.target.id)}, () =>{
+            this.setState({ choosenSeats: this.state.chosenSeats.push(event.target.id) }, () => {
                 this.updateChoice(event.target.id, 1)
                 console.log("chosen Seats now: ", this.state.chosenSeats)
             })
-          
-            
-            
+
+
+
         }
         else {
-            
-            
+
+
             this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== event.target.id) },
-            () =>{
-                this.updateChoice(event.target.id, 0)
-                console.log("chosen Seats now: ", this.state.chosenSeats)
-            }) 
-            
+                () => {
+                    this.updateChoice(event.target.id, 0)
+                    console.log("chosen Seats now: ", this.state.chosenSeats)
+                })
+
         }
     };
 
@@ -131,35 +134,35 @@ class SeatPicker extends Component {
 
         return (
             <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
-                <div style={ {paddingTop:"100px" } }>
-                <Card className="paper" sx={{ minWidth: 275 }}>
-                <Typography style={ {marginTop:"10px", fontSize: "18" }} variant="h5" component="h2">
-                Please pick your desired seats
-                    </Typography>
-                    <hr />
-                <CardContent raised>
-                <Grid container spacing={{ xs: 3 }} >
-                    {Array.from(this.state.seats).map((_, index) => (
-                        <Grid item xs={3} key={index}>
-                            <Checkbox
-                                //checked={this.state.initEcon[index]}
+                <div style={{ paddingTop: "100px" }}>
+                    <Card className="paper" sx={{ minWidth: 275 }}>
+                        <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
+                            Please pick your desired seats
+                        </Typography>
+                        <hr />
+                        <CardContent raised>
+                            <Grid container spacing={{ xs: 3 }} >
+                                {Array.from(this.state.seats).map((_, index) => (
+                                    <Grid item xs={3} key={index}>
+                                        <Checkbox
+                                            //checked={this.state.initEcon[index]}
 
-                                checked={this.state.seats[index]}
-                                disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
+                                            checked={this.state.seats[index]}
+                                            disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
 
-                                onChange={this.handleChange}
-                                id={(index)}
-                                label={index + 1}
-                            />
-
-
-                        </Grid>
+                                            onChange={this.handleChange}
+                                            id={(index)}
+                                            label={index + 1}
+                                        />
 
 
-                    ))}
-                </Grid>
-                </CardContent>
-                </Card>
+                                    </Grid>
+
+
+                                ))}
+                            </Grid>
+                        </CardContent>
+                    </Card>
                 </div>
 
 
@@ -170,4 +173,10 @@ class SeatPicker extends Component {
 
 
 }
-export default SeatPicker;
+const mapStateToProps = (state) => ({
+    details: state.DetailsReducer.details,
+});
+
+
+
+export default connect(mapStateToProps)(SeatPicker);
