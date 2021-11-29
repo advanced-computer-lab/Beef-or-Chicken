@@ -79,7 +79,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
         }
         else {
             let body = {
-                'UserID': "61a518d86046ece4ba9ff27c",
+                'UserID': details.UserID,
                 'DepartureFlightID': details.DepartingFlight._id,
                 "ReturnFlightID": details.ReturnFlight._id,
                 "CabinType": details.cabin_class,
@@ -100,7 +100,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                     console.log("gamed louji!")
 
 
-                    history.push(`/Seats/${details.DepartingFlight._id}`);
+                    history.push(`/Seats/1`);
                 })
                 .catch(error => {
                     console.log("idiot!");

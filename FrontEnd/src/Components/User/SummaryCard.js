@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
         borderRadius: "15px",
         width: "353px",
-        height: "550px",
+        height: "590px",
 
 
     },
@@ -90,6 +90,30 @@ const useStyles = makeStyles((theme) => ({
         // width: "100%",
         // marginLeft: "11%",
         marginTop: "10%",
+
+    },
+    partition: {
+        display: "flex",
+
+    },
+    partition2: {
+        background: "#10404c",
+        color: "wheat",
+        height: "40px",
+        width: "100%",
+        // marginRight: "60px",
+    },
+    text4: {
+        marginLeft: "11%",
+        marginTop: "-3%",
+        fontSize: theme.typography.pxToRem(25),
+        // color:'#70757A',
+        textAlign: "left",
+    },
+
+    button: {
+        marginTop: "5%",
+        marginRight: "5%"
 
     },
 
@@ -184,8 +208,11 @@ function SimplePaper({ details }) {
 
 
                     <hr className={classes.line}></hr>
+                    <div className={classes.partition}>
+                        <Typography className={classes.text3}> Price . EGP {details.DeparturePrice}</Typography>
+                        <Typography className={classes.text3}> Cabin . {details.cabin_class}</Typography>
 
-                    <Typography className={classes.text3}> {layOverTime} . {layOverCity}</Typography>
+                    </div>
                     <hr className={classes.line2}></hr>
                     <div className={classes.TripIcon}>
                         <TripOriginIcon
@@ -217,13 +244,20 @@ function SimplePaper({ details }) {
 
                     </div>
                     <hr className={classes.line}></hr>
+                    <div className={classes.partition}>
+                        <Typography className={classes.text3}> Price . EGP {details.ReturnPrice}</Typography>
+                        <Typography className={classes.text3}> Cabin . {details.cabin_class}</Typography>
 
-                    <Typography className={classes.text3}> {layOverTime} . {layOverCity}</Typography>
-
-
+                    </div>
                     <hr className={classes.line2}></hr>
-                    <ConfirmButton />
+                    <div className={classes.partition2}>
+                        <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
 
+                    </div>
+                    {/* <hr className={classes.line2}></hr> */}
+                    <div className={classes.button}>
+                        <ConfirmButton />
+                    </div>
                 </CardContent>
             </Card>
         </div>
