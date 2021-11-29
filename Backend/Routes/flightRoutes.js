@@ -54,10 +54,9 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
 });
 
 app.get("/flightById/:id", async (request, response) => {
-  const flight = await flightModel.findById(request.params.id);
+ const flight = await flightModel.findById(request.params.id);
 
   try {
-
     response.send(flight);
   } catch (error) {
     response.status(500).send(error);

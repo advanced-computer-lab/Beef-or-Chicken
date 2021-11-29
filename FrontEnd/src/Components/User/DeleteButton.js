@@ -13,10 +13,11 @@ import './ViewAllReservations.css'
 export default function AlertDialog(prop) {
     const reservation = prop.reservation
     const [open, setOpen] = React.useState(false);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
-    
+
     const handleDelete = () => {
         setOpen(false);
 
@@ -28,7 +29,7 @@ export default function AlertDialog(prop) {
                 console.log("response ===> ", response)
             })
             .catch((e) => {
-                console.log("error when deleting reservation BE =>", e);
+                console.log("error ===>", e);
             });
         window.location.reload(false);
 
@@ -57,7 +58,6 @@ export default function AlertDialog(prop) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Are you sure you want to cancel your reservation?
-                        <p style = {{fontSize :"smaller"}}>You will be refunded.</p>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

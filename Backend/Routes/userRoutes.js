@@ -78,7 +78,6 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
     user.UserID=request.params.id;
     const reservedFlights= await reservationModel.find(user);
 
-
     try {
       response.send(reservedFlights);
     } catch (error) {
