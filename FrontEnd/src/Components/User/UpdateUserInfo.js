@@ -87,15 +87,9 @@ function UpdateUserInfo(prop) {
     const [lastName, setLastName] = useState("")
     const [passportNumber, setPassportNumber] = useState("")
     const [email, setEmail] = useState("")
+
+
     
-
-
-
-
-
-
-
-
     const classes = useStyles()
 
 
@@ -131,7 +125,7 @@ function UpdateUserInfo(prop) {
                         name='First Name'
                         // className='form-control'
                         value={firstName}
-                        onChange={event => { setFirstName(event.target.value.toUpperCase()) }}
+                        onChange={event => { setFirstName(event.target.value) }}
                     />
                 </div>
 
@@ -146,7 +140,7 @@ function UpdateUserInfo(prop) {
                         name='Last Name'
                         // className='form-control'
                         value={lastName}
-                        onChange={event => { setLastName(event.target.value.toUpperCase()) }}
+                        onChange={event => { setLastName(event.target.value) }}
                     />
                 </div>
 
@@ -163,13 +157,9 @@ function UpdateUserInfo(prop) {
                         name='Passport Number'
                         // className='form-control'
                         value={passportNumber}
-                        onChange={event => { setPassportNumber(event.target.value.toUpperCase()) }}
+                        onChange={event => { setPassportNumber(event.target.value) }}
                     />
                 </div>
-
-
-
-
 
 
                 <div class="col-md-6" className='form-group form-inline'>
@@ -181,11 +171,11 @@ function UpdateUserInfo(prop) {
                         name='Email'
                         // className='form-control'
                         value={email}
-                        onChange={event => { setEmail(event.target.value.toUpperCase()) }}
+                        onChange={event => { setEmail(event.target.value) }}
                     />
                 </div>       
 
-                  <input
+                  <input  onSubmit={onSubmit}
                     class="btn btn-primary"
                     type="submit"
                 // className="btn btn-outline-warning btn-block mt-4"

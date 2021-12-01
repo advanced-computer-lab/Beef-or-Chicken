@@ -18,6 +18,7 @@ import Tabs from './Components/Admin/Tabs'
 import SearchPage from './Components/Admin/SearchPage'
 import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
+import ViewUserInfo from './Components/User/ViewUserInfo';
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
 
 function App() {
@@ -40,8 +41,11 @@ function App() {
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:id" component={SeatPicker} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
-        <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
-
+        {/* add /:id */}
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
+        <Route exact path="/login" component={UserLogin} />
+        {/* add /:id */}
+        <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
       </Router>
     </div>
   )
