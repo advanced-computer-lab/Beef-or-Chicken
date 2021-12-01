@@ -94,15 +94,15 @@ const flightSchema = new Schema({
     required: true
   },
 
-  EconomySeatsArray:{  // economy then business then first
+  EconomySeatsArray:{ 
     type:Array,
     required:true
   },
-  BusinessSeatsArray:{  // economy then business then first
+  BusinessSeatsArray:{ 
     type:Array,
     required:true
   },
-  FirstSeatsArray:{  // economy then business then first
+  FirstSeatsArray:{  
     type:Array,
     required:true
   },
