@@ -26,6 +26,7 @@ const flightSchema = new Schema({
     type: Date,
     required: true,
   },
+  
   EconomySeats: {
     type: Number,
     required: true
@@ -93,11 +94,18 @@ const flightSchema = new Schema({
     required: true
   },
 
-  Seats:{  // economy then business then first
+  EconomySeatsArray:{ 
     type:Array,
     required:true
-  }
-
+  },
+  BusinessSeatsArray:{ 
+    type:Array,
+    required:true
+  },
+  FirstSeatsArray:{  
+    type:Array,
+    required:true
+  },
 
 
 

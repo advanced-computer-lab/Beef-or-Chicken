@@ -45,17 +45,17 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
       console.log("Request: ", request.body)
       var q = {}
 
-      if (request.body.firstName.firstName != "") {
-        q.firstName = request.body.firstName.firstName
+      if (request.body.firstName != "") {
+        q.firstName = request.body.firstName
       }
-      if (request.body.lastName.lastName != "") {
-        q.lastName = request.body.lastName.lastName
+      if (request.body.lastName != "") {
+        q.lastName = request.body.lastName
       }
-      if (request.body.passportNumber.passportNumber != "") {
-        q.passportNumber = request.body.passportNumber.passportNumber
+      if (request.body.passportNumber != "") {
+        q.passportNumber = request.body.passportNumber
       }
-      if (request.body.email.email != "") {
-        q.email = request.body.email.email
+      if (request.body.email != "") {
+        q.email = request.body.email
       }
      
       console.log(q);
@@ -84,6 +84,7 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
       response.status(500).send(error);
     }
   });
+
 
 
 module.exports = app;

@@ -18,12 +18,24 @@ const reservationSchema = new Schema({
         type: String,
         required: true
     },
-    TakenSeats: {
+    TakenSeatsDeparting: {
         type: Array,
-        required: true,
+        required: false,
+    },
+    TakenSeatsArriving: {
+        type: Array,
+        required: false,
     },
     TotalPrice: {
         type: mongoose.Decimal128,
+        required: true,
+    },
+    Children: {
+        type: Number,
+        required: true,
+    },
+    Adults: {
+        type: Number,
         required: true,
     },
 

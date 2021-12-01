@@ -20,9 +20,80 @@ const initState = {
         infants_in_seat: 0,
         totalPassengers: 0,
         allOffers: [],
+        selectedDepartingFlightID: "",
+        selectedReturningFlightID: "",
+        UserID: "",
+        TakenSeats: [],
+        DeparturePrice: 0,
+        ReturnPrice: 0,
+        DepartingFlight: [],
+        ReturnFlight: [],
+        DepartingSeats: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
+
+    if (action.type == 'setDepartingFlight') {
+        state.details.DepartingFlight = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setDepartingSeats') {
+        state.details.DepartingSeats = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setReturnFlight') {
+        state.details.ReturnFlight = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setReturnPrice') {
+        state.details.ReturnPrice = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setDeparturePrice') {
+        state.details.DeparturePrice = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setTakenSeats') {
+        state.details.TakenSeats = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setUserID') {
+        state.details.UserID = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setSelectedDepartingFlightID') {
+        state.details.selectedDepartingFlightID = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setSelectedReturningFlightID') {
+        state.details.selectedReturningFlightID = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+
+
     if (action.type == 'setOrigin') {
         state.details.origin = action.payload;
         return {

@@ -180,7 +180,12 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        selectedDepartingFlightID: state.DetailsReducer.details.selectedDepartingFlightID,
+        selectedReturningFlightID: state.DetailsReducer.details.selectedDepartingFlightID,
+        UserID: state.DetailsReducer.details.UserID,
+        TakenSeats: state.DetailsReducer.details.TakenSeats,
+        TotalPrice: state.DetailsReducer.details.TotalPrice,
     };
 };
 
@@ -190,12 +195,27 @@ const mapDispatchToState = (dispatch) => {
         setAllOffers: (allOffers) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
+        setSelectedDepartingFlightID: (selectedDepartingFlightID) => {
+            dispatch({ type: 'setAllOffers', payload: selectedDepartingFlightID });
+        },
+        setSelectedReturningFlightID: (selectedReturningFlightID) => {
+            dispatch({ type: 'setAllOffers', payload: selectedReturningFlightID });
+        },
+        setUserID: (UserID) => {
+            dispatch({ type: 'setAllOffers', payload: UserID });
+        },
+        setTakenSeats: (TakenSeats) => {
+            dispatch({ type: 'setAllOffers', payload: TakenSeats });
+        },
+        setTotalPrice: (TotalPrice) => {
+            dispatch({ type: 'setAllOffers', payload: TotalPrice });
+        },
 
 
     };
 };
 export default connect(mapStateToProps, mapDispatchToState)(DetailedAccordion);
-function DetailedAccordion(props, setAllOffers, allOffers) {
+function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingFlightID) {
     const classes = useStyles();
     const details = props.details
     const offer = props.offer.allOffers.data
@@ -204,7 +224,28 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
     console.log("testtty: ", props.offer.allOffers.data)
     let history = useHistory();
     console.log("ffff: ", details)
-    const handleSubmit = async () => {
+
+    const price = (offer) => {
+        // if(details.cabin_class=="")
+        console.log("offersssss: ", offer)
+        let sum = details.Adults + details.children
+        switch (details.cabin_class) {
+            case "Economy":
+                console.log("adults: ", details.Adults)
+                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
+                break;
+            case "Bussiness":
+                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
+                break;
+            case "First":
+                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
+                break;
+            default:
+            // code block
+        }
+    }
+
+    const handleSubmit = async (offer) => {
         let body = {
             'From': details.destination,
             'To': details.origin,
@@ -227,9 +268,15 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.offer.allOffers.data = res;
-
-                console.log("allOffres: ", props.offer.allOffers.data)
-
+                // props.details.selectedDepartingFlightID.data = offer._id
+                // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
+                console.log("offersssss291: ", offer)
+                console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
+                let DeparturePrice = price(offer)
+                props.details.DepartingFlight = offer
+                props.details.DeparturePrice = DeparturePrice
+                props.details.selectedDepartingFlightID = offer._id
+                console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
                 history.push("/ReturningingFlights");
             })
             .catch(error => {
@@ -247,6 +294,8 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
         let duration = f.substring(0, 2) + " hr " + f.substring(3, 5) + " min"
         return duration
     }
+
+
     const bags = (offer) => {
         // if(details.cabin_class=="")
         console.log("offersssss: ", offer)
@@ -264,6 +313,18 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
             default:
             // code block
         }
+    }
+
+    const Submit = (offer) => {
+        // if(details.cabin_class=="")
+        console.log("offersssss291: ", offer)
+        console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
+
+        props.details.selectedDepartingFlightID = offer._id
+        console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
+        handleSubmit()
+
+
     }
     return (
 
@@ -301,7 +362,7 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
                                 <Typography className={classes.column2}>Flight Number </Typography>
                             </div>
                             <div className={classes.column}>
-                                <Typography className={classes.heading1} color="green">EGP {offers.PriceEconomy.$numberDecimal}</Typography>
+                                <Typography className={classes.heading1} color="green">EGP {price(offers)}</Typography>
                                 <Typography className={classes.column2}>round trip  </Typography>
                             </div>
 
@@ -345,47 +406,10 @@ function DetailedAccordion(props, setAllOffers, allOffers) {
                             <hr className={classes.line2}></hr>
 
 
-
-
-                            {/* <div className={classes.TripIcon}>
-                                <TripOriginIcon
-                                    fontSize="small"
-                                    color="disabled"
-                                    label="Female"
-                                />
-
-                                <MoreVertIcon
-                                    fontSize="small"
-                                    color="disabled" />
-                                <TripOriginIcon
-                                    fontSize="small"
-
-                                    color="disabled"
-                                />
-                            </div>
-                            <div className={classes.column} />
-                            <div className={classes.text}>
-                                <Typography className={classes.text1}> 5:00 PM . Munich International Airport (MUC)</Typography>
-                                <Typography className={classes.text2}> Travel time: 3 hr 45 min</Typography>
-                                <Typography className={classes.text1}> 8:45 AM . Cairo International Airport (CAI)</Typography>
-
-                            </div> */}
-
-
-
-                            {/* <div className={clsx(classes.column, classes.helper)}> 
-             <Typography variant="caption">
-              Select your destination of choice
-              <br />
-              <a href="#secondary-heading-and-columns" className={classes.link}>
-                Learn more
-              </a>
-            </Typography> 
-          </div> */}
                         </AccordionDetails>
                         <AccordionActions className={classes.action}>
 
-                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={handleSubmit} >Select flight</Button>
+                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button>
 
                         </AccordionActions>
                         <Divider />

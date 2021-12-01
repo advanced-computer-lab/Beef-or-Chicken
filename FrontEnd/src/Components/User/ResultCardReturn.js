@@ -19,6 +19,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment, { duration } from 'moment'
+import { useHistory } from "react-router-dom";
 import { Select } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -179,7 +180,9 @@ const useStyles = makeStyles((theme) => ({
 export default function DetailedAccordion(props) {
     const classes = useStyles();
     const details = props.details
-    const offer = props.offer.allOffers.data.data
+    let history = useHistory();
+    console.log("OFFRAAATTTAAA: ", props.offer.data.data)
+    const offer = props.offer.data.data
     //const departuretime = offer[0].DepartureTime
 
     console.log("RETURN: ", details.Adults)
@@ -187,17 +190,18 @@ export default function DetailedAccordion(props) {
     const price = (offer) => {
         // if(details.cabin_class=="")
         console.log("offersssss: ", offer)
-        let sum = details.Adults + details.children
+        // let sum = offer.PriceEconomy.$numberDecimal * sum + details.children
         switch (details.cabin_class) {
             case "Economy":
                 console.log("adults: ", details.Adults)
-                return offer.PriceEconomy.$numberDecimal * sum
+                console.log("children price: ", offer.PriceEconomy.$numberDecimal * details.children * 0.7)
+                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
                 break;
             case "Bussiness":
-                return offer.PriceBusiness.$numberDecimal * sum
+                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
             case "First":
-                return offer.PriceFirst.$numberDecimal * sum
+                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
                 break;
             default:
             // code block
@@ -222,12 +226,12 @@ export default function DetailedAccordion(props) {
             // code block
         }
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (offer) => {
         // let body = {
         //     'From': details.destination,
         //     'To': details.origin,
-        //     "DepartureDate": details.departure_date,
-        //     "ArrivalDate": details.return_date,
+        //     "DepartureDate": details.return_date,
+        //     "ArrivalDate": "",
         //     "FirstSeats": null,
         //     "BusinessSeats": null,
         //     "EconomySeats": null,
@@ -236,7 +240,7 @@ export default function DetailedAccordion(props) {
         //     "FlightNumber": ""
         // }
 
-        // console.log(body)
+        // console.log("220 ", body)
         // let url = "http://localhost:8080/searchAvailableFlights"
 
         // axios
@@ -244,16 +248,34 @@ export default function DetailedAccordion(props) {
         //     .then(res => {
         //         console.log("respnose: ", res)
         //         console.log("gamed louji!")
-        //         setAllOffers(res);
-        //         console.log("allOffres: ", allOffers)
-        //         //this.props.history.push('/');
-        //         history.push("/DepartingFlights");
-        //     })
-        //     .catch(error => {
-        //         console.log("idiot!");
-        //         console.log(error.message);
-        //     })
-        // <UpdateFlight flight={flight._id} />
+        //         props.offer.allOffers.data = res;
+        // props.details.selectedDepartingFlightID.data = offer._id
+        // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
+        console.log("offersssss291: ", props.details.TotalPrice)
+        console.log("selecteeeeeddddddd292: ", details)
+        props.details.ReturnFlight = offer
+        props.details.selectedReturningFlightID = offer._id
+        let ReturnPrice = price(offer)
+        props.details.ReturnPrice = ReturnPrice
+        console.log("selecteeeeeddddddd: ", props.details.ReturnPrice)
+
+
+        // let body = {
+        //     'UserID': 1,
+        //     'DepartureFlightID': props.details.selectedDeparturingFlightID,
+        //     'ReturnFlightID': props.details.selectedReturningFlightID,
+        //     'CabinType': props.details.selectedReturningFlightID,
+        //     'TakenSeats': [],
+        //     'TotalPrice': request.body.EconomySeats,
+        // }
+
+        history.push("/Summary");
+        // })
+        // .catch(error => {
+        //     console.log("idiot!");
+        //     console.log(error.message);
+        // })
+
 
     };
     const duration = (DepartureTime, DepartureDate, ArrivalTime, ArrivalDate) => {
@@ -347,7 +369,7 @@ export default function DetailedAccordion(props) {
                         </AccordionDetails>
                         <AccordionActions className={classes.action}>
 
-                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" >Select flight</Button>
+                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button>
 
                         </AccordionActions>
                         <Divider />
