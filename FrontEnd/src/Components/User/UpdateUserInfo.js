@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { useState } from 'react';
+import Button from '@material-ui/core/Button';
 
 
 
@@ -55,10 +56,8 @@ function UpdateUserInfo(prop) {
     // let history = useHistory();
 
 
-    const onSubmit = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("user: ", user)
+    const onSubmit = e => {   
+        console.log("USER AT OM SUBMIIITTTTT ", user)
         let url = `http://localhost:8080/user/${user.id}`;
 
         let body = {
@@ -173,13 +172,30 @@ function UpdateUserInfo(prop) {
                         value={email}
                         onChange={event => { setEmail(event.target.value) }}
                     />
-                </div>       
+                </div>    
 
-                  <input  onSubmit={onSubmit}
+                
+
+                  <Button   onClick={() => {onSubmit() }}
                     class="btn btn-primary"
                     type="submit"
+                    variant="outlined"
+                   size="medium"
+                    color="primary"
                 // className="btn btn-outline-warning btn-block mt-4"
-                /> 
+                    submitBeEdek /> 
+
+{/* <Button onClick={() => {onSubmit() }}
+                  variant="outlined"
+                   size="medium"
+                    color="primary"
+
+  
+                    // class="btn btn-primary"
+                    // type="submit"
+                // className="btn btn-outline-warning btn-block mt-4"
+                submitBeEdek/>  */}
+                
 
     </Box>
     </div>
