@@ -18,7 +18,11 @@ const reservationSchema = new Schema({
         type: String,
         required: true
     },
-    TakenSeats: {
+    TakenSeatsDeparting: {
+        type: Array,
+        required: false,
+    },
+    TakenSeatsArriving: {
         type: Array,
         required: false,
     },

@@ -20,7 +20,7 @@ import { grid } from '@mui/system';
 import { connect } from "react-redux";
 import Button from '@material-ui/core/Button';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
-
+// import { useHistory } from "react-router-dom";
 
 
 
@@ -28,23 +28,29 @@ import Button from '@material-ui/core/Button';
 
 class SeatPicker extends Component {
 
-
+    
 
 
     constructor(props) {
-
+       
         super(props);
+        console.log("before: ", this.props)
+
+        
         this.state = {
 
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
-            flight: this.props.match.params,
+            flight: this.props.match.params.flight,
+            DepartingSeats: [],
+            ReservationId: this.props.history.location.state.ReservationId,
             //initEcon: [],
             //initBusiness: [],
             //initFirst: [],
             seats: [],
             initial: [],
             chosenSeats: [],
+            chosenSeatsDeparting: [],
             currSeats: 0,
             maxSeats: this.props.details.Adults + this.props.details.children,
             //cabin: 1,  // 0 for econ, 1 for business, 2 first
@@ -52,7 +58,7 @@ class SeatPicker extends Component {
             // flag : false,
 
         };
-        console.log("ddddddddddd: ", this.props.details)
+        console.log("ddddddddddd: ", this.props)
     }
 
 
@@ -81,12 +87,16 @@ class SeatPicker extends Component {
     }
 
 
-    componentDidMount = () => {
+    settingArrays = () =>{
+        if(this.props.DepartingSeats != null){
+            this.setState({DepartingSeats: this.props.DepartingSeats, ReservationId : this.state.ReservationId})
+        }
+        
         //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
         if (this.state.flight == 1) {
            
 
-                console.log("curr flight isa: ", this.state.currFlight)
+               // console.log("curr flight isa: ", this.state.currFlight)
                 
                 switch (this.props.details.cabin_class) {
                     case "Economy":
@@ -111,7 +121,7 @@ class SeatPicker extends Component {
 
         }
         else
-            
+            {
                 switch (this.props.details.cabin_class) {
                     case "Economy":
                         // this.setState({ cabin: 0 })
@@ -131,13 +141,18 @@ class SeatPicker extends Component {
                     default:
                     // code block
                 }
-            
+            }
+    }
+    componentDidMount = () => {
+        
+            this.settingArrays()
 
 
 
-
+        
     }
 
+   
 
 
 
@@ -164,7 +179,43 @@ class SeatPicker extends Component {
         }
     };
     handleSubmit = () => {
-        
+        console.log("this.state.flight: ", this.state.flight)
+        if(this.state.flight == 1){
+            console.log("entered first thingy")
+            this.setState( {flight:2 , ReservationId:this.state.ReservationId, 
+                            DepartingSeats: this.state.seats , 
+                            chosenSeats:[],
+                            chosenSeatsDeparting: this.state.chosenSeats,
+                            currSeats:0, maxReached:false }, () =>{
+                this.settingArrays()
+            this.props.history.push(`/Seats/2`, {ReservationId:this.state.ReservationId ,DepartingSeats: this.state.currSeats  });
+            });
+        }
+        else{
+            let url = "http://localhost:8080/reserveSeats"
+            let body = {
+                reservationId : this.state.ReservationId,
+                seatsDeparting : this.state.chosenSeatsDeparting,
+                seatsReturning : this.state.chosenSeats
+             
+
+            }
+            axios
+                .patch(url, body)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+
+
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+
+                
+        }
 
     };
 
@@ -187,7 +238,7 @@ class SeatPicker extends Component {
                         <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
                             {this.props.details.cabin_class + " class"} 
                         </Typography>
-                        <CardContent raised>
+                        <CardContent raised="true">
                             <Grid container spacing={{ xs: 3 }} >
                                 {Array.from(this.state.seats).map((_, index) => (
                                     <Grid item xs={3} key={index}>
@@ -210,8 +261,10 @@ class SeatPicker extends Component {
                             </Grid>
                         </CardContent>
                         <div style = {{  marginLeft: "35%", marginBottom: "15%"}}>
-                        <Button style={{ background: "#10404c ", color: "wheat"  }}
+                        {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                        <Button
                             variant="outlined" size="medium" color="primary"
+                            disabled={!this.state.maxReached}
                             onClick={() => { this.handleSubmit() }} >Confirm</Button>
                         </div>
                     </Card>
