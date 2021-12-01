@@ -13,6 +13,7 @@ import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineE
 import moment, { duration } from 'moment'
 import PersonIcon from '@mui/icons-material/Person';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
@@ -32,6 +33,7 @@ export default function ViewAllReservations(props) {
        Object.assign(reservation, { TakenSeats: [["None"],["None"]] })
 
    }
+   
 
    const flightDuration = ( initDate, finalDate ,initTime, finalTime) => {
         let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
@@ -149,37 +151,53 @@ export default function ViewAllReservations(props) {
                                         <form action="">
 
                                             <div className="row">
-                                                <div className="col-md-4 mb-4">
+                                            <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
+                                                        <AirplaneTicketIcon />&nbsp;
                                                             Flight Code</p>
                                                         <div>
                                                         {returnFlight[0].FlightNumber}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
+                                                <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
-                                                        <FlightTakeoffIcon />&nbsp;
-                                                            Departing From</p>
+                                                        <AirplaneTicketIcon />&nbsp;
+                                                            Reservation Number</p>
                                                         <div>
-                                                        {returnFlight[0].From}
+                                                        {reservation.ReservationNumber}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
-                                                    <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">
+                                               
+                                            </div>
+
+                                            <div className="row">
+                                            <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
+                                                    <p className="h-blue">
+                                                        <FlightTakeoffIcon />&nbsp;
+                                                        Departing From</p>
+                                                    <div>
+                                                        {returnFlight[0].From}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
+                                                    <p className="h-blue">
                                                         <FlightLandIcon />
                                                         &nbsp;
                                                         Arriving to</p>
                                                     <div>
                                                         {returnFlight[0].To}
-                                                        </div>
                                                     </div>
                                                 </div>
+                                                </div>
                                             </div>
+
                                         <div className="row">
                                             <div className="col-md-6 col-12 mb-4">
                                                 <div className="form-control d-flex flex-column">
@@ -295,17 +313,25 @@ export default function ViewAllReservations(props) {
                                         <form action="">
 
                                             <div className="row">
-                                                <div className="col-md-4 mb-4">
+                                                <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
+                                                        <AirplaneTicketIcon />&nbsp;
                                                             Flight Code</p>
-                                                        <div>
-                                                        {departure[0].FlightNumber}
-                                                        </div>
+                                                        <div>{departure[0].FlightNumber}</div>
+                                                </div></div>
+                                                <div className="col-md-6 col-12 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue"><AirplaneTicketIcon />&nbsp;
+                                                            Reservation Number</p>
+                                                        <div>{reservation.ReservationNumber}</div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
-                                                    <div className="form-control d-flex flex-column">
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <FlightTakeoffIcon />&nbsp;
                                                             Departing From</p>
@@ -314,8 +340,8 @@ export default function ViewAllReservations(props) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
-                                                    <div className="form-control d-flex flex-column">
+                                                <div className="col-md-6 col-12 mb-4">
+                                                <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                             <FlightLandIcon />
                                                             &nbsp;
@@ -326,24 +352,20 @@ export default function ViewAllReservations(props) {
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                             <div className="row">
                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">
-                                                            <EventIcon />
-                                                            &nbsp;
+                                                        <p className="h-blue"><EventIcon /> &nbsp;
                                                             Departure Date</p>
-                                                        <div>  {departure[0].DepartureDate.substring(0, 10)}</div>
-                                                    </div>
+                                                        <div>  {departure[0].DepartureDate.substring(0, 10)}</div> </div>
                                                 </div>
                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
-                                                        <p className="h-blue">
-                                                        <EventIcon />
-                                                            &nbsp;
+                                                        <p className="h-blue"><EventIcon />&nbsp;
                                                             Arrival Date</p>
-                                                            <div>  {departure[0].ArrivalDate.substring(0, 10)}</div>
-                                                    </div>
+                                                            <div>  {departure[0].ArrivalDate.substring(0, 10)}</div></div>
                                                 </div>
                                             </div>
 
