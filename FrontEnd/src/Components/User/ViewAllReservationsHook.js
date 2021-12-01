@@ -11,6 +11,8 @@ import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineExtra';
 import moment, { duration } from 'moment'
+import PersonIcon from '@mui/icons-material/Person';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
@@ -24,17 +26,20 @@ export default function ViewAllReservations(props) {
     const returnFlight = props.returnFlight; 
     const baggageReturn  = {baggage: 0 };
     const baggageDeparture = {baggage: 0 };
-   const cabin = reservation.CabinType;
+    const cabin = reservation.CabinType;
+    const passengers = reservation.Adults + reservation.Children ;
+   if(reservation.TakenSeats.length != 2){
+       Object.assign(reservation, { TakenSeats: [["None"],["None"]] })
 
+   }
 
    const flightDuration = ( initDate, finalDate ,initTime, finalTime) => {
-    let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
-    let final = moment(finalDate.substring(0, 10) + " " + finalTime + ":00");
-    var ms = moment(final,"DD/MM/YYYY HH:mm:ss").diff(moment(init,"DD/MM/YYYY HH:mm:ss"));
-    var d = moment.duration(ms);
-    return Math.floor(d.asHours())+" hrs" + moment.utc(ms).format(":mm") +" mins";
+        let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
+        let final = moment(finalDate.substring(0, 10) + " " + finalTime + ":00");
+        var ms = moment(final,"DD/MM/YYYY HH:mm:ss").diff(moment(init,"DD/MM/YYYY HH:mm:ss"));
+        var d = moment.duration(ms);
+        return Math.floor(d.asHours())+" hrs" + moment.utc(ms).format(":mm") +" mins";
 }
-
 
     const fixBaggages = () => {
         if (departure.length !== 0) {
@@ -125,7 +130,7 @@ export default function ViewAllReservations(props) {
                                 {reservation.TotalPrice.$numberDecimal} $
                             </div>
                             <div className="accordionHeader">
-                                {reservation.TakenSeats.length}
+                                {passengers}
                                 &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                                 </svg>
@@ -219,7 +224,7 @@ export default function ViewAllReservations(props) {
                                             </div>
 
                                             <div className="row">
-                                                <div className="col-md-4 mb-4">
+                                                <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                             <p className="h-blue">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hourglass-split" viewBox="0 0 16 16">
@@ -231,7 +236,7 @@ export default function ViewAllReservations(props) {
                                                             </div>
                                                         </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
+                                                <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                             <LuggageIcon />
@@ -241,15 +246,44 @@ export default function ViewAllReservations(props) {
                                                             </div>
                                                     </div>
                                                 </div>
+                                            </div>
+
+
+
+
+                                            <div className="row">
+                                             <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                            <p className="h-blue">
+                                                            <PersonIcon />&nbsp;
+                                                                Adults</p>
+                                                            <div>
+                                                            {reservation.Adults}
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            <ChildCareIcon />&nbsp;
+                                                            Children</p>
+                                                        <div>
+                                                        {reservation.Children}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirlineSeatReclineExtraIcon />
                                                             Seats</p>
-                                                        <div>1A 2A 3A 4A 5A 6A 7A</div>
+                                                        <div>{reservation.TakenSeats[1].join(', ')} </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                </div>
+
+
+
                                             <DeleteButton reservation = {reservation._id} />
 
                                         </form>
@@ -337,7 +371,7 @@ export default function ViewAllReservations(props) {
 
 
                                             <div className="row">
-                                            <div className="col-md-4 mb-4">
+                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                             <p className="h-blue">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hourglass-split" viewBox="0 0 16 16">
@@ -349,7 +383,7 @@ export default function ViewAllReservations(props) {
                                                             </div>
                                                         </div>
                                                 </div>
-                                                <div className="col-md-4 mb-4">
+                                                <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                             <LuggageIcon />
@@ -359,16 +393,44 @@ export default function ViewAllReservations(props) {
                                                         </div>
                                                     </div>
                                                 </div>
+                                             
+                                                
+                                            </div>
+
+                                        <div className="row">
+                                             <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                            <p className="h-blue">
+                                                            <PersonIcon /> &nbsp;
+                                                            Adults</p>
+                                                            <div>
+                                                            {reservation.Adults}
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                            <ChildCareIcon />&nbsp;
+                                                            Children</p>
+                                                        <div>
+                                                        {reservation.Children}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirlineSeatReclineExtraIcon />
                                                             Seats</p>
-                                                        <div>1A 2A 3A 4A 5A 6A 7A</div>
+                                                        <div> {reservation.TakenSeats[0].join(', ')}  </div>
                                                     </div>
                                                 </div>
-                                                
-                                            </div>
+                                                </div>
+
+
+
+
                                             <DeleteButton reservation = {reservation._id} />
 
                                         </form>

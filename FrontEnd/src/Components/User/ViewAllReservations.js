@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewAllReservations.css'
-import Header from '../Admin/Header'
+import Header from './Header'
 import Accordion from 'react-bootstrap/Accordion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
