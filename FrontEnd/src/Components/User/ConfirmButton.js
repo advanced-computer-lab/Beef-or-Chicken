@@ -83,7 +83,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                 'DepartureFlightID': details.DepartingFlight._id,
                 "ReturnFlightID": details.ReturnFlight._id,
                 "CabinType": details.cabin_class,
-                "TakenSeats": details.TakenSeats,
+                // "TakenSeats": details.TakenSeats,
                 "TotalPrice": details.DeparturePrice + details.ReturnPrice,
                 "Children": details.children,
                 "Adults": details.Adults,
