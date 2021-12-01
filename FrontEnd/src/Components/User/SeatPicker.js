@@ -18,6 +18,7 @@ import CardContent from '@mui/material/CardContent';
 import { useHistory } from "react-router-dom";
 import { grid } from '@mui/system';
 import { connect } from "react-redux";
+import Button from '@material-ui/core/Button';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 
 
@@ -37,6 +38,7 @@ class SeatPicker extends Component {
 
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
+            flight: this.props.match.params,
             //initEcon: [],
             //initBusiness: [],
             //initFirst: [],
@@ -45,7 +47,7 @@ class SeatPicker extends Component {
             chosenSeats: [],
             currSeats: 0,
             maxSeats: this.props.details.Adults + this.props.details.children,
-            cabin: 1,  // 0 for econ, 1 for business, 2 first
+            //cabin: 1,  // 0 for econ, 1 for business, 2 first
             maxReached: false,
             // flag : false,
 
@@ -80,22 +82,59 @@ class SeatPicker extends Component {
 
 
     componentDidMount = () => {
-        let url = `http://localhost:8080/flightById/${this.state.id.id}`;
-        console.log("componentdidmount")
-        console.log("url", url)
-        axios.get(url)
-            .then((response) => {
+        //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
+        if (this.state.flight == 1) {
+           
 
-                console.log("currFlight ===> ", response)
-                this.setState({ seats: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
-                this.setState({ initial: JSON.parse(JSON.stringify(response.data.Seats[this.state.cabin])) })
+                console.log("curr flight isa: ", this.state.currFlight)
+                
+                switch (this.props.details.cabin_class) {
+                    case "Economy":
+                        // this.setState({ cabin: 0 })
 
-            })
-            .catch((e) => {
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[0])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[0])) })
 
-                console.log("ana hena")
-                console.log("error ===>", e);
-            });
+                        break;
+                    case "Bussiness":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[1])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[1])) })
+                        break;
+                    case "First":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[2])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.Seats[2])) })
+                        break;
+                    default:
+                    // code block
+                }
+            
+
+        }
+        else
+            
+                switch (this.props.details.cabin_class) {
+                    case "Economy":
+                        // this.setState({ cabin: 0 })
+
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[0])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[0])) })
+
+                        break;
+                    case "Bussiness":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[1])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[1])) })
+                        break;
+                    case "First":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[2])) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.Seats[2])) })
+                        break;
+                    default:
+                    // code block
+                }
+            
+
+
+
 
     }
 
@@ -105,7 +144,7 @@ class SeatPicker extends Component {
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
         if (event.target.checked) {
-            this.setState({ choosenSeats: this.state.chosenSeats.push(event.target.id) }, () => {
+            this.setState({ choosenSeats: this.state.chosenSeats.push( parseInt(event.target.id) + 1 ) }, () => {
                 this.updateChoice(event.target.id, 1)
                 console.log("chosen Seats now: ", this.state.chosenSeats)
             })
@@ -116,7 +155,7 @@ class SeatPicker extends Component {
         else {
 
 
-            this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== event.target.id) },
+            this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== parseInt(event.target.id) + 1 ) },
                 () => {
                     this.updateChoice(event.target.id, 0)
                     console.log("chosen Seats now: ", this.state.chosenSeats)
@@ -124,7 +163,10 @@ class SeatPicker extends Component {
 
         }
     };
+    handleSubmit = () => {
+        
 
+    };
 
 
 
@@ -137,9 +179,14 @@ class SeatPicker extends Component {
                 <div style={{ paddingTop: "100px" }}>
                     <Card className="paper" sx={{ minWidth: 275 }}>
                         <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                            Please pick your desired seats
+                            Please pick your desired seats 
                         </Typography>
+                       
                         <hr />
+
+                        <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
+                            {this.props.details.cabin_class + " class"} 
+                        </Typography>
                         <CardContent raised>
                             <Grid container spacing={{ xs: 3 }} >
                                 {Array.from(this.state.seats).map((_, index) => (
@@ -162,6 +209,11 @@ class SeatPicker extends Component {
                                 ))}
                             </Grid>
                         </CardContent>
+                        <div style = {{  marginLeft: "35%", marginBottom: "15%"}}>
+                        <Button style={{ background: "#10404c ", color: "wheat"  }}
+                            variant="outlined" size="medium" color="primary"
+                            onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                        </div>
                     </Card>
                 </div>
 
