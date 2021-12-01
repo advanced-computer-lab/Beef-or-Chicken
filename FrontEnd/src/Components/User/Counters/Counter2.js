@@ -102,19 +102,26 @@ function Counter2({ count, setCount, children, setChildren }) {
     return (
         <div className="a1">
             <div className="counter1">
-                Aged 2-12
-                <IconButton color={col} sign="-" onClick={func} >
-                    <RemoveBoxRoundedIcon />
-                </IconButton>
-                {children}
-                <IconButton color="primary" sign="-" onClick={func2} >
-                    <AddBoxRoundedIcon />
-                </IconButton>
+                Aged 2-17
+                <div className="counterB">
+                    <div className="sum1">
+                        <IconButton color={col} sign="-" onClick={func} >
+                            <RemoveBoxRoundedIcon />
+                        </IconButton>
+                    </div>
+                    <div className="sum">
+                        {children}
+                    </div>
+                    <div className="sum2">
+                        <IconButton color="primary" sign="-" onClick={func2} >
+                            <AddBoxRoundedIcon />
+                        </IconButton>
+                    </div>
+                </div>
             </div>
 
 
-        </div>
-
+        </div >
     );
 }
 
