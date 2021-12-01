@@ -94,13 +94,15 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
             let url = "http://localhost:8080/createReservation"
 
             axios
+
                 .post(url, body)
                 .then(res => {
                     console.log("respnose: ", res)
-                    console.log("gamed louji!")
+                    console.log("response data", res.data)
+                    
 
 
-                    history.push(`/Seats/1`);
+                    history.push('/Seats/1',{ReservationId: res.data});
                 })
                 .catch(error => {
                     console.log("idiot!");

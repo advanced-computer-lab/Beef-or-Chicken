@@ -28,12 +28,20 @@ const initState = {
         ReturnPrice: 0,
         DepartingFlight: [],
         ReturnFlight: [],
+        DepartingSeats: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
 
     if (action.type == 'setDepartingFlight') {
         state.details.DepartingFlight = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setDepartingSeats') {
+        state.details.DepartingSeats = action.payload;
         return {
             ...state,
         };
