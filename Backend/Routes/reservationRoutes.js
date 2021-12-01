@@ -24,42 +24,44 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
     var q = {}
 
     var reservationId= request.body.reservationId;
-    
-    q.TakenSeats = [ request.body.seatsDeparting, request.body.seatsReturning];
+    if (request.body.seatsDeparting != null)
+      q.TakenSeatsDeparting =  request.body.seatsDeparting
+    if (request.body.seatsReturning != null)
+      q.TakenSeatsArriving = request.body.seatsReturning
     console.log("q: ", q)
     await reservationModel.findByIdAndUpdate(reservationId, q);
 
     response.send();
   } catch (error) {
-    response.status(500).send(error);
+    response.status(5000).send(error);
   }
 });
 
-app.patch("/addSeatsToFlights", async (request, response) => {  //updateUser
-  try {
+// app.patch("/addSeatsToFlights", async (request, response) => {  //updateUser
+//   try {
 
-    var q = {}
+//     var q = {}
 
-    if (request.body.flightIdDeparting != null){
-      q.Seats = request.body.DepartingSeats
-      await flightModel.findByIdAndUpdate(request.body.DepartingId, q);
-    }
+//     if (request.body.flightIdDeparting != null){
+//       q.Seats = request.body.DepartingSeats
+//       await flightModel.findByIdAndUpdate(request.body.DepartingId, q);
+//     }
 
-      var v = {}
+//       var v = {}
 
-      if (request.body.flightIdReturning != null){
-        v.Seats = request.body.ReturningSeats
-        await flightModel.findByIdAndUpdate(request.body.ReturningId, v);
-      }
+//       if (request.body.flightIdReturning != null){
+//         v.Seats = request.body.ReturningSeats
+//         await flightModel.findByIdAndUpdate(request.body.ReturningId, v);
+//       }
     
     
     
 
-    response.send();
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
+//     response.send();
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
 
 app.post("/createReservation", async (request, response) => {
   //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
