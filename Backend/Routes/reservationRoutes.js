@@ -165,39 +165,39 @@ app.delete("/reservation/:id", async (request, response) => {
       //add seats back to flight
       if (reservation.CabinType == 'Business') {
         console.log("fel business");
-        console.log("HENA BA@A1");
+        //console.log("HENA BA@A1");
         var q = {};
-        console.log("HENA BA@A2");
+        //console.log("HENA BA@A2");
         let newBusinessSeatsArray = DepartureFlight.BusinessSeatsArray;
-        console.log("reservation.TakenSeatsDeparting.length", reservation.TakenSeatsDeparting.length);
+        //console.log("reservation.TakenSeatsDeparting.length", reservation.TakenSeatsDeparting.length);
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
-          console.log("AR");
+          //console.log("AR");
           //console.log(newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0);
           newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
-          console.log(newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0);
-          console.log('be5');
+          //console.log(newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0);
+          //console.log('be5');
          // console.log('reservation.TakenSeats[i]-1', reservation.TakenSeats[i]-1),
           //console.log('newBusinessSeatsArray[reservation.TakenSeats[i]-1]', newBusinessSeatsArray[reservation.TakenSeats[i]-1])
         }
-        console.log("newBusinessSeatsArray" , newBusinessSeatsArray);
+       // console.log("newBusinessSeatsArray" , newBusinessSeatsArray);
         q.BusinessSeatsArray = newBusinessSeatsArray;
-        console.log('q.BusinessSeatsArray', q.BusinessSeatsArray);
-        q.RemBusiness = DepartureFlight.RemBusiness + reservation.TakenSeats.length;
-        consolelog(q);
+        //console.log('q.BusinessSeatsArray', q.BusinessSeatsArray);
+        q.RemBusiness = DepartureFlight.RemBusiness + reservation.TakenSeatsDeparting.length;
+        //console.log(q);
         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
-        console.log('7amdellah 3al salama');
+        //console.log('7amdellah 3al salama');
         
         var p = {};
         let newBusinessSeatsArray2 = ReturnFlight.BusinessSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
           newBusinessSeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
         }
-        console.log("newBusinessSeatsArray2" , newBusinessSeatsArray2);
+        //console.log("newBusinessSeatsArray2" , newBusinessSeatsArray2);
         p.BusinessSeatsArray = newBusinessSeatsArray2;
 
-        p.RemBusiness = ReturnFlight.RemBusiness + reservation.TakenSeats.length;
+        p.RemBusiness = ReturnFlight.RemBusiness + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        console.log("5allasna business");
+        //console.log("5allasna business");
 
       }
       if (reservation.CabinType == 'First') {
