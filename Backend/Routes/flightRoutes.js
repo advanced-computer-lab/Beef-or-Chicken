@@ -273,13 +273,43 @@ app.post("/createFlight", async (request, response) => {
   }
 });
 
+app.patch("/flightSeats/:id", async (request, response) => {  //update
+  try {
 
+    console.log("ana el request: ", request.body)
+    
+    var q = {}
+    
+    if (request.body.EconomySeatsArray != null) {
+      q.EconomySeatsArray = request.body.EconomySeatsArray,
+      q.RemEconomy = request.body.RemEconomy
+    }
+    if (request.body.BusinessSeatsArray != null) {
+      q.BusinessSeatsArray = request.body.BusinessSeatsArray,
+      q.RemBusiness = request.body.RemBusiness
+    }
+    if (request.body.FirstSeatsArray != null) {
+      q.FirstSeatsArray = request.body.FirstSeatsArray,
+      q.RemFirst = request.body.RemFirst
+    }
+
+   
+    console.log(request.params.id);
+    await flightModel.findByIdAndUpdate(request.params.id, q);
+    console.log("first line");
+    //  await flightModel.save();
+    // console.log("Second line");
+    response.send();
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
 
     console.log("ana el request: ", request.body)
-
+    
     var q = {}
     if (request.body.From.From != "") {
       q.From = request.body.From.From
@@ -331,8 +361,17 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.FlightNumber.FlightNo != '') {
       q.FlightNumber = request.body.FlightNumber.FlightNo
     }
+    if (request.body.EconomySeatsArray != null) {
+      q.EconomySeatsArray = request.body.EconomySeatsArray
+    }
+    if (request.body.BusinessSeatsArray != null) {
+      q.BusinessSeatsArray = request.body.BusinessSeatsArray
+    }
+    if (request.body.FirstSeatsArray != null) {
+      q.FirstSeatsArray = request.body.FirstSeatsArray
+    }
 
-    console.log(q);
+   
     console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
     console.log("first line");
