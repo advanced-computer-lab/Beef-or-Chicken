@@ -213,10 +213,11 @@ class SeatPicker extends Component {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
 
-
+                
                 // this.props.history.push(`/Seats/1`);
             })
             .catch(error => {
+                alert("Please pick your seat(s)!")
                 console.log("idiot!");
                 console.log(error.message);
             })
@@ -319,11 +320,14 @@ class SeatPicker extends Component {
                 .then(res => {
                     console.log("respnose: ", res)
                     console.log("gamed louji!")
+                    alert("Trip Reserved Successfully!")
                     this.props.history.push("/")
+
 
                     // this.props.history.push(`/Seats/1`);
                 })
                 .catch(error => {
+                    alert("Please pick your seat(s)!")
                     console.log("idiot!");
                     console.log(error.message);
                 })
