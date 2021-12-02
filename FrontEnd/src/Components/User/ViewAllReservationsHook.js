@@ -14,6 +14,7 @@ import moment, { duration } from 'moment'
 import PersonIcon from '@mui/icons-material/Person';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import BadgeIcon from '@mui/icons-material/Badge';
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
@@ -25,12 +26,18 @@ export default function ViewAllReservations(props) {
     const reservation = props.reservation; 
     const departure =props.departureFlight; 
     const returnFlight = props.returnFlight; 
+    const userName = props.userName; 
     const baggageReturn  = {baggage: 0 };
     const baggageDeparture = {baggage: 0 };
     const cabin = reservation.CabinType;
     const passengers = reservation.Adults + reservation.Children ;
-   
-   
+    if(reservation.TakenSeatsDeparting.length === 0 ){
+        Object.assign(reservation, { TakenSeatsDeparting: ["None"] })
+    }
+    if(reservation.TakenSeatsArriving.length === 0 ){
+        Object.assign(reservation, { TakenSeatsArriving: ["None"] })
+    }
+
 
    const flightDuration = ( initDate, finalDate ,initTime, finalTime) => {
         let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
@@ -148,7 +155,7 @@ export default function ViewAllReservations(props) {
                                         <form action="">
 
                                             <div className="row">
-                                            <div className="col-md-6 col-12 mb-4">
+                                            <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirplaneTicketIcon />&nbsp;
@@ -158,13 +165,23 @@ export default function ViewAllReservations(props) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-6 col-12 mb-4">
+                                                <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirplaneTicketIcon />&nbsp;
                                                             Reservation Number</p>
                                                         <div>
                                                         {reservation.Number}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <BadgeIcon />&nbsp;
+                                                            Reserved By</p>
+                                                        <div>
+                                                        {userName}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -310,18 +327,28 @@ export default function ViewAllReservations(props) {
                                         <form action="">
 
                                             <div className="row">
-                                                <div className="col-md-6 col-12 mb-4">
+                                            <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirplaneTicketIcon />&nbsp;
                                                             Flight Number</p>
                                                         <div>{departure[0].FlightNumber}</div>
                                                 </div></div>
-                                                <div className="col-md-6 col-12 mb-4">
+                                                <div className="col-md-4 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue"><AirplaneTicketIcon />&nbsp;
                                                             Reservation Number</p>
                                                         <div>{reservation.Number}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <div className="form-control d-flex flex-column">
+                                                        <p className="h-blue">
+                                                        <BadgeIcon />&nbsp;
+                                                        Reserved By</p>
+                                                        <div>
+                                                        {userName}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

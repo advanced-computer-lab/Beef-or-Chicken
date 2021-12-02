@@ -20,6 +20,7 @@ class ViewSingleReservation extends Component {
         super(props);
         this.state = {
             reservation: props.reservation,
+            userName : props.userName,
             departureFlight: [],
             returnFlight: [],
             flightType: 0,
@@ -64,7 +65,7 @@ class ViewSingleReservation extends Component {
 
 
                 <ViewAllReservationsHook reservation={this.state.reservation} departureFlight={this.state.departureFlight}
-                    returnFlight={this.state.returnFlight} />
+                    returnFlight={this.state.returnFlight} userName={this.state.userName} />
 
             </div>
         );

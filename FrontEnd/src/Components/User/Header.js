@@ -64,7 +64,7 @@ const Header = () => {
             <div className={classes.side}>
                 <SideBar />
             </div>
-            <nav className={classes.nav}>
+            <nav className={classes.nav} >
                 <img src={logo} alt="logohear" className={classes.logo} />
 
 

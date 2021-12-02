@@ -100,20 +100,13 @@ export default function SwipeableTemporaryDrawer() {
                 <Link to="/">
                     <ListItem button key='Make Resrervation' onClick={handleSubmit()}>
                         <CardTravelIcon />
-                        <ListItemText primary='Make Resrervation' />
+                        <ListItemText primary='&nbsp;Make Resrervation' />
                     </ListItem>
                 </Link>
                 <Link to="/ViewAllReservations">
-
-
                     <ListItem className={classes.link} style={{ textDecoration: "none" }} button key='View All Reservations' onClick={handleSubmit()}>
                         <AirplaneTicketIcon />
-                        <ListItemText primary='View All Reservations' />
-                    </ListItem>
-                </Link>
-                <Link to="/">
-                    <ListItem button key='Search' onClick={handleSubmit()}>
-                        <ListItemText primary='Search' />
+                        <ListItemText primary='&nbsp;View All Reservations' />
                     </ListItem>
                 </Link>
                 <Link to="/ViewUserinfo">
@@ -123,7 +116,6 @@ export default function SwipeableTemporaryDrawer() {
                     </ListItem>
                 </Link>
             </List>
-            <Divider />
 
         </Box>
     );

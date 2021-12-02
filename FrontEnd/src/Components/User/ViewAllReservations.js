@@ -35,6 +35,7 @@ class ViewAllReservations extends Component {
             reservations: [],
             //userId : "61a518d86046ece4ba9ff27c"
             userId : props.details.UserID,
+            userName : "",
         };
     }
     
@@ -47,11 +48,15 @@ class ViewAllReservations extends Component {
     */
    
    async componentDidMount() {
-       console.log(this.state.userId);
        const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
        const result = await response.data;
        this.setState({ reservations: result });
-       console.log(this.state.reservations);
+
+       const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId);
+       const resultUser = await responseUser.data;
+       const name = resultUser.firstName + " " + resultUser.lastName ; 
+       this.setState({ userName: name});
+
     }
     
     
@@ -68,11 +73,12 @@ class ViewAllReservations extends Component {
     */
    render() {
        const reservations = this.state.reservations;
-       
+       const userName= this.state.userName;
        
        return (
            <div>
                 <Header />
+
                 <Card className="bg-dark text-white">
                     <Card.Img style={{maxHeight: "280px" , objectFit: "cover"}} src="https://www.kotak.com/content/dam/Kotak/digital-banking/insta-services/kaymall/1440X400-Flight.jpg" />
                     <Card.ImgOverlay style={{ fontFamily: "Arial" , paddingTop : "35px" , color :"#226AC7" , fontWeight :"bold" }}>
@@ -85,12 +91,12 @@ class ViewAllReservations extends Component {
                     </Card.ImgOverlay>
                 </Card>
 
-                {reservations.length === 0 ?(
+                {reservations.length === 0 || userName==""?(
                     <div className="accordions" styles={{fontWeight:"bold", color:"#000000"}}>You don't have any reservations!</div>
                     ):(
                         <div className="accordions">
                     {this.state.reservations.map(r =>
-                        <ViewSingleReservation reservation={r} key={r._id} />
+                        <ViewSingleReservation reservation={r} userName={this.state.userName} key={r._id} />
                         )}
                 </div>
                 )
