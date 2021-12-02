@@ -17,6 +17,16 @@ import SideBar from './SideBar'
 
 
 
+const mapStateToProps = (state) => {
+    //console.log(state.DetailsReducer.details.destination)
+    return {
+        details: state.DetailsReducer.details,
+        
+    };
+};
+
+
+
 
 
 class viewUserInfo extends Component {
@@ -25,7 +35,7 @@ class viewUserInfo extends Component {
         this.state = {
             info: [],
             // id: this.props.details.UserID//added //RETURN AFTER TESTING
-            id:"61a518d86046ece4ba9ff27c"
+            id:this.props.details.UserID,
         };
         console.log("id", this.state.id)
         console.log("details", this.props.details)
@@ -34,6 +44,8 @@ class viewUserInfo extends Component {
     
 
     componentDidMount() {
+        console.log("this:", this)
+        if(this.state.id!="" && this.state.id!=null){
         let url =
             axios
                 .get(`http://localhost:8080/searchUserByID/${this.state.id}`)
@@ -49,7 +61,12 @@ class viewUserInfo extends Component {
                 .catch(err => {
                     console.log('Error');
                 })
-
+            }
+        else{
+            
+            // this.props.history.push("/Userlogin2" , { prevUrl: "/ViewUserInfo"} ); 
+            this.props.history.push("/Userlogin2");
+        }
 
 
 
@@ -76,12 +93,6 @@ class viewUserInfo extends Component {
         //         console.log("ana hena")
         //         console.log("error ===>", e);
         //     });
-
-
-
-
-
-
 
     };
     
@@ -218,9 +229,6 @@ class viewUserInfo extends Component {
 }
 }
 // export default viewUserInfo;
-const mapStateToProps = (state) => ({
-    details: state.DetailsReducer.details,
-});
 
 
 
