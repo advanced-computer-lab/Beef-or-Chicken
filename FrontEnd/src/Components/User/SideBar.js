@@ -5,14 +5,15 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
-
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -96,28 +97,29 @@ export default function SwipeableTemporaryDrawer() {
         >
             <List>
 
+                <Link to="/">
+                    <ListItem button key='Make Resrervation' onClick={handleSubmit()}>
+                        <CardTravelIcon />
+                        <ListItemText primary='Make Resrervation' />
+                    </ListItem>
+                </Link>
                 <Link to="/ViewAllReservations">
 
 
                     <ListItem className={classes.link} style={{ textDecoration: "none" }} button key='View All Reservations' onClick={handleSubmit()}>
-                      
+                        <AirplaneTicketIcon />
                         <ListItemText primary='View All Reservations' />
-                    </ListItem>
-                </Link>
-                <Link to="/">
-                    <ListItem button key='Search' onClick={handleSubmit()}>
-                        <ListItemText primary='Search' />
                     </ListItem>
                 </Link>
                 <Link to="/UpdateUserinfo">
                     <ListItem button key='Update User info' onClick={handleSubmit()}>
-
+                        <ModeEditIcon/>
                         <ListItemText primary='Update User info' />
                     </ListItem>
                 </Link>
             </List>
             <Divider />
-         
+
         </Box>
     );
 

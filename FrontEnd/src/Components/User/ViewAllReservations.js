@@ -9,55 +9,69 @@ import DeleteButton from './DeleteButton'
 import ViewAllReservationsHook from './ViewAllReservationsHook';
 import ViewSingleReservation from './ViewSingleReservation';
 import Card from 'react-bootstrap/Card'
+import { connect } from "react-redux";
+import DetailsReducer from '../Redux/DetailsReducer';
+import { useHistory } from "react-router-dom";
 
 
-//BACKEND DEPENDENT COMMENTED => BACKEND
+  
+const mapStateToProps = (state) => {
+    return {
+        details: state.DetailsReducer.details,
+    };
+};
+//let history = useHistory();
 
 
 class ViewAllReservations extends Component {
     constructor(props) {
         super(props);
+        const { history } = this.props;
+        if(props.details.UserID === ""){
+            alert("You need to login to view your reservations!")
+            history.push("/UserLoginRes");
+}
         this.state = {
             reservations: [],
-            userId : "61a518d86046ece4ba9ff27c"
+            //userId : "61a518d86046ece4ba9ff27c"
+            userId : props.details.UserID,
         };
-
-        //this.GetAllAsync();
-
     }
+    
+   
    /* async GetAllAsync() {
-        const response = await axios.get('http://localhost:8080/allReservations');
-        const result = await response.data;
-        this.state.reservations = [result] ;
-      }
+       const response = await axios.get('http://localhost:8080/allReservations');
+       const result = await response.data;
+       this.state.reservations = [result] ;
+    }
     */
-
-    async componentDidMount() {
-        console.log(this.state.userId);
-        const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
-        const result = await response.data;
-        this.setState({ reservations: result });
-        console.log(this.state.reservations);
-      }
-      
-  
+   
+   async componentDidMount() {
+       console.log(this.state.userId);
+       const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
+       const result = await response.data;
+       this.setState({ reservations: result });
+       console.log(this.state.reservations);
+    }
+    
+    
     /*  
     componentDidMount() {
         let url =
-            axios.get('http://localhost:8080/allReservations')
-                 .then(res => {
-                    this.setState({reservations: res.data})})
-                 .catch(err => { console.log('Backend Error Occured When Getting All Reservations');
-                })
+        axios.get('http://localhost:8080/allReservations')
+        .then(res => {
+            this.setState({reservations: res.data})})
+            .catch(err => { console.log('Backend Error Occured When Getting All Reservations');
+        })
     };
     src="https://s.marketwatch.com/public/resources/images/MW-HE536_airpla_ZDR_20190225131547.jpg" 
-*/
-    render() {
-        const reservations = this.state.reservations;
-        
+    */
+   render() {
+       const reservations = this.state.reservations;
        
-        return (
-            <div>
+       
+       return (
+           <div>
                 <Header />
                 <Card className="bg-dark text-white">
                     <Card.Img style={{maxHeight: "280px" , objectFit: "cover"}} src="https://www.kotak.com/content/dam/Kotak/digital-banking/insta-services/kaymall/1440X400-Flight.jpg" />
@@ -72,18 +86,20 @@ class ViewAllReservations extends Component {
                 </Card>
 
                 {reservations.length === 0 ?(
-                <div className="accordions" styles={{fontWeight:"bold", color:"#000000"}}>You don't have any reservations!</div>
-                ):(
-                <div className="accordions">
+                    <div className="accordions" styles={{fontWeight:"bold", color:"#000000"}}>You don't have any reservations!</div>
+                    ):(
+                        <div className="accordions">
                     {this.state.reservations.map(r =>
                         <ViewSingleReservation reservation={r} key={r._id} />
-                    )}
+                        )}
                 </div>
                 )
-    }
+            }
             </div>
         );
-    
-}  
+        
+    }  
 }
-export default ViewAllReservations;
+//export default ViewAllReservations;
+
+export default connect(mapStateToProps)(ViewAllReservations);

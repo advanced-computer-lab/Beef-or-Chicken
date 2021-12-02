@@ -9,7 +9,6 @@ import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
 import ReturningResults from './Components/User/ReturningResults'
-import ViewAllReservations from './Components/User/ViewAllReservations'
 // import CreateFlight from './Components/CreateFlight'
 import Seats from './Components/User/Seats'
 import './App.css';
@@ -23,6 +22,7 @@ import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
 import UserLogin from "./Components/User/Login"
+import UserLoginRes from "./Components/User/loginReservations"
 
 function App() {
   var hist = createBrowserHistory();
@@ -48,6 +48,7 @@ function App() {
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
+        <Route exact path="/UserLoginRes" component={UserLoginRes} />
 
       </Router>
     </div>
