@@ -40,7 +40,7 @@ function App() {
         <Route exact path="/Search" component={SearchPage} />
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
-        <Route exact path="/Seats/:id" component={SeatPicker} />
+        <Route exact path="/Seats/:flight" component={SeatPicker} />
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />

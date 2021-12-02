@@ -17,6 +17,51 @@ app.get("/allReservations", async (request, response) => {
     response.status(500).send(error);
   }
 });
+app.patch("/reserveSeats", async (request, response) => {  //updateUser
+  try {
+
+    console.log("Request: ", request.body)
+    var q = {}
+
+    var reservationId= request.body.reservationId;
+    if (request.body.seatsDeparting != null)
+      q.TakenSeatsDeparting =  request.body.seatsDeparting
+    if (request.body.seatsReturning != null)
+      q.TakenSeatsArriving = request.body.seatsReturning
+    console.log("q: ", q)
+    await reservationModel.findByIdAndUpdate(reservationId, q);
+
+    response.send();
+  } catch (error) {
+    response.status(5000).send(error);
+  }
+});
+
+// app.patch("/addSeatsToFlights", async (request, response) => {  //updateUser
+//   try {
+
+//     var q = {}
+
+//     if (request.body.flightIdDeparting != null){
+//       q.Seats = request.body.DepartingSeats
+//       await flightModel.findByIdAndUpdate(request.body.DepartingId, q);
+//     }
+
+//       var v = {}
+
+//       if (request.body.flightIdReturning != null){
+//         v.Seats = request.body.ReturningSeats
+//         await flightModel.findByIdAndUpdate(request.body.ReturningId, v);
+//       }
+    
+    
+    
+
+//     response.send();
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
 
 app.post("/createReservation", async (request, response) => {
   //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
@@ -47,7 +92,8 @@ app.post("/createReservation", async (request, response) => {
     'DepartureFlightID': request.body.DepartureFlightID,
     'ReturnFlightID': request.body.ReturnFlightID,
     'CabinType': request.body.CabinType,
-    'TakenSeats': request.body.TakenSeats,
+    'TakenSeatsDeparting': request.body.TakenSeatsDeparting,
+    'TakenSeatsArriving': request.body.TakenSeatsArriving,
     'TotalPrice': request.body.TotalPrice,
     'Children': request.body.Children,
     'Adults': request.body.Adults,
@@ -57,8 +103,16 @@ app.post("/createReservation", async (request, response) => {
 
 
   try {
-    await reservation.save();
-    response.send("reserved successfully");
+    await reservation.save(function(err, savedReservatoion) {
+      if (err) console.log(err);
+      else{
+          var ReservationId = savedReservatoion._id;
+          console.log("success", ReservationId);
+          response.send(ReservationId);
+      }
+  });
+    // await reservation.save();
+    // response.send("reserved successfully");
   } catch (error) {
     response.status(500).send(error);
   }

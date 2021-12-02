@@ -199,22 +199,22 @@ app.post("/createFlight", async (request, response) => {
   var EconomySeats = request.body.EconomySeats;
   var BusinessSeats = request.body.BusinessSeats;
   var FirstSeats = request.body.FirstSeats;
-  var seats = [];
-  var tmpEconomy = [];
-  var tmpBusiness = [];
-  var tmpFirst = [];
+  var EconomySeatsArray = [];
+  var BusinessSeatsArray = [];
+  var FirstSeatsArray = [];
+
   for (let i = 0; i < EconomySeats; i++) {
-    tmpEconomy.push(0);
+    EconomySeatsArray.push(0);
   }
-  seats.push(tmpEconomy);
+  
   for (let i = 0; i < BusinessSeats; i++) {
-    tmpBusiness.push(0);
+    BusinessSeatsArray.push(0);
   }
-  seats.push(tmpBusiness);
+  
   for (let i = 0; i < FirstSeats; i++) {
-    tmpFirst.push(0);
+    FirstSeatsArray.push(0);
   }
-  seats.push(tmpFirst);
+  
 
 
   const flight = new flightModel({
@@ -237,7 +237,9 @@ app.post("/createFlight", async (request, response) => {
     'EconomyBags': request.body.EconomyBags,
     'BusinessBags': request.body.BusinessBags,
     'FirstBags': request.body.FirstBags,
-    'Seats': seats,
+    'EconomySeatsArray': EconomySeatsArray,
+    'BusinessSeatsArray':BusinessSeatsArray,
+    'FirstSeatsArray':FirstSeatsArray,
   });
 
   try {
@@ -248,13 +250,43 @@ app.post("/createFlight", async (request, response) => {
   }
 });
 
+app.patch("/flightSeats/:id", async (request, response) => {  //update
+  try {
 
+    console.log("ana el request: ", request.body)
+    
+    var q = {}
+    
+    if (request.body.EconomySeatsArray != null) {
+      q.EconomySeatsArray = request.body.EconomySeatsArray,
+      q.RemEconomy = request.body.RemEconomy
+    }
+    if (request.body.BusinessSeatsArray != null) {
+      q.BusinessSeatsArray = request.body.BusinessSeatsArray,
+      q.RemBusiness = request.body.RemBusiness
+    }
+    if (request.body.FirstSeatsArray != null) {
+      q.FirstSeatsArray = request.body.FirstSeatsArray,
+      q.RemFirst = request.body.RemFirst
+    }
+
+   
+    console.log(request.params.id);
+    await flightModel.findByIdAndUpdate(request.params.id, q);
+    console.log("first line");
+    //  await flightModel.save();
+    // console.log("Second line");
+    response.send();
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
 
     console.log("ana el request: ", request.body)
-
+    
     var q = {}
     if (request.body.From.From != "") {
       q.From = request.body.From.From
@@ -306,8 +338,17 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.FlightNumber.FlightNo != '') {
       q.FlightNumber = request.body.FlightNumber.FlightNo
     }
+    if (request.body.EconomySeatsArray != null) {
+      q.EconomySeatsArray = request.body.EconomySeatsArray
+    }
+    if (request.body.BusinessSeatsArray != null) {
+      q.BusinessSeatsArray = request.body.BusinessSeatsArray
+    }
+    if (request.body.FirstSeatsArray != null) {
+      q.FirstSeatsArray = request.body.FirstSeatsArray
+    }
 
-    console.log(q);
+   
     console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
     console.log("first line");
