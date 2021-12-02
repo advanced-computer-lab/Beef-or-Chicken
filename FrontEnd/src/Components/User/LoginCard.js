@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -144,17 +146,10 @@ function SignIn({ details }) {
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
-
-
-
-
         let body = {
             'email': { email },
             'password': { password },
-
         }
-
-
         console.log("body: ", body)
         let url = "http://localhost:8080/searchUser"
 
@@ -171,7 +166,11 @@ function SignIn({ details }) {
                     history.push('/Summary');
                 }
                 else {
+                    //<Alert severity="error">Wrong Username or Password!</Alert>
+                    alert("Log in please!")
+                    history.push("/UserLogin");
                     console.log("not user")
+
                 }
                 console.log("gamed louji!")
             })
@@ -183,6 +182,7 @@ function SignIn({ details }) {
     };
 
     return (
+        
         <Card className={classes.paper} elevation={3} >
             <CardContent>
                 <Container component="main" maxWidth="xs">
@@ -252,7 +252,15 @@ function SignIn({ details }) {
                             </Grid>
                         </Box>
                     </Box>
-
+                    {/* <Box sx={{ width: '100%' }}>
+                    <Collapse in={this.state.fail}>
+                        <Alert severity="error"
+                            sx={{ mb: 2 }}
+                        >
+                            Wrong Username or Password!
+                        </Alert>
+                    </Collapse>
+                </Box> */}
                 </Container>
             </CardContent>
         </Card>
