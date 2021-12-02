@@ -140,6 +140,7 @@ function SignIn({ details }) {
     let history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [wrongCredentials, setwrongCredentials] = useState(false);
     const handleSubmit = (event) => {
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
@@ -153,19 +154,12 @@ function SignIn({ details }) {
             'password': { password },
 
         }
-
-
         console.log("body: ", body)
         let url = "http://localhost:8080/searchUser"
 
         axios
             .post(url, body)
             .then(res => {
-                console.log("respnose: ", res.data)
-
-                // setResult(res.data)
-                // window.scroll(0, 9950)
-                console.log("cond: ", res)
                 if (res.data[0].type == 1) {
                     details.UserID = res.data[0]._id
                     history.goBack();

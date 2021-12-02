@@ -29,7 +29,7 @@ class ViewAllReservations extends Component {
         const { history } = this.props;
         if(props.details.UserID === ""){
             alert("You need to login to view your reservations!")
-            history.push("/UserLoginRes");
+            history.push("/Userlogin2");
 }
         this.state = {
             reservations: [],
