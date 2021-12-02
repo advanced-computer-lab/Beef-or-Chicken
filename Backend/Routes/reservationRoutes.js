@@ -17,94 +17,197 @@ app.get("/allReservations", async (request, response) => {
     response.status(500).send(error);
   }
 });
+app.patch("/reserveSeats", async (request, response) => {  //updateUser
+  try {
+
+    console.log("Request: ", request.body)
+    var q = {}
+
+    var reservationId= request.body.reservationId;
+    if (request.body.seatsDeparting != null)
+      q.TakenSeatsDeparting =  request.body.seatsDeparting
+    if (request.body.seatsReturning != null)
+      q.TakenSeatsArriving = request.body.seatsReturning
+    console.log("q: ", q)
+    await reservationModel.findByIdAndUpdate(reservationId, q);
+
+    response.send();
+  } catch (error) {
+    response.status(5000).send(error);
+  }
+});
+
+// app.patch("/addSeatsToFlights", async (request, response) => {  //updateUser
+//   try {
+
+//     var q = {}
+
+//     if (request.body.flightIdDeparting != null){
+//       q.Seats = request.body.DepartingSeats
+//       await flightModel.findByIdAndUpdate(request.body.DepartingId, q);
+//     }
+
+//       var v = {}
+
+//       if (request.body.flightIdReturning != null){
+//         v.Seats = request.body.ReturningSeats
+//         await flightModel.findByIdAndUpdate(request.body.ReturningId, v);
+//       }
+    
+    
+    
+
+//     response.send();
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
+
+app.post("/createReservation", async (request, response) => {
+  //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
+
+  // var EconomySeats = request.body.EconomySeats;
+  // var BusinessSeats = request.body.BusinessSeats;
+  // var FirstSeats = request.body.FirstSeats;
+  // var seats = [];
+  // var tmpEconomy = [];
+  // var tmpBusiness = [];
+  // var tmpFirst = [];
+  // for (let i = 0; i < EconomySeats; i++) {
+  //   tmpEconomy.push(0);
+  // }
+  // seats.push(tmpEconomy);
+  // for (let i = 0; i < BusinessSeats; i++) {
+  //   tmpBusiness.push(0);
+  // }
+  // seats.push(tmpBusiness);
+  // for (let i = 0; i < FirstSeats; i++) {
+  //   tmpFirst.push(0);
+  // }
+  // seats.push(tmpFirst);
+
+
+  const reservation = new reservationModel({
+    'UserID': request.body.UserID,
+    'DepartureFlightID': request.body.DepartureFlightID,
+    'ReturnFlightID': request.body.ReturnFlightID,
+    'CabinType': request.body.CabinType,
+    'TakenSeatsDeparting': request.body.TakenSeatsDeparting,
+    'TakenSeatsArriving': request.body.TakenSeatsArriving,
+    'TotalPrice': request.body.TotalPrice,
+    'Children': request.body.Children,
+    'Adults': request.body.Adults,
+
+  });
+
+
+
+  try {
+    await reservation.save(function(err, savedReservatoion) {
+      if (err) console.log(err);
+      else{
+          var ReservationId = savedReservatoion._id;
+          console.log("success", ReservationId);
+          response.send(ReservationId);
+      }
+  });
+    // await reservation.save();
+    // response.send("reserved successfully");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+
 
 
 app.delete("/reservation/:id", async (request, response) => {
   try {
     const reservation = await reservationModel.findByIdAndDelete(request.params.id);
-    if(!reservation){  
-        //console.log("Mafish");
-        response.status(404).send("No item found");
-        response.status(200).send();
-    
+    if (!reservation) {
+      //console.log("Mafish");
+      response.status(404).send("No item found");
+      response.status(200).send();
+
     }
-    else{
+    else {
       const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
       const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
       const User = await userModel.findById(reservation.UserID);
 
-        //refund (via email) 
+      //refund (via email) 
       const totalPrice = reservation.TotalPrice.toString();
 
       let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "BeefOrChickenACL@gmail.com",
-            pass: "beeforchicken"
+          user: "BeefOrChickenACL@gmail.com",
+          pass: "beeforchicken"
         },
-        tls:{
+        tls: {
           rejectUnauthorized: false,
         },
- });
- 
- let mailOptions = {
- 
- from: "BeefOrChickenACL@gmail.com",
- to: User.email,
- subject: "Your reservation has been canceled",
- text: "Dear " + User.firstName + ", your reservation with Beef or Chicken airlines has been canceled successfully, your refund amount is " + totalPrice + " EGP",
- };
- 
- transporter.sendMail(mailOptions, function(err, success) {
-     if (err) {
-       console.log(err)
-     } else {
-       console.log("Mail sent successfully");
-     }
-   });
-       // console.log("Fih ah");
-        //add seats back to flight
-        if(reservation.CabinType == 'Business'){
-            console.log("fel business");
-            var q = {};
-            q.BusinessSeats = DepartureFlight.BusinessSeats + reservation.TakenSeats.length;
-            console.log(q);
-            await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
-            var p = {};
-            p.BusinessSeats = ReturnFlight.BusinessSeats + reservation.TakenSeats.length;
-            await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-            console.log("5allasna business");
-         
-        }
-        if(reservation.CabinType == 'First'){
-            console.log("fel First");
-            var q = {};
-            q.FirstSeats = DepartureFlight.FirstSeats + reservation.TakenSeats.length;
-            console.log(q);
-            await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
-            var p = {};
-            p.FirstSeats = ReturnFlight.FirstSeats + reservation.TakenSeats.length;
-            await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-            console.log("5allasna first");
-         }
+      });
 
-     if(reservation.CabinType == 'Economy'){
-         console.log("fel economy");
-         var q = {};
-         q.EconomySeats = DepartureFlight.EconomySeats + reservation.TakenSeats.length;
-         console.log(q);
-         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
-         var p = {};
-         p.EconomySeats = ReturnFlight.EconomySeats + reservation.TakenSeats.length;
-         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-         console.log("5allasna economy");
-         }
-     //console.log(totalPrice);
-     response.send();
-    }  
+      let mailOptions = {
+
+        from: "BeefOrChickenACL@gmail.com",
+        to: User.email,
+        subject: "Your reservation has been canceled",
+        text: "Dear " + User.firstName + ", your reservation with Beef or Chicken airlines has been canceled successfully, your refund amount is " + totalPrice + " EGP",
+      };
+
+      transporter.sendMail(mailOptions, function (err, success) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("Mail sent successfully");
+        }
+      });
+      // console.log("Fih ah");
+      //add seats back to flight
+      if (reservation.CabinType == 'Business') {
+        console.log("fel business");
+        var q = {};
+        q.BusinessSeats = DepartureFlight.BusinessSeats + reservation.TakenSeats.length;
+        console.log(q);
+        await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
+        var p = {};
+        p.BusinessSeats = ReturnFlight.BusinessSeats + reservation.TakenSeats.length;
+        await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
+        console.log("5allasna business");
+
+      }
+      if (reservation.CabinType == 'First') {
+        console.log("fel First");
+        var q = {};
+        q.FirstSeats = DepartureFlight.FirstSeats + reservation.TakenSeats.length;
+        console.log(q);
+        await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
+        var p = {};
+        p.FirstSeats = ReturnFlight.FirstSeats + reservation.TakenSeats.length;
+        await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
+        console.log("5allasna first");
+      }
+
+      if (reservation.CabinType == 'Economy') {
+        console.log("fel economy");
+        var q = {};
+        q.EconomySeats = DepartureFlight.EconomySeats + reservation.TakenSeats.length;
+        console.log(q);
+        await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
+        var p = {};
+        p.EconomySeats = ReturnFlight.EconomySeats + reservation.TakenSeats.length;
+        await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
+        console.log("5allasna economy");
+      }
+      //console.log(totalPrice);
+      response.send();
+    }
   } catch (error) {
     response.status(500).send(error);
   }
 });
+
 
 module.exports = app;

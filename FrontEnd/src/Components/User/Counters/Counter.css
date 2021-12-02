@@ -16,10 +16,12 @@ a{
     font-size: 14px;
 
 }
-
+.counterB{
+    margin-left: 100%;
+}
 
 .counter{
-    margin-top: -10px;
+    margin-top: 0px;
     color: #818181;
 }
 .counter .small{

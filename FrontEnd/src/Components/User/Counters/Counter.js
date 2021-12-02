@@ -5,8 +5,11 @@ import IconButton from "@material-ui/core/IconButton";
 import RemoveBoxRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import { SettingsCellOutlined } from "@material-ui/icons";
 import { connect } from "react-redux";
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme) => ({
 
 
+}));
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
@@ -49,8 +52,8 @@ export function Counter({ count, setCount, Adults, setAdult }) {
         console.log("handleInc ", Adults)
     };
     const handleDecrement = () => {
-        if (Adults === 0) {
-            setAdult(0);
+        if (Adults === 1) {
+            setAdult(1);
             setCol("disabled")
         }
 
@@ -95,18 +98,19 @@ export function Counter({ count, setCount, Adults, setAdult }) {
         <div className="b">
             <div className="counter">
                 Aged +18    <small className="small"></small>
-                <IconButton color={col} sign="-" onClick={func} >
-                    <RemoveBoxRoundedIcon />
-                </IconButton>
-                {Adults}
-                <IconButton color="primary" sign="-" onClick={func2} >
-                    <AddBoxRoundedIcon />
-                </IconButton>
+                <div className="counterB">
+                    <IconButton color={col} sign="-" onClick={func} >
+                        <RemoveBoxRoundedIcon />
+                    </IconButton>
+                    {Adults}
+                    <IconButton color="primary" sign="-" onClick={func2} >
+                        <AddBoxRoundedIcon />
+                    </IconButton>
+                </div>
             </div>
 
 
         </div>
-
 
     );
 }

@@ -1,51 +1,402 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
+import ResultBack from "../../images/Results2.png";
+import Typography from '@material-ui/core/Typography';
+import { withRouter } from "react-router";
 import '../../App.css';
-import CheckBox from './CheckBox'
-
+import './SeatPicker.css'
+import Checkbox from '@mui/material/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
+import { experimentalStyled as styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { Card } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import { useHistory } from "react-router-dom";
-
+import { grid } from '@mui/system';
+import { connect } from "react-redux";
+import Button from '@material-ui/core/Button';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
+// import { useHistory } from "react-router-dom";
 
-export default function UpateFlight(prop) {
-    const flight = prop.match.params
-    console.log("flight: ", flight)
-    console.log("flightID: ", flight.id)
+
+
+
+
+class SeatPicker extends Component {
+
     
-    let history = useHistory();
-    
 
-    const getFlight =e  => {
-        // e.preventDefault();
-        // e.stopPropagation();
-        console.log("flight: ", flight)
-        let url = `http://localhost:8080/flightById/${flight.id}`;
 
+    constructor(props) {
        
+        super(props);
+        // console.log("before: ", this.props)
 
-        console.log("url", url)
-        axios.get(url)
-            .then(async (response) => {
-                console.log("response ===> ", response)
-               
+        
+        this.state = {
+
+            //  id: this.details.DepartingFlight._id,
+            id: this.props.details.DepartingFlight._id,
+            flight: this.props.match.params.flight,
+            ReservationId: this.props.history.location.state.ReservationId,
+            seats: [],
+            initial: [],
+            chosenSeats: [],
+            currSeats: 0,
+            maxSeats: this.props.details.Adults + this.props.details.children,
+            //cabin: 1,  // 0 for econ, 1 for business, 2 first
+            maxReached: false,
+            // flag : false,
+
+        };
+        console.log("ddddddddddd: ", this.props)
+    }
+
+
+
+
+    updateChoice = (index, change) => {
+        var temporaryArray = this.state.seats
+        temporaryArray[index] = change
+        this.setState({ seats: temporaryArray })
+        console.log("current seats : ", this.state.seats)
+        console.log("init seats : ", this.state.initial)
+        if (change == 0) {
+            change = -1
+        }
+        this.setState({ currSeats: (this.state.currSeats + change) }, () => {
+            console.log(this.state.currSeats)
+            if (this.state.currSeats >= this.state.maxSeats)
+                this.setState({ maxReached: true }, () => {
+                    console.log(this.state.maxReached)
+                })
+            else
+                this.setState({ maxReached: false }, () => {
+                    console.log(this.state.maxReached)
+                })
+        });
+    }
+
+
+    settingArrays = () =>{
+        if(this.props.DepartingSeats != null){
+            this.setState({DepartingSeats: this.props.DepartingSeats, ReservationId : this.state.ReservationId})
+        }
+        
+        //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
+        if (this.state.flight == 1) {
+           
+
+               // console.log("curr flight isa: ", this.state.currFlight)
+                
+                switch (this.props.details.cabin_class) {
+                    case "Economy":
+                        // this.setState({ cabin: 0 })
+
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
+
+                        break;
+                    case "Bussiness":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                        break;
+                    case "First":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
+                        break;
+                    default:
+                    // code block
+                }
+            
+
+        }
+        else
+            {
+                switch (this.props.details.cabin_class) {
+                    case "Economy":
+                        // this.setState({ cabin: 0 })
+
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
+
+                        break;
+                    case "Bussiness":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
+                        break;
+                    case "First":
+                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
+                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
+                        break;
+                    default:
+                    // code block
+                }
+            }
+    }
+    componentDidMount = () => {
+        
+            this.settingArrays()
+
+
+
+        
+    }
+
+   
+
+
+
+    handleChange = event => {
+        // setState({ [event.target.id]: event.target.checked })
+        if (event.target.checked) {
+            this.setState({ choosenSeats: this.state.chosenSeats.push( parseInt(event.target.id) + 1 ) }, () => {
+                this.updateChoice(event.target.id, 1)
+                console.log("chosen Seats now: ", this.state.chosenSeats)
             })
-            .catch((e) => {
 
-                console.log("ana hena")
-                console.log("error ===>", e);
+
+
+        }
+        else {
+
+
+            this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== parseInt(event.target.id) + 1 ) },
+                () => {
+                    this.updateChoice(event.target.id, 0)
+                    console.log("chosen Seats now: ", this.state.chosenSeats)
+                })
+
+        }
+    };
+    handleSubmit = () => {
+        console.log("state", this.state)
+        console.log("details", this.props)
+        if(this.state.flight == 1){
+            console.log("entered first thingy")
+            let body2 = {}
+            switch (this.props.details.cabin_class) {
+                case "Economy":
+                    
+                    body2 ={
+                        EconomySeatsArray: this.state.seats,
+                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy -1)
+                    }
+
+                    break;
+                case "Bussiness":
+                  
+                    body2 ={
+                        BussinessSeatsArray: this.state.seats,
+                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness -1)
+                    }
+                    break;
+                case "First":
+            
+                    body2 ={
+                        FirstSeatsArray: this.state.seats,
+                        RemFirst: (this.props.details.DepartingFlight.RemFirst -1)
+                    }
+                    break;
+                default:
+                // code block
+            }
+            console.log("body2", body2)
+            let url2 = `http://localhost:8080/flightSeats/${this.props.details.selectedDepartingFlightID}`
+            axios
+            .patch(url2, body2)
+            .then(res => {
+                console.log("respnose: ", res)
+                console.log("gamed louji!")
+
+
+                // this.props.history.push(`/Seats/1`);
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+            let url = "http://localhost:8080/reserveSeats"
+            let body = {
+                reservationId : this.state.ReservationId,
+                seatsDeparting : this.state.chosenSeats,
+                
+            
+            }
+            axios
+                .patch(url, body)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+
+
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+            this.setState( {flight:2 , ReservationId:this.state.ReservationId, 
+                            chosenSeats:[],
+                            currSeats:0, maxReached:false }, () =>{
+           
+          
+
+            this.settingArrays()
+            this.props.history.push(`/Seats/2`);
+
+
+
             });
-        // window.location.reload(false);
+
+           
+
+        }
+        else{
+            let url = "http://localhost:8080/reserveSeats"
+            let body = {
+                reservationId : this.state.ReservationId,
+                seatsReturning : this.state.chosenSeats
+            
+            }
+            axios
+                .patch(url, body)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+
+
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+
+            
+            let url2 = `http://localhost:8080/flightSeats/${this.props.details.selectedReturningFlightID}`
+            
+            
+
+            let body1 = {}
+           
+            switch (this.props.details.cabin_class) {
+                case "Economy":
+                    // this.setState({ cabin: 0 })
+
+                    body1 = {
+                        EconomySeatsArray: this.state.seats,
+                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -1)
+                    }
+                 
+
+                    break;
+                case "Bussiness":
+                    body1 = {
+                        BussinessSeatsArray: this.state.seats,
+                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -1)
+                    }
+                  
+                    break;
+                case "First":
+                    body1 = {
+                        FirstSeatsArray: this.state.seats,
+                        RemFirst: (this.props.details.ReturnFlight.RemFirst -1)
+                    }
+                    
+                    break;
+                default:
+                // code block
+            }
+            axios
+                .patch(url2, body1)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+
+
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+         
+
+                
+        }
 
     };
 
-    const currFlight = getFlight();
 
 
 
-    return (
-        <CheckBox></CheckBox>
-        
-    );
+
+    render() {
+
+        return (
+            <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+                <div style={{ paddingTop: "100px" }}>
+                    <Card className="paper" sx={{ minWidth: 275 }}>
+                        <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
+                            Please pick your desired seats 
+                        </Typography>
+                       
+                        <hr />
+
+                        <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
+                            {this.props.details.cabin_class + " class"} 
+                        </Typography>
+                        <CardContent raised="true">
+                            <Grid container spacing={{ xs: 3 }} >
+                                {Array.from(this.state.seats).map((_, index) => (
+                                    <Grid item xs={3} key={index}>
+                                        <Checkbox
+                                            //checked={this.state.initEcon[index]}
+
+                                            checked={this.state.seats[index]}
+                                            disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
+
+                                            onChange={this.handleChange}
+                                            id={(index)}
+                                            label={index + 1}
+                                        />
+
+
+                                    </Grid>
+
+
+                                ))}
+                            </Grid>
+                        </CardContent>
+                        <div style = {{  marginLeft: "35%", marginBottom: "15%"}}>
+                        {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                        <Button
+                            variant="outlined" size="medium" color="primary"
+                            disabled={!this.state.maxReached}
+                            onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                        </div>
+                    </Card>
+                </div>
+
+
+            </div>
+
+        );
+    }
+
+
 }
+const mapStateToProps = (state) => ({
+    details: state.DetailsReducer.details,
+});
+
+
+
+export default connect(mapStateToProps)(SeatPicker);

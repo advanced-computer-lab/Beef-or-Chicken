@@ -20,9 +20,10 @@ const mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps)(Paginations);
-function Paginations(allOffers, details) {
+function Paginations({ allOffers, details }) {
 
     console.log("ANAAA ELOFFFFERRR: ", allOffers)
+    console.log("ANAAA ELDETAILSSSSS: ", details)
 
     // this.state = {
     //     page: 1,
@@ -59,25 +60,18 @@ function Paginations(allOffers, details) {
     const indexOfLastOffer = offersPerPage * currentPage;
     const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
 
-    console.log("FUNCCCCTTTT", Math.ceil(allOffers.allOffers.data.length / offersPerPage))
+    console.log("FUNCCCCTTTT", Math.ceil(allOffers.data.data.length / offersPerPage))
     // const currentArray = allOffers.slice(indexOfFirstOffer, indexOfLastOffer);
-    console.log("OFFFFFF: ", allOffers)
-    console.log("Detailss: ", allOffers.details)
+    console.log("OFFFFFF: ", allOffers.data.data)
+    console.log("Detailss: ", allOffers.data.data.length)
     return (
         <div>
             <GridContainer >
                 {/* {currentArray.map((offer) => { */}
 
                 <GridItem xs={12} style={{ marginTop: "100px" }}>
-                    {/* <Offer
-                  offer={offer}
-                  classes={classes}
-                  avgCO2={avgCO2}
-                  adults={this.props.adults}
-                  children={this.props.children}
-                  history={this.props.history}
-                /> */}
-                    <ResultCardReturn offer={allOffers} details={allOffers.details} />
+
+                    <ResultCardReturn offer={allOffers} details={details} />
                     {/* <ResultCard />
                     <ResultCard />
                     <ResultCard /> */}
@@ -94,7 +88,7 @@ function Paginations(allOffers, details) {
                     <Pagination
                         //style={{ background: "#10404c ", color: "wheat" }}
                         style={{ marginLeft: "47%", color: "wheat" }}
-                        count={Math.ceil(allOffers.allOffers.data.length / offersPerPage)}
+                        count={Math.ceil(allOffers.data.data.length / offersPerPage)}
 
                         //{Math.ceil(allOffers.data / offersPerPage)}
                         page={currentPage}
