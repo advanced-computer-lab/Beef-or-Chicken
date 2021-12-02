@@ -21,6 +21,7 @@ import Counter2 from './Counters/Counter2.js';
 import React, { useState, setState } from "react";
 import SearchButton from "./SearchButton"
 import { connect } from "react-redux";
+import SideBar from "./SideBar"
 
 
 var option = ""
@@ -204,7 +205,7 @@ function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, childr
     return (
 
         <div style={{ backgroundImage: `url(${bg2})`, height: "100vh", backgroundSize: "cover" }}>
-
+            <SideBar />
             <div className={classes.search}>
                 <div className={classes.bottomSheet}>
                     <div className={classes.rectangle}>

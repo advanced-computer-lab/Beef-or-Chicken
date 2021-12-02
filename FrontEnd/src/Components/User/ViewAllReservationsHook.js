@@ -152,7 +152,7 @@ export default function ViewAllReservations(props) {
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirplaneTicketIcon />&nbsp;
-                                                            Flight Code</p>
+                                                            Flight Number</p>
                                                         <div>
                                                         {returnFlight[0].FlightNumber}
                                                         </div>
@@ -164,7 +164,7 @@ export default function ViewAllReservations(props) {
                                                         <AirplaneTicketIcon />&nbsp;
                                                             Reservation Number</p>
                                                         <div>
-                                                        {reservation.ReservationNumber}
+                                                        {reservation.Number}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -291,7 +291,7 @@ export default function ViewAllReservations(props) {
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirlineSeatReclineExtraIcon />
-                                                            Seats</p>
+                                                            Seat(s) Number(s)</p>
                                                         <div>{reservation.TakenSeatsArriving.join(', ')} </div>
                                                     </div>
                                                 </div>
@@ -314,14 +314,14 @@ export default function ViewAllReservations(props) {
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirplaneTicketIcon />&nbsp;
-                                                            Flight Code</p>
+                                                            Flight Number</p>
                                                         <div>{departure[0].FlightNumber}</div>
                                                 </div></div>
                                                 <div className="col-md-6 col-12 mb-4">
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue"><AirplaneTicketIcon />&nbsp;
                                                             Reservation Number</p>
-                                                        <div>{reservation.ReservationNumber}</div>
+                                                        <div>{reservation.Number}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -441,7 +441,7 @@ export default function ViewAllReservations(props) {
                                                     <div className="form-control d-flex flex-column">
                                                         <p className="h-blue">
                                                         <AirlineSeatReclineExtraIcon />
-                                                            Seats</p>
+                                                            Seat(s) Number(s)</p>
                                                         <div> {reservation.TakenSeatsDeparting.join(', ')}  </div>
                                                     </div>
                                                 </div>
