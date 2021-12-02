@@ -147,6 +147,7 @@ app.delete("/reservation/:id", async (request, response) => {
         tls: {
           rejectUnauthorized: false,
         },
+<<<<<<< Updated upstream
       });
 
       let mailOptions = {
@@ -197,6 +198,38 @@ app.delete("/reservation/:id", async (request, response) => {
         let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
           newFirstSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+=======
+ });
+ 
+ let mailOptions = {
+ 
+ from: "BeefOrChickenACL@gmail.com",
+ to: User.email,
+ subject: "Your reservation has been canceled",
+ text: "Dear " + User.firstName + ", your reservation with Beef or Chicken airlines has been canceled successfully, your refund amount is " + totalPrice + " EGP",
+ };
+ 
+ transporter.sendMail(mailOptions, function(err, success) {
+     if (err) {
+       console.log(err)
+     } else {
+       console.log("Mail sent successfully");
+     }
+   });
+       // console.log("Fih ah");
+        //add seats back to flight
+        if(reservation.CabinType == 'Business'){
+            console.log("fel business");
+            var q = {};
+            q.BusinessSeats = DepartureFlight.BusinessSeats + reservation.TakenSeats.length;
+            console.log(q);
+            await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
+            var p = {};
+            p.BusinessSeats = ReturnFlight.BusinessSeats + reservation.TakenSeats.length;
+            await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
+            console.log("5allasna business");
+         
+>>>>>>> Stashed changes
         }
         q.FirstSeatsArray = newFirstSeatsArray;
 
