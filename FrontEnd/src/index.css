@@ -36,11 +36,12 @@ flex-direction: column;
   position:sticky;
   margin-right: 0; */
   position: absolute;
-  width: 7px;
+  width: 200px;
 height: 21px;
-margin-left: 205px;
+/* margin-left: 205px; */
 
 }
+
 
 .DropDownResults :hover {
   background-color: transparent !important;

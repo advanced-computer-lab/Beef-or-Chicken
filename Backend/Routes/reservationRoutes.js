@@ -164,16 +164,28 @@ app.delete("/reservation/:id", async (request, response) => {
           console.log("Mail sent successfully");
         }
       });
-      // console.log("Fih ah");
       //add seats back to flight
       if (reservation.CabinType == 'Business') {
         console.log("fel business");
         var q = {};
-        q.BusinessSeats = DepartureFlight.BusinessSeats + reservation.TakenSeats.length;
-        console.log(q);
+        let newBusinessSeatsArray = DepartureFlight.BusinessSeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
+          newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+        }
+        q.BusinessSeatsArray = newBusinessSeatsArray;
+        q.RemBusiness = DepartureFlight.RemBusiness + reservation.TakenSeatsDeparting.length;
+        //console.log(q);
         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
+        //console.log('7amdellah 3al salama');
+      
         var p = {};
-        p.BusinessSeats = ReturnFlight.BusinessSeats + reservation.TakenSeats.length;
+        let newBusinessSeatsArray2 = ReturnFlight.BusinessSeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
+          newBusinessSeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+        }
+        p.BusinessSeatsArray = newBusinessSeatsArray2;
+
+        p.RemBusiness = ReturnFlight.RemBusiness + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
         console.log("5allasna business");
 
@@ -181,11 +193,25 @@ app.delete("/reservation/:id", async (request, response) => {
       if (reservation.CabinType == 'First') {
         console.log("fel First");
         var q = {};
-        q.FirstSeats = DepartureFlight.FirstSeats + reservation.TakenSeats.length;
-        console.log(q);
+
+        let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
+          newFirstSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+        }
+        q.FirstSeatsArray = newFirstSeatsArray;
+
+        q.RemFirst = DepartureFlight.RemFirst + reservation.TakenSeatsDeparting.length;
+        //console.log(q);
         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
         var p = {};
-        p.FirstSeats = ReturnFlight.FirstSeats + reservation.TakenSeats.length;
+
+        let newFirstSeatsArray2 = ReturnFlight.FirstSeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
+          newFirstSeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+        }
+        p.FirstSeatsArray = newFirstSeatsArray2;
+
+        p.RemFirst = ReturnFlight.RemFirst + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
         console.log("5allasna first");
       }
@@ -193,11 +219,25 @@ app.delete("/reservation/:id", async (request, response) => {
       if (reservation.CabinType == 'Economy') {
         console.log("fel economy");
         var q = {};
-        q.EconomySeats = DepartureFlight.EconomySeats + reservation.TakenSeats.length;
-        console.log(q);
+
+        let newEconomySeatsArray = DepartureFlight.EconomySeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
+          newEconomySeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+        }
+        q.EconomySeatsArray = newEconomySeatsArray;
+
+        q.RemEconomy = DepartureFlight.RemEconomy + reservation.TakenSeatsDeparting.length;
+        //console.log(q);
         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
         var p = {};
-        p.EconomySeats = ReturnFlight.EconomySeats + reservation.TakenSeats.length;
+
+        let newEconomySeatsArray2 = ReturnFlight.EconomySeatsArray;
+        for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
+          newEconomySeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+        }
+        p.EconomySeatsArray = newEconomySeatsArray2;
+
+        p.RemEconomy = ReturnFlight.RemEconomy + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
         console.log("5allasna economy");
       }

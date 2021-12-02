@@ -64,15 +64,15 @@ export function Counter({ count, setCount, Adults, setAdult }) {
 
 
     const iconColor = (value) => {
-        if (Adults + 1 === 0) {
+        if (Adults + 1 === 1) {
             setCol("disabled")
             console.log("disabled", { count })
         }
-        if (Adults == 1 && value === "dec") {
+        if (Adults == 2 && value === "dec") {
             setCol("disabled")
             // console.log("ahmed")
         }
-        else if (Adults === 0 && value === "dec") {
+        else if (Adults === 1 && value === "dec") {
             setCol("disabled")
         }
         else {
@@ -99,18 +99,24 @@ export function Counter({ count, setCount, Adults, setAdult }) {
             <div className="counter">
                 Aged +18    <small className="small"></small>
                 <div className="counterB">
-                    <IconButton color={col} sign="-" onClick={func} >
-                        <RemoveBoxRoundedIcon />
-                    </IconButton>
-                    {Adults}
-                    <IconButton color="primary" sign="-" onClick={func2} >
-                        <AddBoxRoundedIcon />
-                    </IconButton>
+                    <div className="sum1">
+                        <IconButton color={col} sign="-" onClick={func} >
+                            <RemoveBoxRoundedIcon />
+                        </IconButton>
+                    </div>
+                    <div className="sum">
+                        {Adults}
+                    </div>
+                    <div className="sum2">
+                        <IconButton color="primary" sign="-" onClick={func2} >
+                            <AddBoxRoundedIcon />
+                        </IconButton>
+                    </div>
                 </div>
             </div>
 
 
-        </div>
+        </div >
 
     );
 }
