@@ -177,13 +177,13 @@ function UpdateUserInfo(prop) {
                 
 
                   <Button   onClick={() => {onSubmit() }}
-                    class="btn btn-primary"
-                    type="submit"
+                    // class="btn btn-primary"
+                    // type="submit"
                     variant="outlined"
                    size="medium"
                     color="primary"
                 // className="btn btn-outline-warning btn-block mt-4"
-                    submitBeEdek /> 
+                    /> 
 
 {/* <Button onClick={() => {onSubmit() }}
                   variant="outlined"
