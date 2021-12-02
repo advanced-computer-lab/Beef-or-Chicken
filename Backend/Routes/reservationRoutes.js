@@ -105,11 +105,14 @@ app.post("/createReservation", async (request, response) => {
 
 
   try {
-    await reservation.save(function(err, savedReservatoion) {
+    await reservation.save(async function(err, savedReservatoion) {
       if (err) console.log(err);
       else{
           var ReservationId = savedReservatoion._id;
           console.log("success", ReservationId);
+          var edit = {};
+          edit.Number =  ReservationId.valueOf().substring(18) ;
+          await reservationModel.findByIdAndUpdate(ReservationId, edit);
           response.send(ReservationId);
       }
   });
