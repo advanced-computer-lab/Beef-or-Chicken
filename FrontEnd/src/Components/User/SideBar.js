@@ -109,10 +109,10 @@ export default function SwipeableTemporaryDrawer() {
                         <ListItemText primary='Search' />
                     </ListItem>
                 </Link>
-                <Link to="/UpdateUserinfo">
-                    <ListItem button key='Update User info' onClick={handleSubmit()}>
+                <Link to="/ViewUserinfo">
+                    <ListItem button key='View User info' onClick={handleSubmit()}>
 
-                        <ListItemText primary='Update User info' />
+                        <ListItemText primary='View User info' />
                     </ListItem>
                 </Link>
             </List>
