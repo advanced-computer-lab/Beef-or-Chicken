@@ -127,7 +127,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                             style={{ background: "#10404c ", color: "wheat" }}
                             classname={classes.button2}
                             variant="contained"
-                            disabled={details.origin == "" || details.destination == "" || details.departure_date == ""}
+                            // disabled={details.origin == "" || details.destination == "" || details.departure_date == ""}
                             size="large"
                             className={classes.button}
                             startIcon={<SearchIcon />}
@@ -141,9 +141,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                     </div>
                 </Link>
             </ul>
-            <Button
-                        onClick={ay7aga}          
-                        />
+           
         </div>
     );
 }
