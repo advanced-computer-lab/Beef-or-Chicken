@@ -116,7 +116,8 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        UserID: state.DetailsReducer.details.UserID,
     };
 };
 
@@ -127,6 +128,10 @@ const mapDispatchToState = (dispatch) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
 
+        setUserID: (UserID) => {
+            dispatch({ type: 'setUserID', payload: UserID });
+        },
+
 
     };
 };
@@ -134,7 +139,7 @@ const mapDispatchToState = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToState)(SignIn);
 
-function SignIn({ details }) {
+function SignIn({ details, setUserID }) {
     console.log("ANA GEEEEEEEEEEEEEEEET")
     const classes = useStyles();
     let history = useHistory();
@@ -167,7 +172,8 @@ function SignIn({ details }) {
                 // window.scroll(0, 9950)
                 console.log("cond: ", res)
                 if (res.data[0].type == 1) {
-                    details.UserID = res.data[0]._id
+                    // details.UserID = res.data[0]._id
+                    setUserID(res.data[0]._id)
                     history.push('/Summary');
                 }
                 else {

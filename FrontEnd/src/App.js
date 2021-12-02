@@ -26,6 +26,7 @@ import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
 
+import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
   var hist = createBrowserHistory();
   return (
@@ -55,6 +56,7 @@ function App() {
         <Route exact path="/Userlogin" component={UserLogin} />
         <Route exact path="/Userlogin2" component={UserLogin2} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
+        <Route exact path="/FullSummaryPage" component={FullSummaryPage} />
 
       </Router>
     </div>
