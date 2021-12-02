@@ -26,7 +26,9 @@ export default function AlertDialog(prop) {
         console.log("url", url)
         axios.delete(url)
             .then(async (response) => {
+                alert("Reservation canceled successfully!")
                 console.log("response ===> ", response)
+
             })
             .catch((e) => {
                 console.log("error ===>", e);

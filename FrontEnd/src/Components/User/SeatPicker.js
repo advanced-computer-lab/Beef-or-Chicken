@@ -336,8 +336,14 @@ class SeatPicker extends Component {
                     console.log("details return---->", this.props.details)
                     console.log(this.props.TakenSeatsReturn)
                     this.props.history.push('/FullSummaryPage');
+                    alert("Trip Reserved Successfully!")
+                   
+
+
+                    // this.props.history.push(`/Seats/1`);
                 })
                 .catch(error => {
+                    alert("Please pick your seat(s)!")
                     console.log("idiot!");
                     console.log(error.message);
                 })

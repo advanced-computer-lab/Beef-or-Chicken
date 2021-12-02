@@ -69,7 +69,6 @@ function IconLabelButtons({ details, setAllOffers, departingOffers, setDeparting
     let history = useHistory();
     const classes = useStyles();
 
-
     const func = async () => {
         console.log("detailsssssss: ", details)
         //console.log("allahu akbar", details.allOffers)
@@ -112,10 +111,8 @@ function IconLabelButtons({ details, setAllOffers, departingOffers, setDeparting
     // console.log("lllllllll", response.data.cheapestFlights[0][0].owner.name)
     // console.log("origin:", details.origin)
     // console.log("length:", response.data.cheapestFlights[0].length)
-    
 
     return (
-        console.log("this ba2a:", this),
         <div className={classes.buttonDiv}>
             <ul>
                 <Link to="/results">
@@ -126,21 +123,17 @@ function IconLabelButtons({ details, setAllOffers, departingOffers, setDeparting
                             style={{ background: "#10404c ", color: "wheat" }}
                             classname={classes.button2}
                             variant="contained"
-                            // disabled={details.origin == "" || details.destination == "" || details.departure_date == ""}
                             size="large"
                             className={classes.button}
                             startIcon={<SearchIcon />}
                             onClick={func}
-                             
                         >
                             Search
                         </Button>
-   
 
                     </div>
                 </Link>
             </ul>
-           
         </div>
     );
 }
