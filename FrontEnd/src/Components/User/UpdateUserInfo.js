@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
 
+
+
     padding:{
 
         paddingTop:"10%",
@@ -175,7 +177,8 @@ function UpdateUserInfo(prop) {
                     />
                 </div>    
 
-                
+                <div class="padding">
+                    </div>
 
                   <input   onClick={() => {onSubmit() }}
                     class="btn btn-primary"
@@ -191,18 +194,6 @@ function UpdateUserInfo(prop) {
 
 
 
-                    
-
-{/* <Button onClick={() => {onSubmit() }}
-                  variant="outlined"
-                   size="medium"
-                    color="primary"
-
-  
-                    // class="btn btn-primary"
-                    // type="submit"
-                // className="btn btn-outline-warning btn-block mt-4"
-                submitBeEdek/>  */}
                 
 
     </Box>

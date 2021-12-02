@@ -186,6 +186,9 @@ class viewUserInfo extends Component {
                 // className="btn btn-outline-warning btn-block mt-4"
                 />  */}
 
+                <div class="padding">
+                    </div>
+
                 <Link to={  { pathname: `/UpdateUserInfo/${this.state.id}`  } }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
@@ -194,7 +197,7 @@ class viewUserInfo extends Component {
                     <input
                     class="btn btn-primary"
                     type="submit"
-                    value="edit"
+                    value="Edit"
                     
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
