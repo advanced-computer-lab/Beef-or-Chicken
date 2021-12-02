@@ -111,10 +111,15 @@ export default function SwipeableTemporaryDrawer() {
                         <ListItemText primary='View All Reservations' />
                     </ListItem>
                 </Link>
-                <Link to="/UpdateUserinfo">
-                    <ListItem button key='Update User info' onClick={handleSubmit()}>
-                        <ModeEditIcon/>
-                        <ListItemText primary='Update User info' />
+                <Link to="/">
+                    <ListItem button key='Search' onClick={handleSubmit()}>
+                        <ListItemText primary='Search' />
+                    </ListItem>
+                </Link>
+                <Link to="/ViewUserinfo">
+                    <ListItem button key='View User info' onClick={handleSubmit()}>
+
+                        <ListItemText primary='View User info' />
                     </ListItem>
                 </Link>
             </List>

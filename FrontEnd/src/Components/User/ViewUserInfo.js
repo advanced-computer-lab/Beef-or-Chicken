@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import SideBar from './SideBar'
 
 
 
@@ -98,6 +99,7 @@ class viewUserInfo extends Component {
     return (
 
         <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
+            <SideBar />
             <div class= "padding">
                 
            
@@ -186,6 +188,9 @@ class viewUserInfo extends Component {
                 // className="btn btn-outline-warning btn-block mt-4"
                 />  */}
 
+                <div class="padding">
+                    </div>
+
                 <Link to={  { pathname: `/UpdateUserInfo/${this.state.id}`  } }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
@@ -194,7 +199,7 @@ class viewUserInfo extends Component {
                     <input
                     class="btn btn-primary"
                     type="submit"
-                    value="edit"
+                    value="Edit"
                     
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
