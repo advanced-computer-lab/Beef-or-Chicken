@@ -167,14 +167,14 @@ function SignIn({ details }) {
                 }
                 else {
                     //<Alert severity="error">Wrong Username or Password!</Alert>
-                    alert("Log in please!")
-                    history.push("/UserLogin");
+                    
                     console.log("not user")
 
                 }
                 console.log("gamed louji!")
             })
             .catch(error => {
+                alert("Incorrect Username or Password!")
                 console.log("idiot!");
                 console.log(error.message);
             })
