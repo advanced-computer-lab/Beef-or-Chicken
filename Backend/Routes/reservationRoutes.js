@@ -97,6 +97,8 @@ app.post("/createReservation", async (request, response) => {
     'TotalPrice': request.body.TotalPrice,
     'Children': request.body.Children,
     'Adults': request.body.Adults,
+    'Number': (request.body.DepartureFlightID.substring(20) + request.body.ReturnFlightID.substring(20) + request.body.UserID.substring(20))
+
 
   });
 

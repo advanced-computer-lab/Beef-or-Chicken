@@ -184,7 +184,7 @@ class SeatPicker extends Component {
                     
                     body2 ={
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy -1)
+                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy -(this.state.maxSeats))
                     }
 
                     break;
@@ -192,14 +192,14 @@ class SeatPicker extends Component {
                   
                     body2 ={
                         BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness -1)
+                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness -(this.state.maxSeats))
                     }
                     break;
                 case "First":
             
                     body2 ={
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.DepartingFlight.RemFirst -1)
+                        RemFirst: (this.props.details.DepartingFlight.RemFirst -(this.state.maxSeats))
                     }
                     break;
                 default:
@@ -292,7 +292,7 @@ class SeatPicker extends Component {
 
                     body1 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -1)
+                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -(this.state.maxSeats))
                     }
                  
 
@@ -300,14 +300,14 @@ class SeatPicker extends Component {
                 case "Bussiness":
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -1)
+                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats))
                     }
                   
                     break;
                 case "First":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.ReturnFlight.RemFirst -1)
+                        RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats))
                     }
                     
                     break;
@@ -319,7 +319,7 @@ class SeatPicker extends Component {
                 .then(res => {
                     console.log("respnose: ", res)
                     console.log("gamed louji!")
-
+                    this.props.history.push("/")
 
                     // this.props.history.push(`/Seats/1`);
                 })
