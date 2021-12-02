@@ -34,9 +34,12 @@ export default function AlertDialog(prop) {
         axios.delete(url)
             .then(async (response) => {
                 console.log("response ===> ", response)
+                
+                
+
             })
             .catch((e) => {
-                console.log("ana hena")
+               // console.log("ana hena")
                 console.log("error ===>", e);
 
 
