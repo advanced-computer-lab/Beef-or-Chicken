@@ -68,9 +68,7 @@ function IconLabelButtons({ details, setAllOffers, departingOffers, setDeparting
 
     let history = useHistory();
     const classes = useStyles();
-    const ay7aga = () => {
-        console.log("Deatils ba2a", details)
-    }
+
 
     const func = async () => {
         console.log("detailsssssss: ", details)
