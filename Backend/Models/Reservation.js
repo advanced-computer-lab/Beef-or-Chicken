@@ -30,6 +30,11 @@ const reservationSchema = new Schema({
         type: mongoose.Decimal128,
         required: true,
     },
+    //ReservationNumber: {
+      //  type: String,
+        //required: true,
+    //},
+
     Children: {
         type: Number,
         required: true,
