@@ -41,9 +41,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 const mapStateToProps = (state) => {
-    //console.log(state.DetailsReducer.details.destination)
+    console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
+        departingOffers: state.DetailsReducer.details.departingOffers,
         allOffers: state.DetailsReducer.details.allOffers
     };
 };
@@ -51,8 +52,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToState = (dispatch) => {
     return {
 
-        setAllOffers: (allOffers) => {
-            dispatch({ type: 'setAllOffers', payload: allOffers });
+        setDepartingOffers: (departingOffers) => {
+            dispatch({ type: 'setDepartingOffers', payload: departingOffers });
         },
 
 
@@ -63,7 +64,7 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details, setAllOffers, allOffers }) {
+function IconLabelButtons({ details, setAllOffers, departingOffers, setDepartingOffers }) {
 
     let history = useHistory();
     const classes = useStyles();
@@ -92,7 +93,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
             .then(res => {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
-                setAllOffers(res);
+                setDepartingOffers(res.data);
                 //console.log("allOffres: ", allOffers)
                 //this.props.history.push('/');
                 history.push("/DepartingFlights");

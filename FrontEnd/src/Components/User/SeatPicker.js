@@ -28,15 +28,15 @@ import Button from '@material-ui/core/Button';
 
 class SeatPicker extends Component {
 
-    
+
 
 
     constructor(props) {
-       
+
         super(props);
         // console.log("before: ", this.props)
 
-        
+
         this.state = {
 
             //  id: this.details.DepartingFlight._id,
@@ -51,6 +51,8 @@ class SeatPicker extends Component {
             //cabin: 1,  // 0 for econ, 1 for business, 2 first
             maxReached: false,
             // flag : false,
+            returnSeats: [],
+            DepartureSeats: [],
 
         };
         console.log("ddddddddddd: ", this.props)
@@ -82,79 +84,78 @@ class SeatPicker extends Component {
     }
 
 
-    settingArrays = () =>{
-        if(this.props.DepartingSeats != null){
-            this.setState({DepartingSeats: this.props.DepartingSeats, ReservationId : this.state.ReservationId})
+    settingArrays = () => {
+        if (this.props.DepartingSeats != null) {
+            this.setState({ DepartingSeats: this.props.DepartingSeats, ReservationId: this.state.ReservationId })
         }
-        
+
         //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
         if (this.state.flight == 1) {
-           
 
-               // console.log("curr flight isa: ", this.state.currFlight)
-                
-                switch (this.props.details.cabin_class) {
-                    case "Economy":
-                        // this.setState({ cabin: 0 })
 
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
+            // console.log("curr flight isa: ", this.state.currFlight)
 
-                        break;
-                    case "Bussiness":
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
-                        break;
-                    case "First":
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
-                        break;
-                    default:
-                    // code block
-                }
-            
+            switch (this.props.details.cabin_class) {
+                case "Economy":
+                    // this.setState({ cabin: 0 })
+
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
+
+                    break;
+                case "Bussiness":
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                    break;
+                case "First":
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
+                    break;
+                default:
+                // code block
+            }
+
 
         }
-        else
-            {
-                switch (this.props.details.cabin_class) {
-                    case "Economy":
-                        // this.setState({ cabin: 0 })
+        else {
+            switch (this.props.details.cabin_class) {
+                case "Economy":
+                    // this.setState({ cabin: 0 })
 
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
 
-                        break;
-                    case "Bussiness":
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
-                        break;
-                    case "First":
-                        this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
-                        this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
-                        break;
-                    default:
-                    // code block
-                }
+                    break;
+                case "Bussiness":
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
+                    break;
+                case "First":
+                    this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
+                    this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
+                    break;
+                default:
+                // code block
             }
+        }
     }
     componentDidMount = () => {
-        
-            this.settingArrays()
+
+        this.settingArrays()
 
 
 
-        
+
     }
 
-   
+
 
 
 
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
         if (event.target.checked) {
-            this.setState({ choosenSeats: this.state.chosenSeats.push( parseInt(event.target.id) + 1 ) }, () => {
+            this.setState({ choosenSeats: this.state.chosenSeats.push(parseInt(event.target.id) + 1) }, () => {
                 this.updateChoice(event.target.id, 1)
                 console.log("chosen Seats now: ", this.state.chosenSeats)
             })
@@ -165,7 +166,7 @@ class SeatPicker extends Component {
         else {
 
 
-            this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== parseInt(event.target.id) + 1 ) },
+            this.setState({ chosenSeats: this.state.chosenSeats.filter((item) => item !== parseInt(event.target.id) + 1) },
                 () => {
                     this.updateChoice(event.target.id, 0)
                     console.log("chosen Seats now: ", this.state.chosenSeats)
@@ -176,30 +177,31 @@ class SeatPicker extends Component {
     handleSubmit = () => {
         console.log("state", this.state)
         console.log("details", this.props)
-        if(this.state.flight == 1){
+        this.state.DepartureSeats.push(this.state.chosenSeats)
+        if (this.state.flight == 1) {
             console.log("entered first thingy")
             let body2 = {}
             switch (this.props.details.cabin_class) {
                 case "Economy":
-                    
-                    body2 ={
+
+                    body2 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy -1)
+                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy - 1)
                     }
 
                     break;
                 case "Bussiness":
-                  
-                    body2 ={
+
+                    body2 = {
                         BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness -1)
+                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness - 1)
                     }
                     break;
                 case "First":
-            
-                    body2 ={
+
+                    body2 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.DepartingFlight.RemFirst -1)
+                        RemFirst: (this.props.details.DepartingFlight.RemFirst - 1)
                     }
                     break;
                 default:
@@ -208,26 +210,26 @@ class SeatPicker extends Component {
             console.log("body2", body2)
             let url2 = `http://localhost:8080/flightSeats/${this.props.details.selectedDepartingFlightID}`
             axios
-            .patch(url2, body2)
-            .then(res => {
-                console.log("respnose: ", res)
-                console.log("gamed louji!")
+                .patch(url2, body2)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
 
 
-                // this.props.history.push(`/Seats/1`);
-            })
-            .catch(error => {
-                console.log("idiot!");
-                console.log(error.message);
-            })
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
 
 
             let url = "http://localhost:8080/reserveSeats"
             let body = {
-                reservationId : this.state.ReservationId,
-                seatsDeparting : this.state.chosenSeats,
-                
-            
+                reservationId: this.state.ReservationId,
+                seatsDeparting: this.state.chosenSeats,
+
+
             }
             axios
                 .patch(url, body)
@@ -242,29 +244,34 @@ class SeatPicker extends Component {
                     console.log("idiot!");
                     console.log(error.message);
                 })
-            this.setState( {flight:2 , ReservationId:this.state.ReservationId, 
-                            chosenSeats:[],
-                            currSeats:0, maxReached:false }, () =>{
-           
-          
+            this.setState({
+                flight: 2, ReservationId: this.state.ReservationId,
+                chosenSeats: [],
+                currSeats: 0, maxReached: false
+            }, () => {
 
-            this.settingArrays()
-            this.props.history.push(`/Seats/2`);
+
+                this.props.setTakenSeatsDeparture(this.state.DepartureSeats)
+                console.log("details departure---->", this.props.details)
+                this.settingArrays()
+                this.props.history.push(`/Seats/2`);
 
 
 
             });
 
-           
+
 
         }
-        else{
+        else {
             let url = "http://localhost:8080/reserveSeats"
             let body = {
-                reservationId : this.state.ReservationId,
-                seatsReturning : this.state.chosenSeats
-            
+                reservationId: this.state.ReservationId,
+                seatsReturning: this.state.chosenSeats
+
             }
+            this.state.returnSeats.push(this.state.chosenSeats)
+            // setTakenSeatsReturn(this.state.chosenSeats)
             axios
                 .patch(url, body)
                 .then(res => {
@@ -279,37 +286,37 @@ class SeatPicker extends Component {
                     console.log(error.message);
                 })
 
-            
+
             let url2 = `http://localhost:8080/flightSeats/${this.props.details.selectedReturningFlightID}`
-            
-            
+
+
 
             let body1 = {}
-           
+
             switch (this.props.details.cabin_class) {
                 case "Economy":
                     // this.setState({ cabin: 0 })
 
                     body1 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -1)
+                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy - 1)
                     }
-                 
+
 
                     break;
                 case "Bussiness":
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -1)
+                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness - 1)
                     }
-                  
+
                     break;
                 case "First":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.ReturnFlight.RemFirst -1)
+                        RemFirst: (this.props.details.ReturnFlight.RemFirst - 1)
                     }
-                    
+
                     break;
                 default:
                 // code block
@@ -319,17 +326,18 @@ class SeatPicker extends Component {
                 .then(res => {
                     console.log("respnose: ", res)
                     console.log("gamed louji!")
-
-
-                    // this.props.history.push(`/Seats/1`);
+                    this.props.setTakenSeatsReturn(this.state.returnSeats)
+                    console.log("details return---->", this.props.details)
+                    console.log(this.props.TakenSeatsReturn)
+                    this.props.history.push('/FullSummaryPage');
                 })
                 .catch(error => {
                     console.log("idiot!");
                     console.log(error.message);
                 })
-         
 
-                
+
+
         }
 
     };
@@ -345,13 +353,13 @@ class SeatPicker extends Component {
                 <div style={{ paddingTop: "100px" }}>
                     <Card className="paper" sx={{ minWidth: 275 }}>
                         <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                            Please pick your desired seats 
+                            Please pick your desired seats
                         </Typography>
-                       
+
                         <hr />
 
                         <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
-                            {this.props.details.cabin_class + " class"} 
+                            {this.props.details.cabin_class + " class"}
                         </Typography>
                         <CardContent raised="true">
                             <Grid container spacing={{ xs: 3 }} >
@@ -375,12 +383,12 @@ class SeatPicker extends Component {
                                 ))}
                             </Grid>
                         </CardContent>
-                        <div style = {{  marginLeft: "35%", marginBottom: "15%"}}>
-                        {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
-                        <Button
-                            variant="outlined" size="medium" color="primary"
-                            disabled={!this.state.maxReached}
-                            onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                        <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
+                            {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                            <Button
+                                variant="outlined" size="medium" color="primary"
+                                disabled={!this.state.maxReached}
+                                onClick={() => { this.handleSubmit() }} >Confirm</Button>
                         </div>
                     </Card>
                 </div>
@@ -395,8 +403,25 @@ class SeatPicker extends Component {
 }
 const mapStateToProps = (state) => ({
     details: state.DetailsReducer.details,
+    TakenSeatsReturn: state.DetailsReducer.TakenSeatsReturn,
+    TakenSeatsDeparture: state.DetailsReducer.TakenSeatsDeparture,
 });
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+        setTakenSeatsReturn: (TakenSeatsReturn) => {
+            dispatch({ type: 'setTakenSeatsReturn', payload: TakenSeatsReturn });
+        },
+        setTakenSeatsDeparture: (TakenSeatsDeparture) => {
+            dispatch({ type: 'setTakenSeatsDeparture', payload: TakenSeatsDeparture });
+        },
 
 
 
-export default connect(mapStateToProps)(SeatPicker);
+
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SeatPicker);
