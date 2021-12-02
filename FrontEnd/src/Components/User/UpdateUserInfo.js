@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { useState } from 'react';
+import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
 
 
@@ -56,10 +57,8 @@ function UpdateUserInfo(prop) {
     // let history = useHistory();
 
 
-    const onSubmit = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("user: ", user)
+    const onSubmit = e => {   
+        console.log("USER AT OM SUBMIIITTTTT ", user)
         let url = `http://localhost:8080/user/${user.id}`;
 
         let body = {
@@ -88,15 +87,9 @@ function UpdateUserInfo(prop) {
     const [lastName, setLastName] = useState("")
     const [passportNumber, setPassportNumber] = useState("")
     const [email, setEmail] = useState("")
+
+
     
-
-
-
-
-
-
-
-
     const classes = useStyles()
 
 
@@ -132,7 +125,7 @@ function UpdateUserInfo(prop) {
                         name='First Name'
                         // className='form-control'
                         value={firstName}
-                        onChange={event => { setFirstName(event.target.value.toUpperCase()) }}
+                        onChange={event => { setFirstName(event.target.value) }}
                     />
                 </div>
 
@@ -147,7 +140,7 @@ function UpdateUserInfo(prop) {
                         name='Last Name'
                         // className='form-control'
                         value={lastName}
-                        onChange={event => { setLastName(event.target.value.toUpperCase()) }}
+                        onChange={event => { setLastName(event.target.value) }}
                     />
                 </div>
 
@@ -164,13 +157,9 @@ function UpdateUserInfo(prop) {
                         name='Passport Number'
                         // className='form-control'
                         value={passportNumber}
-                        onChange={event => { setPassportNumber(event.target.value.toUpperCase()) }}
+                        onChange={event => { setPassportNumber(event.target.value) }}
                     />
                 </div>
-
-
-
-
 
 
                 <div class="col-md-6" className='form-group form-inline'>
@@ -182,15 +171,39 @@ function UpdateUserInfo(prop) {
                         name='Email'
                         // className='form-control'
                         value={email}
-                        onChange={event => { setEmail(event.target.value.toUpperCase()) }}
+                        onChange={event => { setEmail(event.target.value) }}
                     />
-                </div>       
+                </div>    
 
-                  <input
+                
+
+                  <input   onClick={() => {onSubmit() }}
                     class="btn btn-primary"
                     type="submit"
+                    variant="outlined"
+                   size="medium"
+                    // color="blue"
+                    class="btn btn-primary"
+                    type="submit"
+                    value="Update"
                 // className="btn btn-outline-warning btn-block mt-4"
-                /> 
+                    /> 
+
+
+
+                    
+
+{/* <Button onClick={() => {onSubmit() }}
+                  variant="outlined"
+                   size="medium"
+                    color="primary"
+
+  
+                    // class="btn btn-primary"
+                    // type="submit"
+                // className="btn btn-outline-warning btn-block mt-4"
+                submitBeEdek/>  */}
+                
 
     </Box>
     </div>

@@ -53,13 +53,35 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
   }
 });
 
+
+
+app.get("/searchUserByID/:id", async (request, response) => {  //search with Criteria
+
+  console.log("ana el request:------- ")
+  
+  // var q = JSON.stringify(request.body.id)
+  // const user = await userModel.findById(q);
+
+  const user = await userModel.findById(request.params.id);
+
+
+  try {
+    response.send(user);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+
+
+
 app.get("/flightById/:id", async (request, response) => {
   const flight = await flightModel.findById(request.params.id);
 
   try {
-
     response.send(flight);
-  } catch (error) {
+  }
+  catch (error) {
     response.status(500).send(error);
   }
 });

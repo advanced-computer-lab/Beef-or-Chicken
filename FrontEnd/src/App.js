@@ -20,6 +20,7 @@ import SearchPage from './Components/Admin/SearchPage'
 import SummaryPage from "./Components/User/SummaryPage"
 import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
+import ViewUserInfo from './Components/User/ViewUserInfo';
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
 import UserLogin from "./Components/User/Login"
 import UserLoginRes from "./Components/User/loginReservations"
@@ -40,13 +41,16 @@ function App() {
         <Route exact path="/Admin" component={Admin} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
-        <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
-
         <Route exact path="/Seats/:flight" component={SeatPicker} />
         <Route exact path="/Summary" component={SummaryPage} />
-        <Route exact path="/UpdateUserInfo" component={UpdateUserInfo} />
+        <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
+        {/* add /:id */}
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
+        <Route exact path="/login" component={UserLogin} />
+        {/* add /:id */}
+        <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
 

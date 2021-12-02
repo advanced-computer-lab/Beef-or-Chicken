@@ -22,6 +22,9 @@ const mapStateToProps = (state) => {
 };
 //let history = useHistory();
 
+function ViewAllReservations() {
+    const [flightType, setFlightType] = useState(0);
+    const [reservations, setReservations] = useState([]);
 
 class ViewAllReservations extends Component {
     constructor(props) {
@@ -101,5 +104,5 @@ class ViewAllReservations extends Component {
     }  
 }
 //export default ViewAllReservations;
-
+}
 export default connect(mapStateToProps)(ViewAllReservations);
