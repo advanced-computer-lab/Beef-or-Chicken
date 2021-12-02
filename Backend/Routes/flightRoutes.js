@@ -332,7 +332,6 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.EconomySeats.EconomySeats != null && request.body.EconomySeats.EconomySeats != "") {
       q.EconomySeats = request.body.EconomySeats.EconomySeats
     }
-
     if (request.body.FirstBags.FirstBags != null && request.body.FirstBags.FirstBags != "") {
       q.FirstBags = request.body.FirstBags.FirstBags
     }
@@ -342,7 +341,6 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.EconomyBags.EconomyBags != null && request.body.EconomyBags.EconomyBags != "") {
       q.EconomyBags = request.body.EconomyBags.EconomyBags
     }
-
     if (request.body.EconomyPrice.EconomyPrice != null && request.body.EconomyPrice.EconomyPrice != "") {
       q.PriceEconomy = request.body.EconomyPrice.EconomyPrice
     }
@@ -361,15 +359,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
     if (request.body.FlightNumber.FlightNo != '') {
       q.FlightNumber = request.body.FlightNumber.FlightNo
     }
-    if (request.body.EconomySeatsArray != null) {
-      q.EconomySeatsArray = request.body.EconomySeatsArray
-    }
-    if (request.body.BusinessSeatsArray != null) {
-      q.BusinessSeatsArray = request.body.BusinessSeatsArray
-    }
-    if (request.body.FirstSeatsArray != null) {
-      q.FirstSeatsArray = request.body.FirstSeatsArray
-    }
+
 
    
     console.log(request.params.id);

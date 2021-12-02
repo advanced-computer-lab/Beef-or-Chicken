@@ -24,7 +24,9 @@ import Button from '@material-ui/core/Button';
 
 
 
-
+const mapStateToProps = (state) => ({
+    details: state.DetailsReducer.details,
+});
 
 class SeatPicker extends Component {
 
@@ -393,9 +395,7 @@ class SeatPicker extends Component {
 
 
 }
-const mapStateToProps = (state) => ({
-    details: state.DetailsReducer.details,
-});
+
 
 
 

@@ -23,6 +23,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import ViewUserInfo from './Components/User/ViewUserInfo';
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
 import UserLogin from "./Components/User/Login"
+import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
+        <Route exact path="/Userlogin2" component={UserLogin2} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
 
       </Router>
