@@ -45,17 +45,17 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
       console.log("Request: ", request.body)
       var q = {}
 
-      if (request.body.firstName != "") {
-        q.firstName = request.body.firstName
+      if (request.body.firstName.firstName != "") {
+        q.firstName = request.body.firstName.firstName
       }
-      if (request.body.lastName != "") {
-        q.lastName = request.body.lastName
+      if (request.body.lastName.lastName != "") {
+        q.lastName = request.body.lastName.lastName
       }
-      if (request.body.passportNumber != "") {
-        q.passportNumber = request.body.passportNumber
+      if (request.body.passportNumber.passportNumber != "") {
+        q.passportNumber = request.body.passportNumber.passportNumber
       }
-      if (request.body.email != "") {
-        q.email = request.body.email
+      if (request.body.email.email != "") {
+        q.email = request.body.email.email
       }
      
       console.log(q);
@@ -74,8 +74,10 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
   //TO BE TESTEEEDDDDDD test test test
 
   app.get("/usersflight/:id", async (request, response) => {
-    const user = await userModel.findById(request.params.id);
-    const reservedFlights= await reservationModel.findById(user);
+    var user={};
+    user.UserID=request.params.id;
+    const reservedFlights= await reservationModel.find(user);
+    console.log(reservedFlights)
 
     try {
       response.send(reservedFlights);
