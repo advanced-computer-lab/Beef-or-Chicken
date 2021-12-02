@@ -19,14 +19,17 @@ import { useHistory } from "react-router-dom";
 import { grid } from '@mui/system';
 import { connect } from "react-redux";
 import Button from '@material-ui/core/Button';
+import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
+import ChairIcon from '@mui/icons-material/Chair';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 // import { useHistory } from "react-router-dom";
 
 
 
-const mapStateToProps = (state) => ({
-    details: state.DetailsReducer.details,
-});
+// const mapStateToProps = (state) => ({
+//     details: state.DetailsReducer.details,
+// });
+var flightType = ""
 
 class SeatPicker extends Component {
 
@@ -93,7 +96,7 @@ class SeatPicker extends Component {
 
         //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
         if (this.state.flight == 1) {
-
+            flightType = "departing"
 
             // console.log("curr flight isa: ", this.state.currFlight)
 
@@ -120,6 +123,7 @@ class SeatPicker extends Component {
 
         }
         else {
+            flightType = "returning"
             switch (this.props.details.cabin_class) {
                 case "Economy":
                     // this.setState({ cabin: 0 })
@@ -355,7 +359,7 @@ class SeatPicker extends Component {
                 <div style={{ paddingTop: "100px" }}>
                     <Card className="paper" sx={{ minWidth: 275 }}>
                         <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                            Please pick your desired seats
+                            Please pick your desired seats from your {flightType} flight
                         </Typography>
 
                         <hr />
@@ -372,12 +376,13 @@ class SeatPicker extends Component {
 
                                             checked={this.state.seats[index]}
                                             disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
-
+                                            icon={<ChairOutlinedIcon />}
+                                            checkedIcon = { <ChairIcon/>}
                                             onChange={this.handleChange}
                                             id={(index)}
                                             label={index + 1}
                                         />
-
+                                    
 
                                     </Grid>
 

@@ -60,7 +60,7 @@ function Paginations(allOffers, details) {
     const indexOfLastOffer = offersPerPage * currentPage;
     const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
 
-    console.log("FUNCCCCTTTT", Math.ceil(allOffers.allOffers.data.length / offersPerPage))
+    // console.log("FUNCCCCTTTT", Math.ceil(allOffers.allOffers.data.length / offersPerPage))
     // const currentArray = allOffers.slice(indexOfFirstOffer, indexOfLastOffer);
     console.log("OFFFFFF: ", allOffers)
     console.log("Detailss: ", allOffers.details)
@@ -95,7 +95,7 @@ function Paginations(allOffers, details) {
                     <Pagination
                         //style={{ background: "#10404c ", color: "wheat" }}
                         style={{ marginLeft: "47%", color: "wheat" }}
-                        count={Math.ceil(allOffers.allOffers.data.length / offersPerPage)}
+                        // count={Math.ceil(allOffers.allOffers.data.length / offersPerPage)}
 
                         //{Math.ceil(allOffers.data / offersPerPage)}
                         page={currentPage}
