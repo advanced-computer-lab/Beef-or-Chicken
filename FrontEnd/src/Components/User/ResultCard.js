@@ -234,7 +234,7 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
                 console.log("adults: ", details.Adults)
                 return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
                 break;
-            case "Bussiness":
+            case "Business":
                 return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
             case "First":
