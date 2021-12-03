@@ -246,7 +246,7 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
             case "Business":
                 return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
-            case "First":
+            case "First Class":
                 return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
                 break;
             default:

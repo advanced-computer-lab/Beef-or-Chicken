@@ -230,10 +230,10 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
                 console.log("children price: ", offer.PriceEconomy.$numberDecimal * details.children * 0.7)
                 return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
                 break;
-            case "Bussiness":
+            case "Business":
                 return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
-            case "First":
+            case "First Class":
                 return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
                 break;
             default:

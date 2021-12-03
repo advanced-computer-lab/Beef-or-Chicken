@@ -53,7 +53,7 @@ export default function ViewAllReservations(props) {
                 Object.assign(baggageDeparture, { baggage: departure[0].EconomyBags })
             }
             else {
-                if (cabin === "First") {
+                if (cabin === "First Class") {
                     Object.assign(baggageDeparture, { baggage: departure[0].FirstBags })
                 }
                 else {
@@ -66,7 +66,7 @@ export default function ViewAllReservations(props) {
                 Object.assign(baggageReturn, { baggage: returnFlight[0].EconomyBags })
             }
             else {
-                if (cabin === "First") {
+                if (cabin === "First Class") {
                     Object.assign(baggageReturn, { baggage: returnFlight[0].FirstBags })
                 }
                 else {
