@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import FlightIcon from '@mui/icons-material/Flight';
 import moment, { duration } from 'moment'
 import ConfirmButton from './ConfirmButton.js'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         wordWrap: "break-word",
         // overflow,
         marginLeft: "38%",
-        paddingTop: "10%",
+        paddingTop: "7%",
         '& > *': {
             // margin: theme.spacing(1),
             // width: theme.spacing(16),
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
         borderRadius: "15px",
         width: "353px",
-        height: "590px",
+        height: "640px",
 
 
     },
@@ -84,6 +85,14 @@ const useStyles = makeStyles((theme) => ({
         // color:'#70757A',
         textAlign: "left",
     },
+    text5: {
+        marginLeft: "1%",
+        marginTop: "-3%",
+        marginBottom: "4%",
+        fontSize: theme.typography.pxToRem(18),
+        // color:'#70757A',
+        textAlign: "left",
+    },
 
     line: {
         // length: "1",
@@ -93,7 +102,22 @@ const useStyles = makeStyles((theme) => ({
 
     },
     partition: {
-        display: "flex",
+        // display: "flex",
+        // width: "80%",
+        marginLeft: "-7%",
+        display: 'flex',
+        alignItems: 'center',
+        width: 'fit-content',
+        //  border: (theme) => `1px solid ${theme.palette.divider}`,
+        borderRadius: 1,
+        bgcolor: 'background.paper',
+        color: 'text.secondary',
+        '& svg': {
+            m: 1.5,
+        },
+        '& hr': {
+            mx: 0.5,
+        },
 
     },
     partition2: {
@@ -161,6 +185,38 @@ function SimplePaper({ details }) {
         return duration
     }
 
+    const passengers = (adults, children) => {
+        var p = " "
+        if (children == 0 && adults == 1) {
+            p = { adults } + " Adult"
+        }
+        else if (details.children == 0 && details.Adults > 1) {
+            p = adults + " Adults"
+        }
+        else if (details.children == 1 && details.Adults == 1) {
+            p = adults + " Adult" + details.children + " Child"
+        }
+        else if (details.children > 1 && details.Adults == 1) {
+            p = adults + " Adult" + details.children + " Children"
+        }
+        else if (details.children == 1 && details.Adults > 1) {
+            p = adults + " Adults" + details.children + " Child"
+        }
+        else if (details.children > 1 && details.Adults > 1) {
+            p = adults + " Adults" + details.children + " Children"
+        }
+        return p
+    }
+
+    const rseats = (array) => {
+        var r = "";
+        for (var i = 0; i < array.length; i++) {
+            r = r + " " + array[i];
+
+        }
+        return r;
+    }
+
 
     return (
         <div className={classes.root}>
@@ -209,8 +265,11 @@ function SimplePaper({ details }) {
 
                     <hr className={classes.line}></hr>
                     <div className={classes.partition}>
-                        <Typography className={classes.text3}> Price . EGP {details.DeparturePrice}</Typography>
-                        <Typography className={classes.text3}> Cabin . {details.cabin_class}</Typography>
+                        <Typography className={classes.text3}> Price : EGP {details.DeparturePrice}</Typography>
+                        <Divider orientation="vertical" variant="middle" flexItem />
+                        <Typography className={classes.text3}> Cabin : {details.cabin_class}</Typography>
+                        <Divider orientation="vertical" variant="middle" flexItem />
+                        <Typography className={classes.text3}> Seats : {rseats(details.TakenSeatsDeparture)}</Typography>
 
                     </div>
                     <hr className={classes.line2}></hr>
@@ -245,11 +304,22 @@ function SimplePaper({ details }) {
                     </div>
                     <hr className={classes.line}></hr>
                     <div className={classes.partition}>
-                        <Typography className={classes.text3}> Price . EGP {details.ReturnPrice}</Typography>
-                        <Typography className={classes.text3}> Cabin . {details.cabin_class}</Typography>
+                        <Typography className={classes.text3}> Price : EGP {details.ReturnPrice}</Typography>
+                        <Divider orientation="vertical" variant="middle" flexItem />
+
+                        <Typography className={classes.text3}> Cabin : {details.cabin_class}</Typography>
+                        <Divider orientation="vertical" variant="middle" flexItem />
+
+                        <Typography className={classes.text3}> Seats : {rseats(details.TakenSeatsReturn)}</Typography>
+
 
                     </div>
                     <hr className={classes.line2}></hr>
+                    <div >
+                        {/* {if(details.children == 0) */}
+                        <Typography className={classes.text5}> Passengers :  {passengers(details.Adults, details.children)}</Typography>
+                        {/* } */}
+                    </div>
                     <div className={classes.partition2}>
                         <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
 
@@ -260,6 +330,6 @@ function SimplePaper({ details }) {
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </div >
     );
 }

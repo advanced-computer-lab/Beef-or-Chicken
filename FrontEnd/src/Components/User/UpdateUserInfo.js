@@ -74,10 +74,11 @@ function UpdateUserInfo(prop) {
         axios.patch(url, body)
             .then(async (response) => {
                 console.log("response ===> ", response)
+                alert("Info Updated Successfully!")
                 // history.push("/usersflight");
             })
             .catch((e) => {
-
+                
                 console.log("ana hena")
                 console.log("error ===>", e);
             });

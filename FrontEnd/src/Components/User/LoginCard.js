@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -116,7 +118,8 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        UserID: state.DetailsReducer.details.UserID,
     };
 };
 
@@ -127,6 +130,10 @@ const mapDispatchToState = (dispatch) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
 
+        setUserID: (UserID) => {
+            dispatch({ type: 'setUserID', payload: UserID });
+        },
+
 
     };
 };
@@ -134,7 +141,7 @@ const mapDispatchToState = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToState)(SignIn);
 
-function SignIn({ details }) {
+function SignIn({ details, setUserID }) {
     console.log("ANA GEEEEEEEEEEEEEEEET")
     const classes = useStyles();
     let history = useHistory();
@@ -144,17 +151,10 @@ function SignIn({ details }) {
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
-
-
-
-
         let body = {
             'email': { email },
             'password': { password },
-
         }
-
-
         console.log("body: ", body)
         let url = "http://localhost:8080/searchUser"
 
@@ -167,15 +167,20 @@ function SignIn({ details }) {
                 // window.scroll(0, 9950)
                 console.log("cond: ", res)
                 if (res.data[0].type == 1) {
-                    details.UserID = res.data[0]._id
+                    // details.UserID = res.data[0]._id
+                    setUserID(res.data[0]._id)
                     history.push('/Summary');
                 }
                 else {
+                    //<Alert severity="error">Wrong Username or Password!</Alert>
+                    
                     console.log("not user")
+
                 }
                 console.log("gamed louji!")
             })
             .catch(error => {
+                alert("Incorrect Username or Password!")
                 console.log("idiot!");
                 console.log(error.message);
             })
@@ -183,6 +188,7 @@ function SignIn({ details }) {
     };
 
     return (
+        
         <Card className={classes.paper} elevation={3} >
             <CardContent>
                 <Container component="main" maxWidth="xs">
@@ -252,7 +258,15 @@ function SignIn({ details }) {
                             </Grid>
                         </Box>
                     </Box>
-
+                    {/* <Box sx={{ width: '100%' }}>
+                    <Collapse in={this.state.fail}>
+                        <Alert severity="error"
+                            sx={{ mb: 2 }}
+                        >
+                            Wrong Username or Password!
+                        </Alert>
+                    </Collapse>
+                </Box> */}
                 </Container>
             </CardContent>
         </Card>

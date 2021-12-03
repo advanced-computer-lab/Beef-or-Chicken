@@ -179,19 +179,24 @@ const useStyles = makeStyles((theme) => ({
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
-        details: state.DetailsReducer.details,
+        detail: state.DetailsReducer.details,
         allOffers: state.DetailsReducer.details.allOffers,
         selectedDepartingFlightID: state.DetailsReducer.details.selectedDepartingFlightID,
         selectedReturningFlightID: state.DetailsReducer.details.selectedDepartingFlightID,
         UserID: state.DetailsReducer.details.UserID,
         TakenSeats: state.DetailsReducer.details.TakenSeats,
         TotalPrice: state.DetailsReducer.details.TotalPrice,
+        returningOffers: state.DetailsReducer.details.returningOffers,
+
     };
 };
 
 const mapDispatchToState = (dispatch) => {
     return {
 
+        setReturningOffers: (returningOffers) => {
+            dispatch({ type: 'setReturningOffers', payload: returningOffers });
+        },
         setAllOffers: (allOffers) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
@@ -212,16 +217,20 @@ const mapDispatchToState = (dispatch) => {
         },
 
 
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToState)(DetailedAccordion);
-function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingFlightID) {
+function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail }) {
     const classes = useStyles();
-    const details = props.details
-    const offer = props.offer.allOffers.data
+    console.log("details---->: ", detail)
+    console.log("redux alloffers:------> ", detail.departingOffers)
+
+    const details = detail
+    const offer = detail.departingOffers
     //const departuretime = offer[0].DepartureTime
     // setAllOffers([]);
-    console.log("testtty: ", props.offer.allOffers.data)
+    //  console.log("testtty: ", props.offer.allOffers.data)
     let history = useHistory();
     console.log("ffff: ", details)
 
@@ -267,16 +276,18 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
             .then(res => {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
-                props.offer.allOffers.data = res;
+                setReturningOffers(res.data);
+                //details.returningOffers = res.data;
+                allOffers = res.data;
                 // props.details.selectedDepartingFlightID.data = offer._id
                 // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
                 console.log("offersssss291: ", offer)
-                console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
+                console.log("selecteeeeeddddddd292: ", details.selectedDepartingFlightID)
                 let DeparturePrice = price(offer)
-                props.details.DepartingFlight = offer
-                props.details.DeparturePrice = DeparturePrice
-                props.details.selectedDepartingFlightID = offer._id
-                console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
+                details.DepartingFlight = offer
+                details.DeparturePrice = DeparturePrice
+                details.selectedDepartingFlightID = offer._id
+                console.log("selecteeeeeddddddd: ", details.selectedDepartingFlightID)
                 history.push("/ReturningingFlights");
             })
             .catch(error => {
@@ -318,10 +329,10 @@ function DetailedAccordion(props, setAllOffers, allOffers, setSelectedDepartingF
     const Submit = (offer) => {
         // if(details.cabin_class=="")
         console.log("offersssss291: ", offer)
-        console.log("selecteeeeeddddddd292: ", props.details.selectedDepartingFlightID)
+        console.log("selecteeeeeddddddd292: ", details.selectedDepartingFlightID)
 
-        props.details.selectedDepartingFlightID = offer._id
-        console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID)
+        details.selectedDepartingFlightID = offer._id
+        console.log("selecteeeeeddddddd: ", details.selectedDepartingFlightID)
         handleSubmit()
 
 

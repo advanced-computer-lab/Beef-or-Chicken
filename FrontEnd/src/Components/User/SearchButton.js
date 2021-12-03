@@ -41,9 +41,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 const mapStateToProps = (state) => {
-    //console.log(state.DetailsReducer.details.destination)
+    console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
+        departingOffers: state.DetailsReducer.details.departingOffers,
         allOffers: state.DetailsReducer.details.allOffers
     };
 };
@@ -51,8 +52,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToState = (dispatch) => {
     return {
 
-        setAllOffers: (allOffers) => {
-            dispatch({ type: 'setAllOffers', payload: allOffers });
+        setDepartingOffers: (departingOffers) => {
+            dispatch({ type: 'setDepartingOffers', payload: departingOffers });
         },
 
 
@@ -63,13 +64,10 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details, setAllOffers, allOffers }) {
+function IconLabelButtons({ details, setAllOffers, departingOffers, setDepartingOffers }) {
 
     let history = useHistory();
     const classes = useStyles();
-    const ay7aga = () => {
-        console.log("Deatils ba2a", details)
-    }
 
     const func = async () => {
         console.log("detailsssssss: ", details)
@@ -95,7 +93,7 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
             .then(res => {
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
-                setAllOffers(res);
+                setDepartingOffers(res.data);
                 //console.log("allOffres: ", allOffers)
                 //this.props.history.push('/');
                 history.push("/DepartingFlights");
@@ -113,10 +111,8 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
     // console.log("lllllllll", response.data.cheapestFlights[0][0].owner.name)
     // console.log("origin:", details.origin)
     // console.log("length:", response.data.cheapestFlights[0].length)
-    
 
     return (
-        console.log("this ba2a:", this),
         <div className={classes.buttonDiv}>
             <ul>
                 <Link to="/results">
@@ -127,23 +123,17 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                             style={{ background: "#10404c ", color: "wheat" }}
                             classname={classes.button2}
                             variant="contained"
-                            disabled={details.origin == "" || details.destination == "" || details.departure_date == ""}
                             size="large"
                             className={classes.button}
                             startIcon={<SearchIcon />}
                             onClick={func}
-                             
                         >
                             Search
                         </Button>
-   
 
                     </div>
                 </Link>
             </ul>
-            <Button
-                        onClick={ay7aga}          
-                        />
         </div>
     );
 }
