@@ -195,7 +195,7 @@ app.delete("/reservation/:id", async (request, response) => {
         console.log("5allasna business");
 
       }
-      if (reservation.CabinType == 'First') {
+      if (reservation.CabinType == 'First Class') {
         console.log("fel First");
         var q = {};
 
