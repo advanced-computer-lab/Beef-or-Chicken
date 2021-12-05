@@ -254,7 +254,7 @@ function Home({ setError, tripType, setTripType, errorOccurred, setCabinClass, c
                                 <Dropdown className="dropdownClass">
                                     <Dropdown.Toggle calssName="selected" variant="outlined-secondary">
 
-                                        {classValue}
+                                        {cabin_class}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item as='button'><div className="buss" onClick={(e) => cabin(e)}>Economy</div>

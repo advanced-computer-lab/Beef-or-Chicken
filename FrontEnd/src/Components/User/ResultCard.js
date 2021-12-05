@@ -197,6 +197,9 @@ const mapDispatchToState = (dispatch) => {
         setReturningOffers: (returningOffers) => {
             dispatch({ type: 'setReturningOffers', payload: returningOffers });
         },
+        setDepartingFlight: (DepartingFlight) => {
+            dispatch({ type: 'setDepartingFlight', payload: DepartingFlight });
+        },
         setAllOffers: (allOffers) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
@@ -221,7 +224,7 @@ const mapDispatchToState = (dispatch) => {
     };
 };
 export default connect(mapStateToProps, mapDispatchToState)(DetailedAccordion);
-function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail }) {
+function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail, DepartingFlight }) {
     const classes = useStyles();
     console.log("details---->: ", detail)
     console.log("redux alloffers:------> ", detail.departingOffers)
@@ -261,11 +264,15 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
             "DepartureDate": details.return_date,
             "ArrivalDate": "",
             "FirstSeats": null,
+            "isReturning": true,
+            "departingArrival": details.DepartingFlight.ArrivalDate,
+            "cabin": details.cabin_class,
             "BusinessSeats": null,
             "EconomySeats": null,
             "ArrivalTime": "",
             "DepartureTime": "",
-            "FlightNumber": ""
+            "FlightNumber": "",
+            "passengers": (details.Adults+ details.children),
         }
 
         console.log("220 ", body)

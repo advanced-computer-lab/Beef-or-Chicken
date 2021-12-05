@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import LogoutButton from './LogoutButton'
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -115,7 +116,9 @@ export default function SwipeableTemporaryDrawer() {
                         <ListItemText primary='View User info' />
                     </ListItem>
                 </Link>
+                <LogoutButton />
             </List>
+            
 
         </Box>
     );

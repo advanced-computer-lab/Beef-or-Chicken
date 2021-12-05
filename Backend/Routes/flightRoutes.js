@@ -58,7 +58,7 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
 app.get("/searchUserByID/:id", async (request, response) => {  //search with Criteria
 
   console.log("ana el request:------- ")
-  
+
   // var q = JSON.stringify(request.body.id)
   // const user = await userModel.findById(q);
 
@@ -173,10 +173,24 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
     q.To = request.body.To
   }
   if (request.body.DepartureDate != "") {
-    q.DepartureDate = request.body.DepartureDate + "T00:00:00.000Z"
+    if (request.body.isReturning) {
+      q.DepartureDate = {
+        $gte: request.body.departingArrival ,
+        $eq: request.body.DepartureDate + "T00:00:00.000Z",
+      }
+    }
+    else{
+    q.DepartureDate = request.body.DepartureDate + "T00:00:00.000Z"}
   }
   if (request.body.ArrivalDate != "") {
-    q.ArrivalDate = request.body.ArrivalDate + "T00:00:00.000Z"
+    if (!request.body.isReturning) {
+      q.ArrivalDate = {
+        $lte: request.body.ArrivalDate ,
+        $eq: request.body.DepartureDate + "T00:00:00.000Z",
+      }
+    }
+      else{
+    q.ArrivalDate = request.body.ArrivalDate + "T00:00:00.000Z"}
   }
   if (request.body.FirstSeats != null) {
     q.FirstSeats = request.body.FirstSeats
@@ -199,13 +213,24 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
   if (request.body.FlightNumber != '') {
     q.FlightNumber = request.body.FlightNumber
   }
+  if (request.body.cabin == "First Class") {
+    q.RemFirst = { $gte: request.body.passengers }
+  }
+  if (request.body.cabin == "Business") {
+    q.RemBusiness = { $gte: request.body.passengers }
+  }
+  if (request.body.cabin == "Economy") {
+    q.RemEconomy = { $gte: request.body.passengers }
+  }
+
+
   console.log("body: ", request.body)
   console.log("1: ", request.body.FlightNumber)
-  console.log("2: ", request.body.FlightNumber.FlightNumber)
+  console.log("cabin: ", cabin)
   console.log(request.body.FlightNumber.FlightNumber != "")
   console.log("q", q)
-  let v = JSON.stringify(q)
-  console.log("v", v)
+  // let v = JSON.stringify(q)
+  // console.log("v", v)
   const flights = await flightModel.find(q);
   //const flights = flightModel.find({ RemEconomy: { $gt: 7 } });
   // if (cabin == "first") {

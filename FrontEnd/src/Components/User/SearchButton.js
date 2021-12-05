@@ -110,14 +110,15 @@ function IconLabelButtons({ details, origin, departingOffers, setDepartingOffers
                 'From': details.origin,
                 'To': details.destination,
                 "DepartureDate": details.departure_date,
-                "ArrivalDate": "",
+                "ArrivalDate": details.return_date,
                 "FirstSeats": null,
                 "BusinessSeats": null,
                 "EconomySeats": null,
                 "ArrivalTime": "",
+                "cabin": details.cabin_class,
                 "DepartureTime": "",
                 "FlightNumber": "",
-                "passengers": 8,
+                "passengers": (details.Adults + details.children),
             }
             setError(false)
 
