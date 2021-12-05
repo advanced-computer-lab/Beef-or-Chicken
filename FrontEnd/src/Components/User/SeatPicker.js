@@ -42,7 +42,8 @@ class SeatPicker extends Component {
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
             flight: this.props.match.params.flight,
-            ReservationId: this.props.history.location.state.ReservationId,
+            // ReservationId: this.props.history.location.state.ReservationId,
+            ReservationId: this.props.details.ReservationID,
             seats: [],
             initial: [],
             chosenSeats: [],
@@ -177,6 +178,8 @@ class SeatPicker extends Component {
     handleSubmit = () => {
         console.log("state", this.state)
         console.log("details", this.props)
+        console.log("seats", this.state.chosenSeats)
+
         this.state.DepartureSeats.push(this.state.chosenSeats)
         if (this.state.flight == 1) {
             console.log("entered first thingy")

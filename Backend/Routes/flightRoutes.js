@@ -141,7 +141,7 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
 
 app.post("/searchAvailableFlights", async (request, response) => {  //search with Criteria
   console.log("ana el request: ", request.body.From)
-
+  var cabin = ""
   var q = {}
   if (request.body.From != "") {
     q.From = request.body.From
@@ -157,12 +157,15 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
   }
   if (request.body.FirstSeats != null) {
     q.FirstSeats = request.body.FirstSeats
+    cabin = "first"
   }
   if (request.body.BusinessSeats != null) {
     q.BusinessSeats = request.body.BusinessSeats
+    cabin = "business"
   }
   if (request.body.EconomySeats != null) {
     q.EconomySeats = request.body.EconomySeats
+    cabin = "economy"
   }
   if (request.body.ArrivalTime != "") {
     q.ArrivalTime = request.body.ArrivalTime
@@ -181,7 +184,18 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
   let v = JSON.stringify(q)
   console.log("v", v)
   const flights = await flightModel.find(q);
-
+  //const flights = flightModel.find({ RemEconomy: { $gt: 7 } });
+  // if (cabin == "first") {
+  //   flightModel.find({ RemFirst: { $gt: request.body.passengers } });
+  // }
+  // if (cabin == "business") {
+  //   flightModel.find({ RemBusiness: { $gt: request.body.passengers } });
+  // }
+  // else {
+  //   flights = flightModel.find(q, { RemEconomy: { $gt: request.body.passengers } });
+  // }
+  //flightModel.getFilter();
+  // flights.find({ : { $gt: 50 } });
   try {
     response.send(flights);
   } catch (error) {
@@ -206,15 +220,15 @@ app.post("/createFlight", async (request, response) => {
   for (let i = 0; i < EconomySeats; i++) {
     EconomySeatsArray.push(0);
   }
-  
+
   for (let i = 0; i < BusinessSeats; i++) {
     BusinessSeatsArray.push(0);
   }
-  
+
   for (let i = 0; i < FirstSeats; i++) {
     FirstSeatsArray.push(0);
   }
-  
+
 
 
   const flight = new flightModel({
@@ -238,8 +252,8 @@ app.post("/createFlight", async (request, response) => {
     'BusinessBags': request.body.BusinessBags,
     'FirstBags': request.body.FirstBags,
     'EconomySeatsArray': EconomySeatsArray,
-    'BusinessSeatsArray':BusinessSeatsArray,
-    'FirstSeatsArray':FirstSeatsArray,
+    'BusinessSeatsArray': BusinessSeatsArray,
+    'FirstSeatsArray': FirstSeatsArray,
   });
 
   try {
@@ -254,23 +268,23 @@ app.patch("/flightSeats/:id", async (request, response) => {  //update
   try {
 
     console.log("ana el request: ", request.body)
-    
+
     var q = {}
-    
+
     if (request.body.EconomySeatsArray != null) {
       q.EconomySeatsArray = request.body.EconomySeatsArray,
-      q.RemEconomy = request.body.RemEconomy
+        q.RemEconomy = request.body.RemEconomy
     }
     if (request.body.BusinessSeatsArray != null) {
       q.BusinessSeatsArray = request.body.BusinessSeatsArray,
-      q.RemBusiness = request.body.RemBusiness
+        q.RemBusiness = request.body.RemBusiness
     }
     if (request.body.FirstSeatsArray != null) {
       q.FirstSeatsArray = request.body.FirstSeatsArray,
-      q.RemFirst = request.body.RemFirst
+        q.RemFirst = request.body.RemFirst
     }
 
-   
+
     console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
     console.log("first line");
@@ -286,7 +300,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
   try {
 
     console.log("ana el request: ", request.body)
-    
+
     var q = {}
     if (request.body.From.From != "") {
       q.From = request.body.From.From
@@ -348,7 +362,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
       q.FirstSeatsArray = request.body.FirstSeatsArray
     }
 
-   
+
     console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
     console.log("first line");

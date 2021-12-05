@@ -9,7 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { connect } from "react-redux";
 import FlightIcon from '@mui/icons-material/Flight';
 import moment, { duration } from 'moment'
-import ConfirmButton from './ConfirmButton.js'
+import ReturnToHomeButton from './ReturnToHomeButton.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -128,9 +128,9 @@ const useStyles = makeStyles((theme) => ({
         // marginRight: "60px",
     },
     text4: {
-        marginLeft: "11%",
+        marginLeft: "1%",
         marginTop: "-3%",
-        fontSize: theme.typography.pxToRem(25),
+        fontSize: theme.typography.pxToRem(23),
         // color:'#70757A',
         textAlign: "left",
     },
@@ -186,9 +186,10 @@ function SimplePaper({ details }) {
     }
 
     const passengers = (adults, children) => {
+        //console.log
         var p = " "
         if (children == 0 && adults == 1) {
-            p = { adults } + " Adult"
+            p = details.Adults + " Adult"
         }
         else if (details.children == 0 && details.Adults > 1) {
             p = adults + " Adults"
@@ -269,7 +270,7 @@ function SimplePaper({ details }) {
                         <Divider orientation="vertical" variant="middle" flexItem />
                         <Typography className={classes.text3}> Cabin : {details.cabin_class}</Typography>
                         <Divider orientation="vertical" variant="middle" flexItem />
-                        <Typography className={classes.text3}> Seats : {rseats(details.TakenSeatsDeparture)}</Typography>
+                        <Typography className={classes.text3}> Seats : {rseats(details.TakenSeatsDeparture[0])}</Typography>
 
                     </div>
                     <hr className={classes.line2}></hr>
@@ -326,7 +327,7 @@ function SimplePaper({ details }) {
                     </div>
                     {/* <hr className={classes.line2}></hr> */}
                     <div className={classes.button}>
-                        <ConfirmButton />
+                        <ReturnToHomeButton />
                     </div>
                 </CardContent>
             </Card>

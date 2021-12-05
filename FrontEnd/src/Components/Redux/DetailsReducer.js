@@ -33,9 +33,23 @@ const initState = {
         DepartingSeats: [],
         departingOffers: [],
         returningOffers: [],
+        ReservationID: "",
+        errorOccurred: false,
     },
 };
 const DetailsReducer = (state = initState, action) => {
+    if (action.type == 'setError') {
+        state.details.errorOccurred = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setReservationID') {
+        state.details.ReservationID = action.payload;
+        return {
+            ...state,
+        };
+    }
     if (action.type == 'setDepartingOffers') {
         state.details.departingOffers = action.payload;
         return {

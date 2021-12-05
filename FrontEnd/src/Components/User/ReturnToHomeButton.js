@@ -45,20 +45,44 @@ const mapStateToProps = (state) => {
     return {
         details: state.DetailsReducer.details,
         allOffers: state.DetailsReducer.details.allOffers,
-        ReservationID: state.DetailsReducer.details.ReservationID,
+        origin: state.DetailsReducer.details.origin,
+        origin_name: state.DetailsReducer.details.origin_name,
+        destination: state.DetailsReducer.details.destination,
+        destination_name: state.DetailsReducer.details.destination_name,
+        cabin_class: state.DetailsReducer.details.cabin_class,
+        Adults: state.DetailsReducer.details.Adults,
+        children: state.DetailsReducer.details.children,
     };
 };
 
 const mapDispatchToState = (dispatch) => {
     return {
-        setReservationID: (ReservationID) => {
-            dispatch({ type: 'setReservationID', payload: ReservationID });
+
+        setCabinClass: (cabin_class) => {
+            dispatch({ type: 'setCabinClass', payload: cabin_class });
+        },
+        setAdult: (Adults) => {
+            dispatch({ type: 'setAdult', payload: Adults });
+        },
+        setChildren: (children) => {
+            dispatch({ type: 'setChildren', payload: children });
+        },
+        setOrigin: (origin) => {
+            dispatch({ type: 'setOrigin', payload: origin });
         },
 
-
-        setAllOffers: (allOffers) => {
-            dispatch({ type: 'setAllOffers', payload: allOffers });
+        setOriginName: (origin_name) => {
+            dispatch({ type: 'setOriginName', payload: origin_name });
         },
+
+        setDestination: (destination) => {
+            dispatch({ type: 'setDestination', payload: destination });
+        },
+
+        setDestinationName: (destination_name) => {
+            dispatch({ type: 'setDestinationName', payload: destination_name });
+        },
+
 
 
     };
@@ -68,55 +92,60 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details, setReservationID, ReservationID }) {
+function IconLabelButtons({ setAdult, setCabinClass, setChildren, details, setOrigin, setOriginName, setDestination, setDestinationName }) {
 
     let history = useHistory();
     const classes = useStyles();
 
     const func = async (e) => {
         e.preventDefault();
-        // console.log("detailsssssss: ", details)
+        setOrigin("")
+        setOriginName("")
+        setDestination("")
+        setDestinationName("")
+        setCabinClass('Economy')
+        setAdult(1)
+        setChildren(0)
+        console.log("detailsssssss------->: ", details)
         // //console.log("allahu akbar", details.allOffers)
-        if (details.UserID == "") {
-            alert("Log in please!")
-            history.push("/UserLogin");
+        // if (details.UserID == "") {
+        //     alert("Log in please!")
+        //     history.push("/UserLogin");
 
-        }
-        else {
-            let body = {
-                'UserID': details.UserID,
-                'DepartureFlightID': details.DepartingFlight._id,
-                "ReturnFlightID": details.ReturnFlight._id,
-                "CabinType": details.cabin_class,
-                // "TakenSeats": details.TakenSeats,
-                "TotalPrice": details.DeparturePrice + details.ReturnPrice,
-                "Children": details.children,
-                "Adults": details.Adults,
+        // }
+        // else {
+        //     let body = {
+        //         'UserID': details.UserID,
+        //         'DepartureFlightID': details.DepartingFlight._id,
+        //         "ReturnFlightID": details.ReturnFlight._id,
+        //         "CabinType": details.cabin_class,
+        //         // "TakenSeats": details.TakenSeats,
+        //         "TotalPrice": details.DeparturePrice + details.ReturnPrice,
+        //         "Children": details.children,
+        //         "Adults": details.Adults,
 
-            }
+        //     }
 
-            console.log("body: ", body)
-            let url = "http://localhost:8080/createReservation"
+        // console.log("body: ", body)
+        // let url = "http://localhost:8080/createReservation"
 
-            axios
+        // axios
 
-                .post(url, body)
-                .then(res => {
-                    console.log("respnose: ", res)
-                    console.log("response data", res.data)
+        //     .post(url, body)
+        //     .then(res => {
+        //         console.log("respnose: ", res)
+        //         console.log("response data", res.data)
 
 
-                    setReservationID(res.data)
-                    console.log("ReservationID-----> ", ReservationID)
-                    console.log("details-----> ", details)
-                    history.push('/Seats/1', { ReservationId: res.data });
-                })
-                .catch(error => {
-                    console.log("idiot!");
-                    console.log(error.message);
-                })
-        }
+
+        history.push('/');
+        // })
+        // .catch(error => {
+        //     console.log("idiot!");
+        //     console.log(error.message);
+        // })
     }
+    //  }
 
     //resluts.slices.semg.length
 
@@ -143,7 +172,7 @@ function IconLabelButtons({ details, setReservationID, ReservationID }) {
                             // startIcon={<SearchIcon />}
                             onClick={(e) => { func(e) }}
                         >
-                            Confirm
+                            Home
                         </Button>
 
                     </div>

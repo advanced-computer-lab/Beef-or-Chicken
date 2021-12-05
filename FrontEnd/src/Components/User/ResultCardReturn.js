@@ -233,7 +233,7 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
             case "Bussiness":
                 return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
                 break;
-            case "First":
+            case "First Class":
                 return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
                 break;
             default:
@@ -362,7 +362,7 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
 
                             <Typography className={classes.text3}> Cabin Class : {details.cabin_class}</Typography>
 
-                            <Typography className={classes.text4}> Baggage Allowance : {bags(offers)} Kg</Typography>
+                            <Typography className={classes.text4}> Baggage Allowance : {bags(offers)} Pieces</Typography>
                             <hr className={classes.line2}></hr>
 
                         </AccordionDetails>
