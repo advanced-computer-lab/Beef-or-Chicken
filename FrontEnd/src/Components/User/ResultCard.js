@@ -413,7 +413,7 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
 
                             <Typography className={classes.text3}> Cabin Class : {details.cabin_class}</Typography>
 
-                            <Typography className={classes.text4}> Baggage Allowance : {bags(offers)} Kg</Typography>
+                            <Typography className={classes.text4}> Baggage Allowance : {bags(offers)} Pieces</Typography>
                             <hr className={classes.line2}></hr>
 
 

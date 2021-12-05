@@ -23,6 +23,10 @@ import SearchButton from "./SearchButton"
 import { connect } from "react-redux";
 import SideBar from "./SideBar"
 
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Collapse from '@mui/material/Collapse';
+import Box from '@mui/material/Box';
 
 var option = ""
 var sum = 0;
@@ -103,6 +107,7 @@ const mapStateToProps = (state) => {
         infants_in_seat: state.DetailsReducer.details.infants_in_seat,
         totalPassengers: state.DetailsReducer.details.totalPassengers,
         Adults: state.DetailsReducer.details.Adults,
+        errorOccurred: state.DetailsReducer.details.errorOccurred,
 
     };
 };
@@ -116,6 +121,9 @@ const mapDispatchToState = (dispatch) => {
         },
         setOriginName: (origin_name) => {
             dispatch({ type: 'setOriginName', payload: origin_name });
+        },
+        setError: (errorOccurred) => {
+            dispatch({ type: 'setError', payload: errorOccurred });
         },
 
         setTripType: (tripType) => {
@@ -151,12 +159,12 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(Home);
 
 
-function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, children, infants_on_lap, infants_in_seat, setTotalPassengers, totalPassengers, Adults }) {
+function Home({ setError, tripType, setTripType, errorOccurred, setCabinClass, cabin_class, destination, children, infants_on_lap, infants_in_seat, setTotalPassengers, totalPassengers, Adults }) {
     const classes = useStyles();
 
     const [dropDownValue, setdropDownValue] = useState("Round Trip");
     const [classValue, setclassValue] = useState('Economy');
-
+    const [open, setOpen] = useState(true)
 
     const [state, setState] = useState([
         {
@@ -197,6 +205,21 @@ function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, childr
         setCabinClass(e.target.textContent)
         console.log("cabin: ", cabin_class)
     }
+    const handleError = () => {
+        if (errorOccurred == true) {
+
+            // setError(false)
+            console.log("errorr--->", errorOccurred)
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+    // if (origin == "" || destination == "") {
+    //     setOpen(true)
+    // }
     // render() { 
     const [newcount1, setnewCount1] = useState(0);
     const [newcount2, setnewCount2] = useState(0);
@@ -206,6 +229,20 @@ function Home({ tripType, setTripType, setCabinClass, cabin_class, Adult, childr
 
         <div style={{ backgroundImage: `url(${bg2})`, height: "100vh", backgroundSize: "cover" }}>
             <SideBar />
+            <div>
+                <Box sx={{ width: '100%' }}>
+                    <Collapse in={handleError()}>
+                        <Alert severity="error"
+
+                            sx={{ mb: 2 }}
+                        >
+                            Please Enter All Details!
+                        </Alert>
+                    </Collapse>
+
+                </Box>
+            </div>
+
             <div className={classes.search}>
                 <div className={classes.bottomSheet}>
                     <div className={classes.rectangle}>

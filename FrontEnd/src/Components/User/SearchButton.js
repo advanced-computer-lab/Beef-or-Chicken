@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -12,6 +12,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Collapse from '@mui/material/Collapse';
+import Box from '@mui/material/Box';
+
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -41,11 +46,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 const mapStateToProps = (state) => {
-    console.log(state.DetailsReducer.details.destination)
+    // console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
         departingOffers: state.DetailsReducer.details.departingOffers,
-        allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        origin: state.DetailsReducer.details.origin,
+        destination: state.DetailsReducer.details.destination,
+        errorOccurred: state.DetailsReducer.details.errorOccurred,
     };
 };
 
@@ -56,6 +64,10 @@ const mapDispatchToState = (dispatch) => {
             dispatch({ type: 'setDepartingOffers', payload: departingOffers });
         },
 
+        setError: (errorOccurred) => {
+            dispatch({ type: 'setError', payload: errorOccurred });
+        },
+
 
     };
 };
@@ -64,44 +76,69 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details, setAllOffers, departingOffers, setDepartingOffers }) {
+function IconLabelButtons({ details, origin, departingOffers, setDepartingOffers, destination, setError, errorOccurred }) {
 
     let history = useHistory();
     const classes = useStyles();
+    const [open, setOpen] = useState(true)
+    // setError(false)
 
+    useEffect(() => {
+        window.addEventListener("beforeunload", alertUser);
+        return () => {
+            window.removeEventListener("beforeunload", alertUser);
+        };
+    }, []);
+    const alertUser = (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+        console.log("refreshhhh")
+        setError(false)
+        console.log("reafresh---> ", errorOccurred)
+
+    };
     const func = async () => {
         console.log("detailsssssss: ", details)
         //console.log("allahu akbar", details.allOffers)
-        let body = {
-            'From': details.origin,
-            'To': details.destination,
-            "DepartureDate": details.departure_date,
-            "ArrivalDate": "",
-            "FirstSeats": null,
-            "BusinessSeats": null,
-            "EconomySeats": null,
-            "ArrivalTime": "",
-            "DepartureTime": "",
-            "FlightNumber": ""
+        if (origin == "" || destination == "") {
+            console.log("la wlo")
+            setError(true)
+            console.log(errorOccurred)
         }
+        else {
+            let body = {
+                'From': details.origin,
+                'To': details.destination,
+                "DepartureDate": details.departure_date,
+                "ArrivalDate": "",
+                "FirstSeats": null,
+                "BusinessSeats": null,
+                "EconomySeats": null,
+                "ArrivalTime": "",
+                "DepartureTime": "",
+                "FlightNumber": "",
+                "passengers": 8,
+            }
+            setError(false)
 
-        console.log("body: ", body)
-        let url = "http://localhost:8080/searchAvailableFlights"
+            console.log("body: ", body)
+            let url = "http://localhost:8080/searchAvailableFlights"
 
-        axios
-            .post(url, body)
-            .then(res => {
-                console.log("respnose: ", res)
-                console.log("gamed louji!")
-                setDepartingOffers(res.data);
-                //console.log("allOffres: ", allOffers)
-                //this.props.history.push('/');
-                history.push("/DepartingFlights");
-            })
-            .catch(error => {
-                console.log("idiot!");
-                console.log(error.message);
-            })
+            axios
+                .post(url, body)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+                    setDepartingOffers(res.data);
+                    //console.log("allOffres: ", allOffers)
+                    //this.props.history.push('/');
+                    history.push("/DepartingFlights");
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+        }
     }
 
     //resluts.slices.semg.length
@@ -115,24 +152,52 @@ function IconLabelButtons({ details, setAllOffers, departingOffers, setDeparting
     return (
         <div className={classes.buttonDiv}>
             <ul>
-                <Link to="/results">
-                    <div className={classes.button}>
 
-                        {/* This Button uses a Font Icon, see the installation instructions in the Icon component docs. */}
-                        <Button
-                            style={{ background: "#10404c ", color: "wheat" }}
-                            classname={classes.button2}
-                            variant="contained"
-                            size="large"
-                            className={classes.button}
-                            startIcon={<SearchIcon />}
-                            onClick={func}
-                        >
-                            Search
-                        </Button>
+                <div className={classes.button}>
 
-                    </div>
-                </Link>
+                    <Button
+                        style={{ background: "#10404c ", color: "wheat" }}
+                        //   classname={classes.button2}
+                        variant="contained"
+                        //disabled={btnDisabled}
+                        size="large"
+                        className={classes.button}
+                        startIcon={<SearchIcon />}
+                        onClick={func}
+                    >
+                        Search
+                    </Button>
+                    {/* <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        This is an error alert — <strong>check it out!</strong>
+                    </Alert> */}
+
+                    {/* <div>
+                        <Box sx={{ width: '100%' }}>
+                            <Collapse in={open}>
+                                <Alert severity="error"
+                                    //   action={
+                                    // <IconButton
+                                    //   aria-label="close"
+                                    //   color="inherit"
+                                    //   size="small"
+                                    //   onClick={ this.setAlertFalse()
+                                    //  }
+                                    // >
+                                    //   <CloseIcon fontSize="inherit" />
+                                    // </IconButton>
+                                    //   }
+                                    sx={{ mb: 2 }}
+                                >
+                                    Please Enter All Details Correctly!
+                                </Alert>
+                            </Collapse>
+
+                        </Box>
+                    </div> */}
+
+                </div>
+
             </ul>
         </div>
     );
