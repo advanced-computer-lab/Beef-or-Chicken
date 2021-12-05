@@ -109,11 +109,11 @@ class SeatPicker extends Component {
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
 
                     break;
-                case "Bussiness":
+                case "Business":
                     this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
                     break;
-                case "First":
+                case "First Class":
                     this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
                     break;
@@ -133,11 +133,11 @@ class SeatPicker extends Component {
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
 
                     break;
-                case "Bussiness":
+                case "Business":
                     this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
                     break;
-                case "First":
+                case "First Class":
                     this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
                     this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
                     break;
@@ -199,14 +199,14 @@ class SeatPicker extends Component {
                     }
 
                     break;
-                case "Bussiness":
+                case "Business":
 
                     body2 = {
                         BussinessSeatsArray: this.state.seats,
                         RemBusiness: (this.props.details.DepartingFlight.RemBusiness -(this.state.maxSeats))
                     }
                     break;
-                case "First":
+                case "First Class":
 
                     body2 = {
                         FirstSeatsArray: this.state.seats,
@@ -313,14 +313,14 @@ class SeatPicker extends Component {
 
 
                     break;
-                case "Bussiness":
+                case "Business":
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
                         RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats))
                     }
 
                     break;
-                case "First":
+                case "First Class":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
                         RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats))
