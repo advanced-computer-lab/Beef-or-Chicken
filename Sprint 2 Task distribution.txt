@@ -1,0 +1,38 @@
+Yasmine Elfares
+46-1357
+yasmine.elfares@student.guc.edu.eg
+T-22
+
+Mark Sroor
+46-5861	
+mark.sroor@student.guc.edu.eg
+T-22
+
+Carol Emad	
+46-0285	
+carol.halim@student.guc.edu.eg
+T-22
+
+Lougina Hatem
+46-13014	
+lougina.backar@student.guc.edu.eg
+T-22
+
+Dareen Mohamed	
+46-0416	
+dareen.abdelwareth@student.guc.edu.eg
+T-18
+
+---------------------------------------------------------------------------------------------------------------------------------
+BEEF or CHICKEN
+
+Tasks assigned:
+
+	Dareen :  - Frontend of Viewing reservations & reserved flights  
+        	  - Frontend of Cancelling Reservations & Confirming Cancelling Reservations   
+
+
+
+
+
+

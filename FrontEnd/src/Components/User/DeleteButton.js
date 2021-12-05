@@ -83,7 +83,7 @@ export default function AlertDialog(prop) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >  <DialogTitle id="alert-dialog-title">
-                    {"Success"}
+                    {" "}
                 </DialogTitle>
                 
                 <DialogContent>
