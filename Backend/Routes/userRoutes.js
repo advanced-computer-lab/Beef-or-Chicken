@@ -74,17 +74,13 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
 
 
 
-
-
-
-
 app.post('/login', (req, res) => {
   const userLoggedIn = req.body
   userModel.findOne({ email: userLoggedIn.email })
     .then(dbUser => {
       if (!dbUser) {
         return res.json({
-          message: "Invalid Username or Pass"
+          message: "Invalid Username or Password"
         })
       }
       bcrypt.compare(userLoggedIn.password, dbUser.password)
@@ -122,36 +118,40 @@ app.post('/login', (req, res) => {
 
 app.post('/register', async (req, res) => {
   const user = req.body;
-  //const takenUsername = await userModel.findOne({ user: user.username })
+  console.log(user);
+  const takenUsername = await userModel.findOne({ username: user.username })
   const takenEmail = await userModel.findOne({ email: user.email })
-  console.log(takenEmail)
-  console.log(user)
+ console.log(takenUsername);
 
-  if (takenEmail) {
-    res.json({ message: "username or password taken" })
+ if (takenEmail) {
+    res.json({ message: "email taken" })
   }
   else {
-    console.log("hahashing")
-    // const hashedPassword = await new Promise((resolve, reject) => {
-    user.password = await bcrypt.hash(req.body.password, 10);
-    //   })
-    console.log("done hashing")
-
-    const dbUser = new userModel({
-      //username: user.name.toLowerCase(),
-      email: user.email.toLowerCase(),
-      password: user.password,
-      type: 1,
-      firstName: "marky",
-      lastName: "mark",
-      passportNumber: "07775000",
-      reservations: []
+    if(takenUsername){
+      res.json({ message: "username taken" })
+    }else {
+      user.password = await bcrypt.hash(req.body.password, 10);
+  
+      const dbUser = new userModel({
+        username: user.username,
+        email: user.email.toLowerCase(),
+        password: user.password,
+        type: 1,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        passportNumber: user.passportNumber,
+        reservations: [],
+        address : user.address,
+        countryCode:user.countryCode,
+        telephone1: user.telephone1,   
+        telephone2: user.telephone2
+      }
+      )
+      dbUser.save()
+      res.json({ message: "Success" })
     }
-    )
-    console.log("hashedpass", user.password)
-    dbUser.save()
-    res.json({ message: "Success" })
   }
+  
 })
 
 //pure habdddddd

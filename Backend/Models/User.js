@@ -6,8 +6,11 @@ const userSchema = new Schema({
     //     type: String,
     //     required:
     // },
-
-
+    username: {
+        unique:true,
+        type: String,
+        required: true,
+    },
     email: {
         unique:true,
         type: String,
@@ -36,6 +39,22 @@ const userSchema = new Schema({
     reservations: {
         type: Array,
         required: true
+    },
+    address: {
+        type: String,
+        required: false
+    },
+    countryCode: {
+        type: String,
+        required: true
+    },
+    telephone1: {
+        type: String,
+        required: true
+    },
+    telephone2: {
+        type: String,
+        required: false
     },
 
 
