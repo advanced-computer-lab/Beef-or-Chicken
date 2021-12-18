@@ -35,9 +35,17 @@ const initState = {
         returningOffers: [],
         ReservationID: "",
         errorOccurred: false,
+        Reservation =[],
     },
 };
 const DetailsReducer = (state = initState, action) => {
+    if (action.type == 'setReservation') {
+        state.details.Reservation = action.payload;
+        return {
+            ...state,
+        };
+    }
+
     if (action.type == 'setError') {
         state.details.errorOccurred = action.payload;
         return {
