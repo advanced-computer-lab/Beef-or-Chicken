@@ -4,6 +4,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
+import Button from '@material-ui/core/Button';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
@@ -36,12 +37,12 @@ const mapDispatchToState = (dispatch) => {
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
-export default function ViewAllReservations({ props, Reservation, setReservation }) {
-
+ function ViewAllReservations(props,{Reservation,setReservation} ) {
+    console.log("props: ",props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-
+    console.log("reservation from details: ",Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;
@@ -56,9 +57,9 @@ export default function ViewAllReservations({ props, Reservation, setReservation
     if (reservation.TakenSeatsArriving.length === 0) {
         Object.assign(reservation, { TakenSeatsArriving: ["None"] })
     }
-    const handleEdit = () => {
-        setReservation("whatever");
-
+    const handleEdit = (type) => { //1 is departing and 2 is returning
+        props.setReservation("Marky");
+       // console.log("props.reservation:" ,props.Reservation)
     };
 
     const flightDuration = (initDate, finalDate, initTime, finalTime) => {
@@ -339,6 +340,10 @@ export default function ViewAllReservations({ props, Reservation, setReservation
 
 
                                             <DeleteButton reservation={reservation._id} />
+                                            <Button
+                                            variant="outlined" size="medium" color="primary"
+                                           
+                                             onClick={() => {handleEdit(2) }} >Edit Flight</Button>
 
                                         </form>
                                     </div>
@@ -498,8 +503,12 @@ export default function ViewAllReservations({ props, Reservation, setReservation
 
 
 
-
+                                            <Button
+                                            variant="outlined" size="medium" color="primary"
+                                           
+                                             onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
+                                            
 
                                         </form>
                                     </div>

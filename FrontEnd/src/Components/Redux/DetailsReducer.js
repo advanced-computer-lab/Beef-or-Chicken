@@ -35,7 +35,7 @@ const initState = {
         returningOffers: [],
         ReservationID: "",
         errorOccurred: false,
-        Reservation :[],
+        Reservation :["marky"],
     },
 };
 const DetailsReducer = (state = initState, action) => {
