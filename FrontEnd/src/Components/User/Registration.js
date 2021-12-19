@@ -26,6 +26,9 @@ import StepLabel from '@mui/material/StepLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
 const steps = ['', ''];
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +88,6 @@ function Register({ details , setUserID}) {
     const [lastName, setLastName] = useState("");
     const [passportNumber, setPassportNumber] = useState("");
     const [address, setAddress] = useState("");
-    const [countryCode, setCountryCode] = useState("");
     const [telephone1, setTelephone1] = useState("");
     const [telephone2, setTelephone2] = useState("");
 
@@ -104,17 +106,42 @@ function Register({ details , setUserID}) {
       return skipped.has(step);
     };
   
-    const handleNext = () => {
-      let newSkipped = skipped;
-      if (isStepSkipped(activeStep)) {
-        newSkipped = new Set(newSkipped.values());
-        newSkipped.delete(activeStep);
-      }
   
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
+
+    const handleNext = () => {
+        
+        let body = {
+            'username': username
+        }
+        let url = "http://localhost:8080/CheckUsername"
+        axios
+            .post(url, body)
+            .then(res => {
+               console.log(res.data.message)
+               if(res.data.message === "not"){
+
+                let newSkipped = skipped;
+                if (isStepSkipped(activeStep)) {
+                  newSkipped = new Set(newSkipped.values());
+                  newSkipped.delete(activeStep);
+                }
+            
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                setSkipped(newSkipped);
+
+               }
+               else{
+                   
+               }
+               //not taken
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
 
     };
+
+
   
     const handleBack = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -173,53 +200,31 @@ function Register({ details , setUserID}) {
         'lastName':lastName,
         'passportNumber':  passportNumber,
         'address' : address,
-        'countryCode':countryCode,
         'telephone1': telephone1,   
         'telephone2': telephone2
 
     }
 
-    console.log("body: ", body) 
+    console.log("body: ", body)
+    let url = "http://localhost:8080/register"
+    axios
+        .post(url, body)
+        .then(res => {
+         /*   if (res.data[0].type == 1) {
+                details.UserID = res.data[0]._id
+                //details.token = 
+                history.goBack();
+            }
+            else {
+                console.log("not user")
+            }
+            */
+        })
+        .catch(error => {
+            console.log(error.message);
+        })
  };  
-    
 
-    const handleSubmit2 = (event) => {
-        event.preventDefault();
-        
-        let body = {
-            'username': username,
-            'email':  email ,
-            'password':  password ,
-            'firstName' : firstName,
-            'lastName':lastName,
-            'passportNumber':  passportNumber,
-            'address' : address,
-            'countryCode':countryCode,
-            'telephone1': telephone1,   
-            'telephone2': telephone2
-
-        }
-
-        console.log("body: ", body)
-        let url = "http://localhost:8080/register"
-        axios
-            .post(url, body)
-            .then(res => {
-             /*   if (res.data[0].type == 1) {
-                    details.UserID = res.data[0]._id
-                    //details.token = 
-                    history.goBack();
-                }
-                else {
-                    console.log("not user")
-                }
-                */
-            })
-            .catch(error => {
-                console.log(error.message);
-            })
-
-    };
 
     const countries = [
         { code: 'AD', label: 'Andorra', phone: '376' },
@@ -581,6 +586,8 @@ function Register({ details , setUserID}) {
                                         <PersonIcon  sx={{ width: 40, height: 40  }}/>
                                     </Avatar>
                                     <hr/>
+
+                                   
                                     <Typography component="h1" variant="h5">
                                         Create Account
                                     </Typography>
@@ -704,7 +711,7 @@ function Register({ details , setUserID}) {
                                                     </div>
 
                                                         : (<div>
-
+                                                           
                                                             <Row>
                                                                 <Col>
                                                                     <Form.Group controlId="validationCustom01">
@@ -728,7 +735,7 @@ function Register({ details , setUserID}) {
                                                             <Row>
                                                                 <Col>
                                                                     <Form.Group controlId="validationCustom01">
-                                                                        <FloatingLabel controlId="floatingAddress" label="Address" >
+                                                                        <FloatingLabel controlId="floatingAddress" label="Address (optional)" >
                                                                             <Form.Control
                                                                                 type="text"
                                                                                 aria-describedby="inputGroupPrepend"
@@ -742,77 +749,56 @@ function Register({ details , setUserID}) {
                                                             <br />
                                                             <Row>
                                                                 <Col>
-                                                                
-                                                                
-                                                                
-                                                                
-                                                                
-
-
-                                                                    <Autocomplete
-                                                                        id="country-select-demo"
-                                                                        options={countries}
-                                                                        autoHighlight
-                                                                        getOptionLabel={(option) => "+" + option.phone}
-                                                                        renderOption={(props, option) => (
-                                                                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                                                                <img
-                                                                                    loading="lazy"
-                                                                                    width="20"
-                                                                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                                                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                                                                    alt=""
-                                                                                />
-                                                                                {option.label} ({option.code}) +{option.phone}
-                                                                            </Box>
-                                                                        )}
-                                                                        renderInput={(params) => (
-                                                                            <TextField
-                                                                                {...params}
-                                                                                label="Country Code *"
-                                                                                inputProps={{
-                                                                                    ...params.inputProps,
-                                                                                    autoComplete: 'new-password', // disable autocomplete and autofill
-                                                                                }}
-                                                                            />
-                                                                        )}
-                                                                    />
-
-
-                                                                
-                                                                
-                                                                
-                                                                
-                                                                
-                                                                
-                                                                
-                                                                </Col>
-                                                            <Col>
-                                                                <Form.Group controlId="validationCustom01">
-                                                                    <FloatingLabel controlId="floatingTelephone1" label="Phone Number *" >
-                                                                        <Form.Control
+                                                                    <Form.Group controlId="validationCustom01">
+                                                                        <  PhoneInput
                                                                             required
-                                                                            type="text"
-                                                                            onChange={e => setTelephone1(e.target.value)}
+                                                                            placeholder="Telephone *"
+                                                                            isValid={(value, country) => {
+                                                                                if (value.match(/12345/)) {
+                                                                                    return 'Invalid value: ' + value + ', ' + country.name;
+                                                                                } else if (value.match(/1234/)) {
+                                                                                    return false;
+                                                                                } else {
+                                                                                    if (value === country.countryCode || value ==="") {
+                                                                                        setTelephone1("")
+                                                                                    }
+                                                                                    else {
+                                                                                        setTelephone1("+" + value)
+                                                                                    }
+                                                                                    return true;
+                                                                                }
+                                                                            }}
                                                                         />
-                                                                    </FloatingLabel>
-                                                                    <Form.Control.Feedback type="invalid">Phone Number is Required!</Form.Control.Feedback>
-                                                                </Form.Group>
-                                                            </Col>
+                                                                        <Form.Control.Feedback type="invalid">Phone Number is Required!</Form.Control.Feedback>
 
-
-                                                            <Col>
-                                                            <Form.Group controlId="validationCustom01">
-                                                                    <FloatingLabel controlId="floatingTelephone2" label="Phone Number" >
-                                                                        <Form.Control
-                                                                            type="text"
-                                                                            onChange={e => setTelephone2(e.target.value)}
+                                                                    </Form.Group>
+                                                                </Col>
+                                                                </Row>
+                                                                <br/>
+                                                                <Row>
+                                                                    
+                                                                <Col>
+                                                                    <Form.Group controlId="validationCustom01">
+                                                                        <PhoneInput
+                                                                            placeholder="Telephone (optional)"
+                                                                            isValid={(value, country) => {
+                                                                                if (value.match(/12345/)) {
+                                                                                    return 'Invalid value: ' + value + ', ' + country.name;
+                                                                                } else if (value.match(/1234/)) {
+                                                                                    return false;
+                                                                                } else {
+                                                                                    if (value === country.countryCode|| value ==="") {
+                                                                                        setTelephone2("")}
+                                                                                    else{
+                                                                                        setTelephone2("+" + value)}
+                                                                                    return true;
+                                                                                }
+                                                                            }}
                                                                         />
-                                                                    </FloatingLabel>
-                                                                </Form.Group>
-                                                            </Col>
-                                                        </Row>
-                                                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 , flex: '1 1 auto'  }}>
+                                                                    </Form.Group>
+                                                                </Col>
+                                                            </Row>
+                                                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 , flex: '1 1 auto'  }}>
                                                         <Box sx={{ flex: '1 1 auto' }} />
                                                         <Button type="submit"  >Submit</Button>
 
@@ -875,45 +861,91 @@ function Register({ details , setUserID}) {
 
 
 
-
+country={'eg'}
 
 
 
 <Autocomplete
-      id="country-select-demo"
-      sx={{ width: 300 }}
-      options={countries}
-      autoHighlight
-      getOptionLabel={(option) => "+" + option.phone}
-      renderOption={(props, option) => (
+id="country-select-demo"
+sx={{ width: 300 }}
+options={countries}
+autoHighlight
+getOptionLabel={(option) => "+" + option.phone}
+renderOption={(props, option) => (
         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-          <img
-            loading="lazy"
+        <img
+        loading="lazy"
             width="20"
             src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
             srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
             alt=""
           />
           {option.label} ({option.code}) +{option.phone}
-        </Box>
-      )}
-      renderInput={(params) => (
-        <TextField
+          </Box>
+          )}
+          renderInput={(params) => (
+              <TextField
           {...params}
           label="Country Code"
           inputProps={{
-            ...params.inputProps,
+              ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
+        }}
         />
-      )}
-    />
-
-
-
-
-
-
-
-
-*/
+        )}
+        />
+        
+        
+        
+        
+        
+        
+        
+        
+       <Col>
+       
+       
+       
+       
+       
+       
+       
+           <Autocomplete
+               id="country-select-demo"
+               options={countries}
+               autoHighlight
+               getOptionLabel={(option) => "+" + option.phone}
+               renderOption={(props, option) => (
+                   <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                       <img
+                           loading="lazy"
+                           width="20"
+                           src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                           srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                           alt=""
+                       />
+                       {option.label} ({option.code}) +{option.phone}
+                   </Box>
+               )}
+               renderInput={(params) => (
+                   <TextField
+                       {...params}
+                       label="Country Code *"
+                       inputProps={{
+                           ...params.inputProps,
+                           autoComplete: 'new-password', // disable autocomplete and autofill
+                       }}
+                   />
+               )}
+           />
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       </Col>
+        */

@@ -44,10 +44,6 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    countryCode: {
-        type: String,
-        required: true
-    },
     telephone1: {
         type: String,
         required: true

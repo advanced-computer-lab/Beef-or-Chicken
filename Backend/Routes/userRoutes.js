@@ -142,7 +142,6 @@ app.post('/register', async (req, res) => {
         passportNumber: user.passportNumber,
         reservations: [],
         address : user.address,
-        countryCode:user.countryCode,
         telephone1: user.telephone1,   
         telephone2: user.telephone2
       }
@@ -153,6 +152,24 @@ app.post('/register', async (req, res) => {
   }
   
 })
+
+
+app.post('/CheckUsername', async (req, res) => {
+  const user = req.body;
+  console.log(user);
+  const takenUsername = await userModel.findOne({ username: user.username })
+console.log(takenUsername)
+    if(takenUsername){
+      res.json({ message: "taken" })
+    }else {
+      res.json({ message: "not" })
+      }
+  
+  
+})
+
+
+
 
 //pure habdddddd
 //TO BE TESTEEEDDDDDD test test test
