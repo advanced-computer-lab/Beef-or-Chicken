@@ -6,7 +6,10 @@ const flightModel = require("../Models/Flight");
 const userModel = require("../Models/User");
 const reservationModel = require("../Models/Reservation");
 const nodemailer = require("nodemailer");
+<<<<<<< Updated upstream
 const { diffIndexes } = require("../Models/Flight");
+=======
+>>>>>>> Stashed changes
 
 
 app.get("/allReservations", async (request, response) => {
@@ -32,8 +35,12 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
       q.TakenSeatsArriving = request.body.seatsReturning
     await reservationModel.findByIdAndUpdate(reservationId, q);
 
+<<<<<<< Updated upstream
 
         //send mail with itineraire
+=======
+      //send mail with itineraire
+>>>>>>> Stashed changes
         //IF PAID
         //const seats = await reservationModel.findById(ReservationId);
         const reservation = await reservationModel.findById(reservationId);
