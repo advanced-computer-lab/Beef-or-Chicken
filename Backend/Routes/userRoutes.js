@@ -72,11 +72,9 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
 });
 
 
-
-
 app.post('/login', (req, res) => {
   const userLoggedIn = req.body
-  userModel.findOne({ email: userLoggedIn.email })
+  userModel.findOne({ username: userLoggedIn.username })
     .then(dbUser => {
       if (!dbUser) {
         return res.json({
@@ -120,13 +118,8 @@ app.post('/register', async (req, res) => {
   const user = req.body;
   console.log(user);
   const takenUsername = await userModel.findOne({ username: user.username })
-  const takenEmail = await userModel.findOne({ email: user.email })
  console.log(takenUsername);
 
- if (takenEmail) {
-    res.json({ message: "email taken" })
-  }
-  else {
     if(takenUsername){
       res.json({ message: "username taken" })
     }else {
@@ -159,7 +152,7 @@ app.post('/register', async (req, res) => {
         (err, token) => {
           if (err) return res.json({ message: err })
           return res.json({
-            token: "Bearer"+token,
+            token: "Bearer "+token,
             message :"success",
             UserId : payload.id
           })
@@ -169,7 +162,7 @@ app.post('/register', async (req, res) => {
     }
   }
   
-})
+)
 
 
 app.post('/CheckUsername', async (req, res) => {
