@@ -8,6 +8,27 @@ const reservationModel = require("../Models/Reservation");
 const nodemailer = require("nodemailer");
 
 
+function verifyJWT(req , res , next) {
+  const tokwn = req.headers["x-access-token"]?.split(' ')[1]
+  
+  if(token){
+    jwt.verify(token, process.env.PASSPORTSECRET, (err ,decoded) => {
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed To Authenticate"
+      })
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      next()
+    })
+  }else{
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
+
+
+
 app.get("/allReservations", async (request, response) => {
   const reservations = await reservationModel.find({});
 

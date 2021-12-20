@@ -159,7 +159,7 @@ app.post('/register', async (req, res) => {
         (err, token) => {
           if (err) return res.json({ message: err })
           return res.json({
-            token: token,
+            token: "Bearer"+token,
             message :"success",
             UserId : payload.id
           })
