@@ -6,10 +6,6 @@ const flightModel = require("../Models/Flight");
 const userModel = require("../Models/User");
 const reservationModel = require("../Models/Reservation");
 const nodemailer = require("nodemailer");
-<<<<<<< Updated upstream
-const { diffIndexes } = require("../Models/Flight");
-=======
->>>>>>> Stashed changes
 
 
 app.get("/allReservations", async (request, response) => {
@@ -21,11 +17,10 @@ app.get("/allReservations", async (request, response) => {
     response.status(500).send(error);
   }
 });
-
 app.patch("/reserveSeats", async (request, response) => {  //updateUser
   try {
 
-    //console.log("Request: ", request.body)
+    console.log("Request: ", request.body)
     var q = {}
 
     var reservationId= request.body.reservationId;
@@ -33,14 +28,10 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
       q.TakenSeatsDeparting =  request.body.seatsDeparting
     if (request.body.seatsReturning != null)
       q.TakenSeatsArriving = request.body.seatsReturning
+    console.log("q: ", q)
     await reservationModel.findByIdAndUpdate(reservationId, q);
 
-<<<<<<< Updated upstream
-
-        //send mail with itineraire
-=======
-      //send mail with itineraire
->>>>>>> Stashed changes
+       //send mail with itineraire
         //IF PAID
         //const seats = await reservationModel.findById(ReservationId);
         const reservation = await reservationModel.findById(reservationId);
@@ -78,6 +69,7 @@ console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
         }
       });
 
+      
     response.send();
   } catch (error) {
     response.status(5000).send(error);
@@ -110,7 +102,6 @@ console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
 //   }
 // });
 
-
 app.post("/createReservation", async (request, response) => {
   //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
 
@@ -134,7 +125,8 @@ app.post("/createReservation", async (request, response) => {
   // }
   // seats.push(tmpFirst);
 
-const reservation = new reservationModel({
+
+  const reservation = new reservationModel({
     'UserID': request.body.UserID,
     'DepartureFlightID': request.body.DepartureFlightID,
     'ReturnFlightID': request.body.ReturnFlightID,
@@ -152,7 +144,7 @@ const reservation = new reservationModel({
 
 
   try {
-    await reservation.save(function(err, savedReservatoion) {
+    await reservation.save(async function(err, savedReservatoion) {
       if (err) console.log(err);
       else{
           var ReservationId = savedReservatoion._id;
@@ -160,8 +152,6 @@ const reservation = new reservationModel({
           var edit = {};
           edit.Number =  ReservationId.valueOf().substring(18) ;
           await reservationModel.findByIdAndUpdate(ReservationId, edit);
-
-
           response.send(ReservationId);
       }
   });
@@ -172,15 +162,7 @@ const reservation = new reservationModel({
   }
 });
 
-// app.get("/allReservations", async (request, response) => {
-//   const reservations = await reservationModel.find({});
 
-//   try {
-//     response.send(reservations);
-//   } catch (error) {
-//     response.status(500).send(error);
-//   }
-// });
 
 
 app.delete("/reservation/:id", async (request, response) => {
@@ -228,7 +210,7 @@ app.delete("/reservation/:id", async (request, response) => {
       });
       //add seats back to flight
       if (reservation.CabinType == 'Business') {
-        //console.log("fel business");
+        console.log("fel business");
         var q = {};
         let newBusinessSeatsArray = DepartureFlight.BusinessSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
@@ -249,11 +231,11 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemBusiness = ReturnFlight.RemBusiness + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        //console.log("5allasna business");
+        console.log("5allasna business");
 
       }
       if (reservation.CabinType == 'First Class') {
-        //console.log("fel First");
+        console.log("fel First");
         var q = {};
 
         let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;
@@ -275,11 +257,11 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemFirst = ReturnFlight.RemFirst + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        //console.log("5allasna first");
+        console.log("5allasna first");
       }
 
       if (reservation.CabinType == 'Economy') {
-        //console.log("fel economy");
+        console.log("fel economy");
         var q = {};
 
         let newEconomySeatsArray = DepartureFlight.EconomySeatsArray;
@@ -301,7 +283,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemEconomy = ReturnFlight.RemEconomy + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        //console.log("5allasna economy");
+        console.log("5allasna economy");
       }
       //console.log(totalPrice);
       response.send();
