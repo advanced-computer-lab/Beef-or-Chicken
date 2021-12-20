@@ -6,6 +6,7 @@ const flightModel = require("../Models/Flight");
 const userModel = require("../Models/User");
 const reservationModel = require("../Models/Reservation");
 const nodemailer = require("nodemailer");
+const { diffIndexes } = require("../Models/Flight");
 
 
 app.get("/allReservations", async (request, response) => {
@@ -17,10 +18,11 @@ app.get("/allReservations", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
 app.patch("/reserveSeats", async (request, response) => {  //updateUser
   try {
 
-    console.log("Request: ", request.body)
+    //console.log("Request: ", request.body)
     var q = {}
 
     var reservationId= request.body.reservationId;
@@ -28,8 +30,46 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
       q.TakenSeatsDeparting =  request.body.seatsDeparting
     if (request.body.seatsReturning != null)
       q.TakenSeatsArriving = request.body.seatsReturning
-    console.log("q: ", q)
     await reservationModel.findByIdAndUpdate(reservationId, q);
+
+
+        //send mail with itineraire
+        //IF PAID
+        //const seats = await reservationModel.findById(ReservationId);
+        const reservation = await reservationModel.findById(reservationId);
+        const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
+        const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
+        const User = await userModel.findById(reservation.UserID);
+        const totalPrice = reservation.TotalPrice.toString();
+
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "BeefOrChickenACL@gmail.com",
+          pass: "beeforchicken"
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+
+      let mailOptions = {
+
+        from: "BeefOrChickenACL@gmail.com",
+        to: User.email,
+        subject: "Reservation confirmation",
+        text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ", 
+      };
+console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
+console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
+      transporter.sendMail(mailOptions, function (err, success) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("Mail sent successfully");
+        }
+      });
 
     response.send();
   } catch (error) {
@@ -63,6 +103,7 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
 //   }
 // });
 
+
 app.post("/createReservation", async (request, response) => {
   //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
 
@@ -86,8 +127,7 @@ app.post("/createReservation", async (request, response) => {
   // }
   // seats.push(tmpFirst);
 
-
-  const reservation = new reservationModel({
+const reservation = new reservationModel({
     'UserID': request.body.UserID,
     'DepartureFlightID': request.body.DepartureFlightID,
     'ReturnFlightID': request.body.ReturnFlightID,
@@ -110,6 +150,14 @@ app.post("/createReservation", async (request, response) => {
       else{
           var ReservationId = savedReservatoion._id;
           console.log("success", ReservationId);
+<<<<<<< Updated upstream
+=======
+          var edit = {};
+          edit.Number =  ReservationId.valueOf().substring(18) ;
+          await reservationModel.findByIdAndUpdate(ReservationId, edit);
+
+
+>>>>>>> Stashed changes
           response.send(ReservationId);
       }
   });
@@ -120,7 +168,15 @@ app.post("/createReservation", async (request, response) => {
   }
 });
 
+// app.get("/allReservations", async (request, response) => {
+//   const reservations = await reservationModel.find({});
 
+//   try {
+//     response.send(reservations);
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
 
 
 app.delete("/reservation/:id", async (request, response) => {
@@ -168,7 +224,7 @@ app.delete("/reservation/:id", async (request, response) => {
       });
       //add seats back to flight
       if (reservation.CabinType == 'Business') {
-        console.log("fel business");
+        //console.log("fel business");
         var q = {};
         let newBusinessSeatsArray = DepartureFlight.BusinessSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
@@ -189,11 +245,16 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemBusiness = ReturnFlight.RemBusiness + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        console.log("5allasna business");
+        //console.log("5allasna business");
 
       }
+<<<<<<< Updated upstream
       if (reservation.CabinType == 'First') {
         console.log("fel First");
+=======
+      if (reservation.CabinType == 'First Class') {
+        //console.log("fel First");
+>>>>>>> Stashed changes
         var q = {};
 
         let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;
@@ -215,11 +276,11 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemFirst = ReturnFlight.RemFirst + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        console.log("5allasna first");
+        //console.log("5allasna first");
       }
 
       if (reservation.CabinType == 'Economy') {
-        console.log("fel economy");
+        //console.log("fel economy");
         var q = {};
 
         let newEconomySeatsArray = DepartureFlight.EconomySeatsArray;
@@ -241,7 +302,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         p.RemEconomy = ReturnFlight.RemEconomy + reservation.TakenSeatsArriving.length;
         await flightModel.findByIdAndUpdate(ReturnFlight.id, p);
-        console.log("5allasna economy");
+        //console.log("5allasna economy");
       }
       //console.log(totalPrice);
       response.send();
