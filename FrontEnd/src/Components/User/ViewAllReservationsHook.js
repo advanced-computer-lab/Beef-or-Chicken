@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import axios from 'axios';
 import './ViewAllReservations.css'
 import Accordion from 'react-bootstrap/Accordion'
 import Tabs from '@mui/material/Tabs';
@@ -24,6 +25,8 @@ const mapStateToProps = (state) => {
         origin: state.DetailsReducer.details.origin,
         origin_name: state.DetailsReducer.details.origin_name,
         Reservation: state.DetailsReducer.details.Reservation,
+        DepartingFlight: state.DetailsReducer.details.DepartingFlight,
+        ReturnFlight: state.DetailsReducer.details.ReturnFlight,
     };
 };
 const mapDispatchToState = (dispatch) => {
@@ -31,13 +34,19 @@ const mapDispatchToState = (dispatch) => {
         setReservation: (Reservation) => {
             dispatch({ type: 'setReservation', payload: Reservation });
         },
+        setDepartingFlight: (DepartingFlight) => {
+            dispatch({ type: 'setDepartingFlight', payload: DepartingFlight });
+        },
+        setReturnFlight: (ReturnFlight) => {
+            dispatch({ type: 'setReturnFlight', payload: ReturnFlight });
+        },
 
 
     };
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
- function ViewAllReservations(props,{Reservation,setReservation} ) {
+ function ViewAllReservations(props,{Reservation,setReservation,setDepartingFlight,setReturnFlight,DepartingFlight,ReturnFlight} ) {
     console.log("props: ",props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
@@ -58,8 +67,57 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
         Object.assign(reservation, { TakenSeatsArriving: ["None"] })
     }
     const handleEdit = (type) => { //1 is departing and 2 is returning
-        props.setReservation("Marky");
+        
+        console.log(props)
+        
+            let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+            axios
+                .get(url2)
+                .then(res => {
+                    console.log("respnose: ", res)
+                    console.log("gamed louji!")
+                    props.setReservation(res.data);
+
+                    // this.props.history.push(`/Seats/1`);
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+            url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                axios
+                    .get(url2)
+                    .then(res => {
+                        console.log("respnose: ", res)
+                        console.log("gamed louji!")
+                        props.setDepartingFlight(res.data);
+    
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+                    url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                axios
+                    .get(url2)
+                    .then(res => {
+                        console.log("respnose: ", res)
+                        console.log("gamed louji!")
+                        props.setReturnFlight(res.data);
+    
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+
+            console.log(props)
+
        // console.log("props.reservation:" ,props.Reservation)
+        // need to set flights too
+    
     };
 
     const flightDuration = (initDate, finalDate, initTime, finalTime) => {

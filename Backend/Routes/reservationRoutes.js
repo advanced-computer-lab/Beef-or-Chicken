@@ -17,6 +17,16 @@ app.get("/allReservations", async (request, response) => {
     response.status(500).send(error);
   }
 });
+app.get("/reservationByID/:id", async (request, response) => {
+  const reservation = await reservationModel.findById(request.params.id);
+
+  try {
+    response.send(reservation);
+  }
+  catch (error) {
+    response.status(500).send(error);
+  }
+});
 app.patch("/reserveSeats", async (request, response) => {  //updateUser
   try {
 
