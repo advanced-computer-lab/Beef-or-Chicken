@@ -38,6 +38,8 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
       q.TakenSeatsDeparting =  request.body.seatsDeparting
     if (request.body.seatsReturning != null)
       q.TakenSeatsArriving = request.body.seatsReturning
+    if (request.body.email != null)
+      //do shtuff
     console.log("q: ", q)
     await reservationModel.findByIdAndUpdate(reservationId, q);
 

@@ -308,7 +308,8 @@ class SeatPicker extends Component {
 
                     body1 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -(this.state.maxSeats))
+                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -(this.state.maxSeats)),
+                        email:true
                     }
 
 
@@ -316,14 +317,16 @@ class SeatPicker extends Component {
                 case "Business":
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats))
+                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats)),
+                        email:true
                     }
 
                     break;
                 case "First Class":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats))
+                        RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats)),
+                        email:true
                     }
 
                     break;
