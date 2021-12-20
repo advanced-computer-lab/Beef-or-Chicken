@@ -4,6 +4,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
+import MailButton from './MailButton'
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
@@ -14,6 +15,7 @@ import moment, { duration } from 'moment'
 import PersonIcon from '@mui/icons-material/Person';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import Button from 'react-bootstrap/Button';
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
@@ -300,6 +302,13 @@ export default function ViewAllReservations(props) {
 
 
                                             <DeleteButton reservation = {reservation._id} />
+                                            <Button variant="contained">Contained</Button>
+<Button variant="contained" disabled>
+  Disabled
+</Button>
+<Button variant="contained" href="#contained-buttons">
+  Link
+</Button>
 
                                         </form>
                                     </div>
@@ -451,6 +460,8 @@ export default function ViewAllReservations(props) {
 
 
                                             <DeleteButton reservation = {reservation._id} />
+                                            <MailButton/>
+                                            
                                            
 
                                         </form>
