@@ -18,6 +18,7 @@ import ChildCareIcon from '@mui/icons-material/ChildCare';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 //BACKEND DEPENDENT COMMENTED => BACKEND
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
@@ -47,6 +48,7 @@ const mapDispatchToState = (dispatch) => {
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
  function ViewAllReservations(props,{Reservation,setReservation,setDepartingFlight,setReturnFlight,DepartingFlight,ReturnFlight} ) {
+    let history = useHistory();
     console.log("props: ",props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
@@ -77,44 +79,48 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
                     console.log("respnose: ", res)
                     console.log("gamed louji!")
                     props.setReservation(res.data);
-
+                    url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                    axios
+                        .get(url2)
+                        .then(res => {
+                            console.log("respnose: ", res)
+                            console.log("gamed louji!")
+                            props.setDepartingFlight(res.data);
+                            axios
+                    .get(url2)
+                    .then(res => {
+                        console.log("respnose: ", res)
+                        console.log("gamed louji!")
+                        props.setReturnFlight(res.data);
+                        if(type == 1)
+                        history.push('/EditSeats/1');
+                    else if(type == 2)
+                        history.push('/EditSeats/2');
+            
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+                            // this.props.history.push(`/Seats/1`);
+                        })
+                        .catch(error => {
+                            console.log("idiot!");
+                            console.log(error.message);
+                        })
+                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
                     // this.props.history.push(`/Seats/1`);
                 })
                 .catch(error => {
                     console.log("idiot!");
                     console.log(error.message);
                 })
-            url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
-                axios
-                    .get(url2)
-                    .then(res => {
-                        console.log("respnose: ", res)
-                        console.log("gamed louji!")
-                        props.setDepartingFlight(res.data);
-    
-                        // this.props.history.push(`/Seats/1`);
-                    })
-                    .catch(error => {
-                        console.log("idiot!");
-                        console.log(error.message);
-                    })
-                    url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                axios
-                    .get(url2)
-                    .then(res => {
-                        console.log("respnose: ", res)
-                        console.log("gamed louji!")
-                        props.setReturnFlight(res.data);
-    
-                        // this.props.history.push(`/Seats/1`);
-                    })
-                    .catch(error => {
-                        console.log("idiot!");
-                        console.log(error.message);
-                    })
-
-            console.log(props)
-
+           
+                
+                    
+                  
+         
        // console.log("props.reservation:" ,props.Reservation)
         // need to set flights too
     

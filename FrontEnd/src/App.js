@@ -8,6 +8,7 @@ import Home from './Components/User/HomePage'
 import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
+import SeatEditor from './Components/User/SeatEditor'
 import ReturningResults from './Components/User/ReturningResults'
 // import CreateFlight from './Components/CreateFlight'
 import Seats from './Components/User/Seats'
@@ -46,6 +47,7 @@ function App() {
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:flight" component={SeatPicker} />
+        <Route exact path="/EditSeats/:flight" component={SeatEditor} />
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
