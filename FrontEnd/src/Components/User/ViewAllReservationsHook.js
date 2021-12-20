@@ -6,6 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
 import Button from '@material-ui/core/Button';
+import MailButton from './MailButton'
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
@@ -19,6 +20,7 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+//import Button from 'react-bootstrap/Button';
 //BACKEND DEPENDENT COMMENTED => BACKEND
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
@@ -403,8 +405,15 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
 
 
 
-                                            <DeleteButton reservation={reservation._id} />
-                                            <Button
+                                            <DeleteButton reservation = {reservation._id} />
+                                            <Button variant="contained">Contained</Button>
+<Button variant="contained" disabled>
+  Disabled
+</Button>
+<Button variant="contained" href="#contained-buttons">
+  Link
+</Button>
+<Button
                                             variant="outlined" size="medium" color="primary"
                                            
                                              onClick={() => {handleEdit(2) }} >Edit Flight</Button>
@@ -573,6 +582,10 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
                                              onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
                                             
+                                          {/*  */}
+                                            <MailButton/>
+                                            
+                                           
 
                                         </form>
                                     </div>

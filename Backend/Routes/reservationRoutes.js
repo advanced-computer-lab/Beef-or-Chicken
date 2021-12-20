@@ -41,6 +41,45 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
     console.log("q: ", q)
     await reservationModel.findByIdAndUpdate(reservationId, q);
 
+       //send mail with itineraire
+        //IF PAID
+        //const seats = await reservationModel.findById(ReservationId);
+        const reservation = await reservationModel.findById(reservationId);
+        const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
+        const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
+        const User = await userModel.findById(reservation.UserID);
+        const totalPrice = reservation.TotalPrice.toString();
+
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "BeefOrChickenACL@gmail.com",
+          pass: "beeforchicken"
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+
+      let mailOptions = {
+
+        from: "BeefOrChickenACL@gmail.com",
+        to: User.email,
+        subject: "Reservation confirmation",
+        text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ", 
+      };
+console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
+console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
+      transporter.sendMail(mailOptions, function (err, success) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("Mail sent successfully");
+        }
+      });
+
+      
     response.send();
   } catch (error) {
     response.status(5000).send(error);
