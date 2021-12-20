@@ -147,7 +147,25 @@ app.post('/register', async (req, res) => {
       }
       )
       dbUser.save()
-      res.json({ message: "Success" })
+
+      const payload = {
+        id: dbUser._id,
+        username: dbUser.username,
+      }
+      jwt.sign(
+        payload,
+        "" + process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err })
+          return res.json({
+            token: token,
+            message :"success",
+            UserId : payload.id
+          })
+        }
+      )
+
     }
   }
   

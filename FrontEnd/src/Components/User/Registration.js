@@ -22,13 +22,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
+import Alert from '@mui/material/Alert';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-
+import FlightOutlinedIcon from '@mui/icons-material/FlightOutlined';
 const steps = ['', ''];
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
-        //token : state.DetailsReducer.details.token,
+        token : state.DetailsReducer.details.token,
     };
 };
 
@@ -67,16 +66,16 @@ const mapDispatchToState = (dispatch) => {
         setUserID: (UserID) => {
             dispatch({ type: 'setUserID', payload: UserID });
         },
-/*setUserToken: (token) => {
-            dispatch({ type: 'setUserToken', payload: token });
-        },  */
+        setToken: (token) => {
+            dispatch({ type: 'setToken', payload: token });
+        },  
     };
 };
 
 export default connect(mapStateToProps, mapDispatchToState)(Register);
 
 
-function Register({ details , setUserID}) {
+function Register({ details , setUserID , setToken}) {
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200&family=Inter:wght@100;200;300&family=Montserrat:wght@100;200;300&display=swap" rel="stylesheet"></link>
     const classes = useStyles();
     
@@ -90,14 +89,20 @@ function Register({ details , setUserID}) {
     const [address, setAddress] = useState("");
     const [telephone1, setTelephone1] = useState("");
     const [telephone2, setTelephone2] = useState("");
+    const [usernameTaken , setUsernameTaken] = useState(false);
 
     const [validated, setValidated] = useState(false);
 
+    let token = "";
+    let UserId = "";
+
     const [isError, setIsError] = useState({ email: '', password: ''});
-    
+    const [isEmailError , setIsEmailError] = useState(false); 
+
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
-  
+
+
     const isStepOptional = (step) => {
       return step === 1;
     };
@@ -114,11 +119,11 @@ function Register({ details , setUserID}) {
             'username': username
         }
         let url = "http://localhost:8080/CheckUsername"
-        axios
-            .post(url, body)
-            .then(res => {
+        axios.post(url, body)
+             .then(res => {
                console.log(res.data.message)
                if(res.data.message === "not"){
+                setUsernameTaken(false);
 
                 let newSkipped = skipped;
                 if (isStepSkipped(activeStep)) {
@@ -131,9 +136,10 @@ function Register({ details , setUserID}) {
 
                }
                else{
+                   console.log()
+                   setUsernameTaken(true);
                    
                }
-               //not taken
             })
             .catch(error => {
                 console.log(error.message);
@@ -147,84 +153,85 @@ function Register({ details , setUserID}) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
   
-
     
     const regExp = RegExp(
         /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
         )
                 
-        const formValChange = e => {
-            e.preventDefault();
-            const { name, value } = e.target;
-            
-            switch (name) {
-                /*
-                case "username":
-                    isError.name =
+    const formValChange = e => {
+        console.log(e.target)
+        console.log(e.target.value + "  <----valueee")
+        const name = e.target.name;
+        const value = e.target.value;
+        switch (name) {
+/* add it fel state
+            case "username":
+            isError.name =
                     value.length < 4 ? "Atleast 4 characaters required" : "";
-                    break;
-                    */
-                   case "email":
-                       console.log(isError.email);
-                       isError.email = regExp.test(value)? "": "Email address is invalid";
-                       break;
-                       case "password":
-                           isError.password =
-                           value.length < 6 ? "Atleast 6 characaters required" : "";
-                           break;
-                           default:
-                               break;
-                            }
-                            
-                            setIsError({
-                                [name]: value
-                            })
+                break;
+*/ 
+            case "email":
+            setEmail(value)    
+            isError.email = regExp.test(value) ? "" : "Email address is invalid";
+            if( !regExp.test(value)){
+                setIsEmailError(true);
+            }
+            else{
+                setIsEmailError(false);
+            }
+                break;
+            case "password":
+                isError.password =
+                    value.length < 6 ? "Atleast 6 characaters required" : "";
+                break;
+            default:
+                break;
+        }
 
-        console.log(isError.email)
+        setIsError({
+            [name]: value
+        })
+
+        console.log(isError.email + "  error message")
     };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
     }
-    setValidated(true);
-    
-    let body = {
-        'username': username,
-        'email':  email ,
-        'password':  password ,
-        'firstName' : firstName,
-        'lastName':lastName,
-        'passportNumber':  passportNumber,
-        'address' : address,
-        'telephone1': telephone1,   
-        'telephone2': telephone2
+    else {
+        setValidated(true);
+        setActiveStep(steps.length); 
+        let body = {
+            'username': username,
+            'email': email,
+            'password': password,
+            'firstName': firstName,
+            'lastName': lastName,
+            'passportNumber': passportNumber,
+            'address': address,
+            'telephone1': telephone1,
+            'telephone2': telephone2
 
-    }
+        }
+        let url = "http://localhost:8080/register"
+        axios
+            .post(url, body)
+            .then(res => {
+               token = res.data.token;
+               setUserID(res.data.UserId);
 
-    console.log("body: ", body)
-    let url = "http://localhost:8080/register"
-    axios
-        .post(url, body)
-        .then(res => {
-         /*   if (res.data[0].type == 1) {
-                details.UserID = res.data[0]._id
-                //details.token = 
-                history.goBack();
-            }
-            else {
-                console.log("not user")
-            }
-            */
-        })
-        .catch(error => {
-            console.log(error.message);
-        })
- };  
-
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+}
+};  
 
     const countries = [
         { code: 'AD', label: 'Andorra', phone: '376' },
@@ -614,12 +621,18 @@ function Register({ details , setUserID}) {
                                         {activeStep === steps.length ? (
 
                                             <React.Fragment>
-                                                <Typography sx={{ mt: 2, mb: 1 }}>
+                                                <Typography sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}>
                                                     Acount Created Successfully!
                                                 </Typography>
+                                                
                                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                                     <Box sx={{ flex: '1 1 auto' }} />
-                                                    {/*  <Button onClick={handleReset}>Reset</Button> */}
+                                                    <Button variant="contained" sx = {{marginRight:"14.5%"}}
+                                                        onClick={() => {
+                                                            history.push("/");
+                                                        }}
+                                                    >Start Booking&nbsp; <FlightOutlinedIcon /></Button>
+
                                                 </Box>
                                             </React.Fragment>
                                         ) : (
@@ -636,25 +649,31 @@ function Register({ details , setUserID}) {
                                                                             required
                                                                             type="text"
                                                                             onChange={e => setFirstName(e.target.value)}
+                                                                            value = {firstName}
+                                                                            minlength = "2"
+
                                                                         />
 
                                                                     </FloatingLabel>
-                                                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                                                    <Form.Control.Feedback type="invalid">Firstname is required!</Form.Control.Feedback>
                                                                 </Form.Group>
                                                             </Col>
 
 
                                                             <Col>
                                                                 <Form.Group controlId="validationCustom02">
-                                                                    <FloatingLabel controlId="floatingFirstName" label="Last name *" >
+                                                                    <FloatingLabel controlId="floatingLastName" label="Last name *" >
                                                                         <Form.Control
                                                                             required
                                                                             type="text"
                                                                             onChange={e => setLastName(e.target.value)}
+                                                                            value = {lastName}
+                                                                            minlength = "2"
                                                                         />
                                                                     </FloatingLabel>
-                                                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                                                </Form.Group>
+                                                                    <Form.Control.Feedback type="invalid">
+                                                                            Lastname is required!
+                                                                        </Form.Control.Feedback>                                                                </Form.Group>
                                                             </Col>
                                                         </Row>
                                                         <br />
@@ -668,9 +687,10 @@ function Register({ details , setUserID}) {
                                                                             aria-describedby="inputGroupPrepend"
                                                                             required
                                                                             onChange={e => setUsername(e.target.value)}
+                                                                            value = {username}
                                                                         />
                                                                         <Form.Control.Feedback type="invalid">
-                                                                            Username already exists!
+                                                                            Username is required!
                                                                         </Form.Control.Feedback>
                                                                     </FloatingLabel>
                                                                 </Form.Group>
@@ -684,7 +704,12 @@ function Register({ details , setUserID}) {
                                                                             aria-describedby="inputGroupPrepend"
                                                                             onChange={e => setPassword(e.target.value)}
                                                                             required
+                                                                            value = {password}
+                                                                            minlength = "8"
                                                                         />
+                                                                        <Form.Control.Feedback type="invalid">
+                                                                            Password is required!
+                                                                        </Form.Control.Feedback>
                                                                     </FloatingLabel>
                                                                 </Form.Group>
                                                             </Col>
@@ -692,22 +717,35 @@ function Register({ details , setUserID}) {
                                                         <br />
                                                         <Row>
                                                             <Col>
-                                                                <Form.Group controlId="validationCustomUsername">
+                                                                <Form.Group controlId="validationCustomEmail">
                                                                     <FloatingLabel controlId="floatingEmail" label="Email *" >
                                                                         <Form.Control
-                                                                            type="text"
+                                                                            type="email"
                                                                             aria-describedby="inputGroupPrepend"
                                                                             required
+                                                                            name = "email"
+                                                                            value = {email}
                                                                             onChange={e => setEmail(e.target.value)}
-
+                                                                            pattern=".+@gmail\.com"
                                                                         />
+                                                                    {/*
+                                                                        {isEmailError &&
+                                                                        <span className="text-danger">Please enter a valid email</span>
+                                                                        }
+                                                                    */}
                                                                         <Form.Control.Feedback type="invalid">
-                                                                            Email already exists or not entered!
-                                                                        </Form.Control.Feedback>
+                                                                        Please enter a valid email                                                                        </Form.Control.Feedback>
                                                                     </FloatingLabel>
                                                                 </Form.Group>
                                                             </Col>
                                                         </Row>
+                                                        <br />
+                                                        {usernameTaken &&       
+                                                            <Alert severity="error">Username already taken!</Alert>
+                                                        }
+                                                                       
+                                                        
+
                                                     </div>
 
                                                         : (<div>
@@ -720,8 +758,9 @@ function Register({ details , setUserID}) {
                                                                                 type="text"
                                                                                 aria-describedby="inputGroupPrepend"
                                                                                 required
-                                                                                onChange={e => setPassportNumber(e.target.value)}
-
+                                                                                onChange={e => setPassportNumber(e.target.value) }
+                                                                                value = {passportNumber}
+                                                                                
                                                                             />
                                                                             <Form.Control.Feedback type="invalid">
                                                                                 Passport Number is Required!
@@ -740,6 +779,7 @@ function Register({ details , setUserID}) {
                                                                                 type="text"
                                                                                 aria-describedby="inputGroupPrepend"
                                                                                 onChange={e => setAddress(e.target.value)}
+                                                                                value={address}
 
                                                                             />
                                                                         </FloatingLabel>
@@ -759,7 +799,7 @@ function Register({ details , setUserID}) {
                                                                                 } else if (value.match(/1234/)) {
                                                                                     return false;
                                                                                 } else {
-                                                                                    if (value === country.countryCode || value ==="") {
+                                                                                    if (value === country.countryCode || value === "") {
                                                                                         setTelephone1("")
                                                                                     }
                                                                                     else {
@@ -768,15 +808,16 @@ function Register({ details , setUserID}) {
                                                                                     return true;
                                                                                 }
                                                                             }}
+                                                                            value={telephone1}
                                                                         />
                                                                         <Form.Control.Feedback type="invalid">Phone Number is Required!</Form.Control.Feedback>
 
                                                                     </Form.Group>
                                                                 </Col>
-                                                                </Row>
-                                                                <br/>
-                                                                <Row>
-                                                                    
+                                                            </Row>
+                                                            <br />
+                                                            <Row>
+
                                                                 <Col>
                                                                     <Form.Group controlId="validationCustom01">
                                                                         <PhoneInput
@@ -787,10 +828,12 @@ function Register({ details , setUserID}) {
                                                                                 } else if (value.match(/1234/)) {
                                                                                     return false;
                                                                                 } else {
-                                                                                    if (value === country.countryCode|| value ==="") {
-                                                                                        setTelephone2("")}
-                                                                                    else{
-                                                                                        setTelephone2("+" + value)}
+                                                                                    if (value === country.countryCode || value === "") {
+                                                                                        setTelephone2("")
+                                                                                    }
+                                                                                    else {
+                                                                                        setTelephone2("+" + value)
+                                                                                    }
                                                                                     return true;
                                                                                 }
                                                                             }}
@@ -798,9 +841,10 @@ function Register({ details , setUserID}) {
                                                                     </Form.Group>
                                                                 </Col>
                                                             </Row>
-                                                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 , flex: '1 1 auto'  }}>
+                                                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, flex: '1 1 auto' }}>
                                                         <Box sx={{ flex: '1 1 auto' }} />
-                                                        <Button type="submit"  >Submit</Button>
+                                                        <Button type="submit" disabled={passportNumber === "" || telephone1 === ""}
+                                                            >Submit</Button>
 
                                                         </Box>
 
@@ -815,25 +859,30 @@ function Register({ details , setUserID}) {
                                                         onClick={handleBack}
                                                         sx={{ mr: 1 , marginTop:"-75px" }}
                                                         >
-                                                        Back
-                                                      </Button>
-                                                        :
+                                                                Back
+                                                            </Button>
+                                                            :
                                                             <Button
                                                                 color="inherit"
                                                                 disabled={activeStep === 0}
                                                                 onClick={handleBack}
-                                                                sx={{ mr: 1  }}
+                                                                sx={{ mr: 1 }}
                                                             >
                                                                 Back
                                                             </Button>}
-                                              
-                                              <Box sx={{ flex: '1 1 auto' }} />
-                                              
-                                              <Button onClick={handleNext} disabled={activeStep === 1}>
-                                                {activeStep === steps.length - 1 ? '' : 'Next'}
-                                              </Button>
 
-                                            </Box>
+                                                        <Box sx={{ flex: '1 1 auto' }} />
+
+                                                        <Button
+                                                            onClick={handleNext}
+                                                            disabled={activeStep === 1 ||
+                                                                firstName === "" || lastName === "" || username === "" || password === "" || email === ""
+                                                            }
+                                                        >
+                                                            {activeStep === steps.length - 1 ? '' : 'Next'}
+                                                        </Button>
+
+                                                    </Box>
                                           </React.Fragment>
 
                                         )}
