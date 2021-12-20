@@ -150,14 +150,11 @@ const reservation = new reservationModel({
       else{
           var ReservationId = savedReservatoion._id;
           console.log("success", ReservationId);
-<<<<<<< Updated upstream
-=======
           var edit = {};
           edit.Number =  ReservationId.valueOf().substring(18) ;
           await reservationModel.findByIdAndUpdate(ReservationId, edit);
 
 
->>>>>>> Stashed changes
           response.send(ReservationId);
       }
   });
@@ -248,13 +245,8 @@ app.delete("/reservation/:id", async (request, response) => {
         //console.log("5allasna business");
 
       }
-<<<<<<< Updated upstream
-      if (reservation.CabinType == 'First') {
-        console.log("fel First");
-=======
       if (reservation.CabinType == 'First Class') {
         //console.log("fel First");
->>>>>>> Stashed changes
         var q = {};
 
         let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;

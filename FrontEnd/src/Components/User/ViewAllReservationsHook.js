@@ -451,6 +451,7 @@ export default function ViewAllReservations(props) {
 
 
                                             <DeleteButton reservation = {reservation._id} />
+                                           
 
                                         </form>
                                     </div>
