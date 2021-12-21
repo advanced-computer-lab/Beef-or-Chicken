@@ -276,7 +276,8 @@ class SeatPicker extends Component {
             let url = "http://localhost:8080/reserveSeats"
             let body = {
                 reservationId: this.state.ReservationId,
-                seatsReturning: this.state.chosenSeats
+                seatsReturning: this.state.chosenSeats,
+                email:true
 
             }
             this.state.returnSeats.push(this.state.chosenSeats)
@@ -309,7 +310,7 @@ class SeatPicker extends Component {
                     body1 = {
                         EconomySeatsArray: this.state.seats,
                         RemEconomy: (this.props.details.ReturnFlight.RemEconomy -(this.state.maxSeats)),
-                        email:true
+                       
                     }
 
 
@@ -318,7 +319,7 @@ class SeatPicker extends Component {
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
                         RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats)),
-                        email:true
+                      
                     }
 
                     break;
@@ -326,7 +327,7 @@ class SeatPicker extends Component {
                     body1 = {
                         FirstSeatsArray: this.state.seats,
                         RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats)),
-                        email:true
+                        
                     }
 
                     break;
