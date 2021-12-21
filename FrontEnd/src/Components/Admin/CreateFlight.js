@@ -9,10 +9,11 @@ import { useAlert } from 'react-alert'
 import OurAlert from "./OurAlert"
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
-import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
+import ResultTest from "../../images/ResultTest.png";
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+
 
 // number of Economy seats, number of Business class seats,
 class CreateFlight extends Component {
@@ -134,11 +135,6 @@ class CreateFlight extends Component {
         this.setState({
             [e.target.name]: e.target.value
         }, () => {
-            console.log()
-            console.log("edited target")
-            //  console.log("from state: ", this.state.From)
-            //  console.log("batates")
-            //  console.log("departure date string" , this.state.DepartureDate)
             console.log("currentDeparture before editing: ", this.state.CurrentDeparture)
             // //setState
             // this.setState({CurrentDeparture:(new Date(  this.state.DepartureDate.substring(0,4) , 
@@ -157,31 +153,10 @@ class CreateFlight extends Component {
 
             console.log("currentDeparture after editing: ", this.state.CurrentDeparture)
 
-            // console.log("target.name: ", e.target.name),
-
-
-            // console.log("departureDate: ", this.state.DepartureDate),
-            // console.log(this.state.CurrentDeparture),
         });
 
-
-
-
-        // console.log("departure date", new Date(date.getFullYear(),date.getMonth(),date.getDate()-1))
-
-
-
-
-
         //this.state.From=e.target.value
-
-
-        // console.log(e.target.name)
-        // console.log(e.target.value)
-        // console.log("open: ",this.state.open)
     };
-
-
 
     onSubmit = e => {
         e.preventDefault();
@@ -208,13 +183,6 @@ class CreateFlight extends Component {
 
         };
         console.log(data)
-        // console.log(this.state.From)
-        // console.log(this.state.To)
-        // console.log(this.state.)
-        // console.log(this.state.Cabin)
-        // console.log(this.state.SeatsAvailable)
-        // console.log(this.state.DepartureTime)
-        // console.log(this.state.ArrivalTime)
         let url = "http://localhost:8080/createFlight"
 
         axios
@@ -261,44 +229,78 @@ class CreateFlight extends Component {
     };
 
 
-
-
     render() {
         return (
-            <div>
+            <div style={{ backgroundImage: `url(${ResultTest})`, minHeight: "1220px", backgroundSize: "cover", backgroundRepeat:"repeat-y" }}>
                 <Header />
-                <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit}>
-                    <div class="col-md-6" className='form-group'>
-                        <label class="form-label">From</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='From'
-                            name='From'
-                            //className='form-control'
-                            value={this.state.From}
-                            onChange={this.onChange}
-                        />
+                <div >
+                <Box sx={{ width: '100%' }}>
+                    <Collapse in={this.state.open}>
+                        <Alert sx={{ mb: 2 }}>
+                            Flight Added!
+                        </Alert>
+                    </Collapse>
 
+                </Box>
+                <Box sx={{ width: '100%' }}>
+                    <Collapse in={this.state.fail}>
+                        <Alert severity="error"
+                            sx={{ mb: 2 }}
+                        >
+                            Please Enter All Details Correctly!
+                        </Alert>
+                    </Collapse>
+
+                </Box>
+                    <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit} >
+                        
+                        <h3>Add Flight <FlightTakeoffIcon /></h3>
+                        <div className='form-group row' style = {{ paddingTop:"5px" }}>
+                            <FloatingLabel label="Flight Number">
+                                <input
+                                type='text'
+                                class="form-control flex-fill"
+                                name='FlightNumber'
+                                //  className='form-control'
+                                value={this.state.FlightNumber}
+                                onChange={this.onChange}
+                            />
+                            </FloatingLabel>  
+                    </div>
+                    <bl/>
+                    <div className="row">
+                        <div className="col-md-6 col-12 mb-4 form-group">
+
+                            <FloatingLabel label="From" >
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                name='From'
+                                //className='form-control'
+                                value={this.state.From}
+                                onChange={this.onChange}
+                            />
+                            </FloatingLabel>
+                        </div>
+
+                        <div className="col-md-6 col-12 mb-4 form-group form-inline">
+                            {/* <div class="col-md-6" className='form-group form-inline'>*/}
+                            <FloatingLabel label="To" >
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                name='To'
+                                // className='form-control'
+                                value={this.state.To}
+                                onChange={this.onChange}
+                            />
+                            </FloatingLabel>
+                        </div>
                     </div>
 
-
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">To</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='To'
-                            name='To'
-                            // className='form-control'
-                            value={this.state.To}
-                            onChange={this.onChange}
-                        />
-                    </div>
-
-
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Departure Date</label>
+                    <div className="row">
+                        <div className="col-md-6 col-12 mb-4 form-group form-group form-inline">
+                        <FloatingLabel label="Departure Date" >
                         <input
                             onKeyDown={(e) => e.preventDefault()}
                             type='date'
@@ -311,11 +313,13 @@ class CreateFlight extends Component {
                             value={this.state.DepartureDate}
                             onChange={this.onChange}
                         />
+                        </FloatingLabel>
                     </div>
 
+                    <div className="col-md-6 col-12 mb-4 form-group form-inline">
 
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Arrival Date</label>
+                    {/*<div class="col-md-6" className='form-group form-inline'>*/}
+                    <FloatingLabel label="Arrival Date" >
                         <input
                             onKeyDown={(e) => e.preventDefault()}
                             type='date'
@@ -328,10 +332,14 @@ class CreateFlight extends Component {
                             value={this.state.ArrivalDate}
                             onChange={this.onChange}
                         />
+                        </FloatingLabel>
+                    </div>
                     </div>
 
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Departure Time</label>
+
+                    <div className="row">
+                        <div className="col-md-6 col-12 mb-4 form-group form-group form-inline">
+                        <FloatingLabel label="Departure Time" >
                         <input
                             type='time'
                             class="form-control flex-fill"
@@ -341,12 +349,13 @@ class CreateFlight extends Component {
                             value={this.state.DepartureTime}
                             onChange={this.onChange}
                         />
+                        </FloatingLabel>
                     </div>
 
 
 
-                    <div class="col-md-4" className='form-group form-inline'>
-                        <label class="form-label">Arrival Time</label>
+                    <div className="col-md-6 col-12 mb-4 form-group form-inline">
+                    <FloatingLabel label="Arrival Time" >
                         <input
                             type='time'
                             class="form-control flex-fill"
@@ -356,192 +365,159 @@ class CreateFlight extends Component {
                             value={this.state.ArrivalTime}
                             onChange={this.onChange}
                         />
+                        </FloatingLabel>
                     </div>
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">Economy</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div class="col-md-4" className='form-group2 form-inline'>
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Seats Available'
-                            name='EconomySeats'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomySeats}
-                            onChange={this.onChange2}
-                        />
-                       
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Price Per Seat'
-                            name='EconomyPrice'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomyPrice}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Bags Allowed'
-                            name='EconomyBags'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomyBags}
-                            onChange={this.onChange2}
-                        />
+                        </div>
+                        <hr />
+                        <h5>Economy Class</h5>
+                        <bl />
+                        <div className="row">
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Seats Available" >
+                                    <input
+                                        type='number'
+                                        class="form-control flex-fill"
+                                        name='EconomySeats'
+                                        min='0'
+                                        //  className='form-control'
+                                        value={this.state.EconomySeats}
+                                        onChange={this.onChange2}
+                                    />                        </FloatingLabel>
+
+                            </div>
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Price" >
+
+                                    <input
+                                        type='number'
+                                        class="form-control flex-fill"
+                                        name='EconomyPrice'
+                                        min='0'
+                                        //  className='form-control'
+                                        value={this.state.EconomyPrice}
+                                        onChange={this.onChange2}
+                                    />
+                                </FloatingLabel>
+
+                            </div>
+
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Baggage Allowance" >
+
+                                    <input
+                                        type='number'
+                                        class="form-control flex-fill"
+                                        name='EconomyBags'
+                                        min='0'
+                                        //  className='form-control'
+                                        value={this.state.EconomyBags}
+                                        onChange={this.onChange2}
+                                    />
+                                </FloatingLabel>
+                            </div>
+
+
                     </div>
 
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">Business</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div class="col-md-4" className='form-group2 form-inline'>
-                       
+                    <hr />
+                        <h5>Business Class</h5>
+                        <bl/>
+                        <div className="row">
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Seats Available" >
+                                    <input
+                                        type='number'
+                                        min='0'
+                                        class="form-control flex-fill"
+                                        name='BusinessSeats'
+                                        //  className='form-control'
+                                        value={this.state.BusinessSeats}
+                                        onChange={this.onChange2}
+                                    />
+                                </FloatingLabel>
+                            </div>
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Price" >
+                                    <input
+                                        type='number'
+                                        min='0'
+                                        class="form-control flex-fill"
+                                        name='BusinessPrice'
+                                        //  className='form-control'
+                                        value={this.state.BusinessPrice}
+                                        onChange={this.onChange2}
+                                    />
+                                      </FloatingLabel>
+                            </div>
+                                    <div className="col-md-4 mb-4">
+                                        <FloatingLabel label="Baggage Allowance" >
+                                        <input
+                                            type='number'
+                                            class="form-control flex-fill"
+                                            name='BusinessBags'
+                                            min='0'
+                                            //  className='form-control'
+                                            value={this.state.BusinessBags}
+                                            onChange={this.onChange2}
+                                        />
+                                          </FloatingLabel>
+                                          </div>
+                        </div>
+                        <hr />
+                        <h5>First Class</h5>
+                        <bl/>
+                        <div className="row">
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Seats Available" >
                         <input
                             type='number'
                             min='0'
                             class="form-control flex-fill"
-                            placeholder='Seats Available'
-                            name='BusinessSeats'
-                            //  className='form-control'
-                            value={this.state.BusinessSeats}
-                            onChange={this.onChange2}
-                        />
-                         <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Price Per Seat'
-                            name='BusinessPrice'
-                            //  className='form-control'
-                            value={this.state.BusinessPrice}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Bags Allowed'
-                            name='BusinessBags'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.BusinessBags}
-                            onChange={this.onChange2}
-                        />
-                    </div>
-
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">First Class</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div className='form-group2 form-inline'>
-                        
-                        <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Seats Available'
                             name='FirstSeats'
                             //  className='form-control'
                             value={this.state.FirstSeats}
                             onChange={this.onChange2}
                         />
+                        </FloatingLabel>
+                        </div>
+                            <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Price" >
                         <input
                             type='number'
                             min='0'
                             class="form-control flex-fill"
-                            placeholder='Price Per Seat'
                             name='FirstPrice'
                             //  className='form-control'
                             value={this.state.FirstPrice}
                             onChange={this.onChange2}
-                        />
+                            />
+                            </FloatingLabel>
+                            </div>
+                          <div className="col-md-4 mb-4">
+                                <FloatingLabel label="Bagagge Allowance">
+
                         <input
                             type='number'
                             class="form-control flex-fill"
-                            placeholder='Bags Allowed'
                             name='FirstBags'
                             min='0'
                             //  className='form-control'
                             value={this.state.FirstBags}
                             onChange={this.onChange2}
-                        />
+                            />
+                            </FloatingLabel>
+                            </div>
                     </div>
-
-
-                    <div class="form-group form-inline" className='form-group'>
-                        <label class="form-label">Flight Number</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='Flight Number'
-                            name='FlightNumber'
-                            //  className='form-control'
-                            value={this.state.FlightNumber}
-                            onChange={this.onChange}
-                        />
-                    </div>
-
-
                     <input
                         class="btn btn-primary"
                         type="submit"
-
                     />
+                    <hl/>
                     {/* <OurAlert flag={this.flag}></OurAlert> */}
 
-
                 </form>
-                <Box sx={{ width: '100%' }}>
-                    <Collapse in={this.state.open}>
-                        <Alert
-                            //   action={
-                            // <IconButton
-                            //   aria-label="close"
-                            //   color="inherit"
-                            //   size="small"
-                            //   onClick={ this.setAlertFalse()
-                            //  }
-                            // >
-                            //   <CloseIcon fontSize="inherit" />
-                            // </IconButton>
-                            //   }
-                            sx={{ mb: 2 }}
-                        >
-                            Flight Added!
-                        </Alert>
-                    </Collapse>
-
-                </Box>
-                <Box sx={{ width: '100%' }}>
-                    <Collapse in={this.state.fail}>
-                        <Alert severity="error"
-                            //   action={
-                            // <IconButton
-                            //   aria-label="close"
-                            //   color="inherit"
-                            //   size="small"
-                            //   onClick={ this.setAlertFalse()
-                            //  }
-                            // >
-                            //   <CloseIcon fontSize="inherit" />
-                            // </IconButton>
-                            //   }
-                            sx={{ mb: 2 }}
-                        >
-                            Please Enter All Details Correctly!
-                        </Alert>
-                    </Collapse>
-
-                </Box>
-
-            </div>
+                </div>
+                </div>
         );
     }
 }

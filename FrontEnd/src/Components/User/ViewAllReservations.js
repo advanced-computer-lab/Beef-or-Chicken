@@ -13,6 +13,20 @@ import { connect } from "react-redux";
 import DetailsReducer from '../Redux/DetailsReducer';
 import { useHistory } from "react-router-dom";
 
+/*
+
+axios.post('https://example.com/postSomething', {
+ email: varEmail, //varEmail is a variable which holds the email
+ password: varPassword
+},
+{
+  headers: {
+    Authorization: 'Bearer ' + varToken
+    x-access-token : token
+  }
+})
+
+*/
 
   
 const mapStateToProps = (state) => {
