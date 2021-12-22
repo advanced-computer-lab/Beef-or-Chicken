@@ -63,8 +63,6 @@ app.get("/searchUserByID/:id", async (request, response) => {  //search with Cri
   // const user = await userModel.findById(q);
 
   const user = await userModel.findById(request.params.id);
-
-
   try {
     response.send(user);
   } catch (error) {
