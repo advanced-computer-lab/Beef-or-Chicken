@@ -125,7 +125,7 @@ app.post("/mail", async (request, response) => {
     const DepartureFlight = request.body.Departing;
     const ReturnFlight = request.body.Returning;
 
-    const totalPrice = reservation.TotalPrice.toString();
+    const totalPrice = reservation.TotalPrice.$numberDecimal;
 
     console.log("reservation", reservation)
     console.log("User", User)
