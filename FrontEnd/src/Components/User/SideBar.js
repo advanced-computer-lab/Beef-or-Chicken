@@ -14,6 +14,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import SearchIcon from '@mui/icons-material/Search';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -62,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 export default function SwipeableTemporaryDrawer() {
+    
+
+
     const classes = useStyles();
     const [state, setState] = React.useState({
         top: false,
@@ -69,6 +75,8 @@ export default function SwipeableTemporaryDrawer() {
         bottom: false,
         right: false,
     });
+
+    
     const handleSubmit = () => {
 
 
@@ -113,13 +121,23 @@ export default function SwipeableTemporaryDrawer() {
                 </Link>
                 <Link to="/">
                     <ListItem button key='Search' onClick={handleSubmit()}>
+                        <SearchIcon/>
                         <ListItemText primary='Search' />
                     </ListItem>
                 </Link>
+
                 <Link to="/ViewUserinfo">
                     <ListItem button key='View User info' onClick={handleSubmit()}>
-
+                    <AccountBoxIcon></AccountBoxIcon>
                         <ListItemText primary='View User info' />
+                    </ListItem>
+                </Link>
+
+
+                <Link to={  { pathname: `/ChangePassword`} }>
+                    <ListItem button key='Change Password' onClick={handleSubmit()}>
+                    <VpnKeyIcon></VpnKeyIcon>
+                        <ListItemText primary='Change Password' />
                     </ListItem>
                 </Link>
             </List>

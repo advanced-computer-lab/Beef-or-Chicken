@@ -191,7 +191,7 @@ class viewUserInfo extends Component {
 
 
 
-                <Link to={  { pathname: `/UpdateUserInfoNew/${this.state.id}`} }>
+                <Link to={  { pathname: `/ChangePassword/${this.state.id}`} }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton> */}
@@ -219,9 +219,9 @@ class viewUserInfo extends Component {
 }
 }
 // export default viewUserInfo;
-const mapStateToProps = (state) => ({
-    details: state.DetailsReducer.details,
-});
+// const mapStateToProps = (state) => ({
+//     details: state.DetailsReducer.details,
+// });
 
 
 

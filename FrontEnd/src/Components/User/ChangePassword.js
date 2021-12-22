@@ -10,7 +10,8 @@ import { useState , useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { useHistory } from "react-router-dom";
 
 
 const mapStateToProps = (state) => {
@@ -64,68 +65,118 @@ const useStyles = makeStyles((theme) => ({
 function UpdateUserInfo(prop) {
 
     const user = prop.match.params
-    console.log("User: ", user)
-    console.log("userID: ", user.id)
-    const [open, setOpen] = React.useState(false);
-    const [info, setInfo] =React.useState({firstName:"",lastName:"",email:"",passportNumber:""});
-    // let history = useHistory();
-    
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [passportNumber, setPassportNumber] = useState("")
-    const [email, setEmail] = useState("")
 
 
     
-
-    useEffect(() => {
-        
-        axios.get('http://localhost:8080/searchUserByID/'+ user.id ).then(
-            res => {
-                console.log(res.data )
-                setFirstName(res.data.firstName)
-                setLastName(res.data.lastName)
-                setEmail(res.data.email)
-                setPassportNumber(res.data.passportNumber)
+    let history = useHistory();
+    const [password, setPassword] = useState("");
+    const onSubmit = (event) => {
+        event.preventDefault();
+        // const data = new FormData(event.currentTarget);
+        // eslint-disable-next-line no-console
 
 
-                console.log(firstName)
-            })
 
-            .catch(err => {
-                console.log('Error');
-            })
-                
-            
-        }
-            , []);
-
-
-            
-
-    const onSubmit = e => {   
-        let url = `http://localhost:8080/user/${user.id}`;
 
         let body = {
-            "firstName": { firstName },
-            "lastName": { lastName },
-            "passportNumber": { passportNumber },
-            "email": { email }
+            'password': { password },
+
         }
 
-        axios.patch(url, body)
-            .then(async (response) => {
-                alert("Info Updated Successfully!")
-                // history.push("/usersflight");
+
+        console.log("body: ", body)
+        let url = "http://localhost:8080/searchUser"
+
+        axios
+            .post(url, body)
+            .then(res => {
+                console.log("respnose: ", res.data)
+
+                // setResult(res.data)
+                // window.scroll(0, 9950)
+                console.log("cond: ", res)
+                if (res.data[0].type == 1) {
+                    prop.UserID = res.data[0]._id
+                    history.push('/Summary');
+                }
+                else {
+                    console.log("not user")
+                }
+                console.log("gamed louji!")
             })
-            .catch((e) => {
-                
-                console.log("ana hena")
-                console.log("error ===>", e);
-            });
-        // window.location.reload(false);
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
 
     };
+
+
+
+
+
+    // console.log("User: ", user)
+    // console.log("userID: ", user.id)
+    // const [open, setOpen] = React.useState(false);
+    // const [info, setInfo] =React.useState({firstName:"",lastName:"",email:"",passportNumber:""});
+    // // let history = useHistory();
+    
+    // const [firstName, setFirstName] = useState("")
+    // const [lastName, setLastName] = useState("")
+    // const [passportNumber, setPassportNumber] = useState("")
+    // const [email, setEmail] = useState("")
+
+
+    
+
+    // useEffect(() => {
+        
+    //     axios.get('http://localhost:8080/searchUserByID/'+ user.id ).then(
+    //         res => {
+    //             console.log(res.data )
+    //             setFirstName(res.data.firstName)
+    //             setLastName(res.data.lastName)
+    //             setEmail(res.data.email)
+    //             setPassportNumber(res.data.passportNumber)
+
+
+    //             console.log(firstName)
+    //         })
+
+    //         .catch(err => {
+    //             console.log('Error');
+    //         })
+                
+            
+    //     }
+    //         , []);
+
+
+            
+
+    // const onSubmit = e => {   
+    //     let url = `http://localhost:8080/user/${user.id}`;
+
+    //     let body = {
+    //         "firstName": { firstName },
+    //         "lastName": { lastName },
+    //         "passportNumber": { passportNumber },
+    //         "email": { email }
+    //     }
+
+    //     axios.patch(url, body)
+    //         .then(async (response) => {
+    //             alert("Info Updated Successfully!")
+    //             // history.push("/usersflight");
+    //         })
+    //         .catch((e) => {
+                
+    //             console.log("ana hena")
+    //             console.log("error ===>", e);
+    //         });
+    //     // window.location.reload(false);
+
+    // };
 
     const classes = useStyles()
 
@@ -151,71 +202,42 @@ function UpdateUserInfo(prop) {
     >
      
     <h3 class="colorHeader">
-    <ManageAccountsIcon></ManageAccountsIcon> Edit Account      
+    <VpnKeyIcon></VpnKeyIcon> Change My Password      
     </h3>
 
 
       <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">First Name</label>
+                    <label class="form-label">Current Password</label>
                     <input
                         type='text'
                         class="form-control flex-fill"
-                        placeholder= {firstName}
-                        name='First Name'
+                        name='Current Password'
                         // className='form-control'
                         
-                        onChange={event => { setFirstName(event.target.value) }}
+                        onChange={event => { setPassword(event.target.value) }}
                     />
                 </div>
 
 
 
                 <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Last Name</label>
+                    <label class="form-label">New Password</label>
                     <input
                         type='text'
                         class="form-control flex-fill"
-                        placeholder={lastName}
                         name='Last Name'
                         // className='form-control'
-                        onChange={event => { setLastName(event.target.value) }}
+                        onChange={event => { setPassword(event.target.value) }}
                     />
                 </div>
 
 
-
-
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Passport Number</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder={passportNumber}
-                        name='Passport Number'
-                        // className='form-control'
-                        onChange={event => { setPassportNumber(event.target.value) }}
-                    />
-                </div>
-
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Email</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder={email}
-                        name='Email'
-                        // className='form-control'
-                        onChange={event => { setEmail(event.target.value) }}
-                    />
-                </div>    
 
                 <div class="padding">
                     </div>
                     <div class="rectangle4">
 
-                  <input   onClick={() => {onSubmit() }}
+                  <input onClick={() => {onSubmit() }}
                     class="btn btn-primary"
                     type="submit"
                     variant="outlined"
