@@ -22,7 +22,7 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Mailer } from 'nodemailer-react';
+// import { Mailer } from 'nodemailer-react';
 import nodemailer from "nodemailer";
 
 

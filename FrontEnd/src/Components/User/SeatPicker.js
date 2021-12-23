@@ -364,7 +364,7 @@ class SeatPicker extends Component {
                 <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent:"center", display:"flex",width:"100%" , overflowX:"hidden" ,backgroundSize: "cover" }}>
                 <div style={{ paddingTop: "100px" }}>
                     <Grid container spacing={0}>
-                        <Grid item xs={6}>
+                        <Grid item xs={9}>
                             <Card className="paper" sx={{ minWidth: 275 }}>
                                 <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
                                     Please pick your desired seats from your {flightType} flight

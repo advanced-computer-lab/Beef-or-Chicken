@@ -154,8 +154,14 @@ function SignIn({ details }) {
         axios
             .post(url, body)
             .then(res => {
+                console.log(res)
+                if(res.data.message=="Invalid Username or Password")
+                    alert("Invalid Username or Password")
+                else{
                 details.UserID = res.data.UserID
-                history.goBack();
+                console.log(details)
+               history.goBack();
+                }
             })
             .catch(error => {
                 console.log(error.message);
