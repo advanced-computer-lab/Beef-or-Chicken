@@ -2,12 +2,44 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const stripe = require('stripe')('sk_test_51K8WOHIYl2C21a0iJRwT0vGtrRncQP5GmQfCEp9UbVdAeQqnz4GffjbLfYHSyn73MWbTRPlBARke0uWSk9qLgz0i00vfn3Qnl7');
 require("dotenv").config();
+const uuid = require('uuidv4')
 const nodemailer = require('nodemailer')
 const userModel = require("../Models/User");
 const reservationModel = require("../Models/Reservation");
 var cors = require('cors');
 app.use(cors())
+
+
+
+
+app.post("/payment", (req, res) => {
+  // const { product, token } = req.body
+  // const idempontencyKey = uuid()
+  console.log(req.body)
+  return stripe.customers.create({
+    email: req.body.email,
+    source: "tok_visa"
+  })
+    .then(customer => {
+      stripe.charges.create({
+        amount: req.body.amount * 100,
+        currency: 'egp',
+        customer: customer.id,
+        receipt_email: req.body.email,
+        // description: "My First Test Charge (created for API docs)"
+      },
+        //  { idempontencyKey }
+      )
+    })
+    .then(result => res.status(200).send(result))
+    .catch(err => console.log(err));
+}
+)
+
+
+
 
 app.get("/allUsers", async (request, response) => {
   const users = await userModel.find({});

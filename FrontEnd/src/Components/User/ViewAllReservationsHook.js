@@ -36,7 +36,7 @@ const mapDispatchToState = (dispatch) => {
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
-export default function ViewAllReservations({ props, Reservation, setReservation }) {
+function ViewAllReservations({ props, Reservation, setReservation }) {
 
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
