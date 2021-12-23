@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewAllReservations.css'
 import Accordion from 'react-bootstrap/Accordion'
+import Backdrop from '@mui/material/Backdrop';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
@@ -9,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import MailButton from './MailButton'
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import CircularProgress from '@mui/material/CircularProgress';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -49,13 +51,20 @@ const mapDispatchToState = (dispatch) => {
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
- function ViewAllReservations(props,{Reservation,setReservation,setDepartingFlight,setReturnFlight,DepartingFlight,ReturnFlight} ) {
+function ViewAllReservations(props, { Reservation, setReservation, setDepartingFlight, setReturnFlight, DepartingFlight, ReturnFlight }) {
     let history = useHistory();
-    console.log("props: ",props)
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+    //   setOpen(!open);
+    };
+    console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-    console.log("reservation from details: ",Reservation)
+    console.log("reservation from details: ", Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;
@@ -71,61 +80,62 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
         Object.assign(reservation, { TakenSeatsArriving: ["None"] })
     }
     const handleEdit = (type) => { //1 is departing and 2 is returning
-        
+
         console.log(props)
-        
-            let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
-            axios
-                .get(url2)
-                .then(res => {
-                    console.log("respnose: ", res)
-                    console.log("gamed louji!")
-                    props.setReservation(res.data);
-                    url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
-                    axios
-                        .get(url2)
-                        .then(res => {
-                            console.log("respnose: ", res)
-                            console.log("gamed louji!")
-                            props.setDepartingFlight(res.data);
-                            axios
+        setOpen(true)
+        let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+        axios
+            .get(url2)
+            .then(res => {
+                console.log("respnose: ", res)
+                console.log("gamed louji!")
+                props.setReservation(res.data);
+                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                axios
                     .get(url2)
                     .then(res => {
                         console.log("respnose: ", res)
                         console.log("gamed louji!")
-                        props.setReturnFlight(res.data);
-                        if(type == 1)
-                        history.push('/EditSeats/1');
-                    else if(type == 2)
-                        history.push('/EditSeats/2');
-            
+                        props.setDepartingFlight(res.data);
+                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                        axios
+                            .get(url2)
+                            .then(res => {
+                                console.log("respnose: ", res)
+                                console.log("gamed louji!")
+                                props.setReturnFlight(res.data);
+                                if (type == 1)
+                                    history.push('/EditSeats/1');
+                                else if (type == 2)
+                                    history.push('/EditSeats/2');
+
+                                // this.props.history.push(`/Seats/1`);
+                            })
+                            .catch(error => {
+                                console.log("idiot!");
+                                console.log(error.message);
+                            })
                         // this.props.history.push(`/Seats/1`);
                     })
                     .catch(error => {
                         console.log("idiot!");
                         console.log(error.message);
                     })
-                            // this.props.history.push(`/Seats/1`);
-                        })
-                        .catch(error => {
-                            console.log("idiot!");
-                            console.log(error.message);
-                        })
-                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                    // this.props.history.push(`/Seats/1`);
-                })
-                .catch(error => {
-                    console.log("idiot!");
-                    console.log(error.message);
-                })
-           
                 
-                    
-                  
-         
-       // console.log("props.reservation:" ,props.Reservation)
+                // this.props.history.push(`/Seats/1`);
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+
+
+
+        // console.log("props.reservation:" ,props.Reservation)
         // need to set flights too
-    
+
     };
 
     const flightDuration = (initDate, finalDate, initTime, finalTime) => {
@@ -194,6 +204,13 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
 
         return (
             <div>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={open}
+                    //onClick={handleClose}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <Accordion className="accordion" >
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>
@@ -405,18 +422,18 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
 
 
 
-                                            <DeleteButton reservation = {reservation._id} />
+                                            <DeleteButton reservation={reservation._id} />
                                             <Button variant="contained">Contained</Button>
-<Button variant="contained" disabled>
-  Disabled
-</Button>
-<Button variant="contained" href="#contained-buttons">
-  Link
-</Button>
-<Button
-                                            variant="outlined" size="medium" color="primary"
-                                           
-                                             onClick={() => {handleEdit(2) }} >Edit Flight</Button>
+                                            <Button variant="contained" disabled>
+                                                Disabled
+                                            </Button>
+                                            <Button variant="contained" href="#contained-buttons">
+                                                Link
+                                            </Button>
+                                            <Button
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleEdit(2) }} >Edit Flight</Button>
 
                                         </form>
                                     </div>
@@ -577,15 +594,15 @@ export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations)
 
 
                                             <Button
-                                            variant="outlined" size="medium" color="primary"
-                                           
-                                             onClick={() => { handleEdit(1) }} >Edit Flight</Button>
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
-                                            
-                                          {/*  */}
-                                            <MailButton/>
-                                            
-                                           
+
+                                            {/*  */}
+                                            <MailButton />
+
+
 
                                         </form>
                                     </div>
