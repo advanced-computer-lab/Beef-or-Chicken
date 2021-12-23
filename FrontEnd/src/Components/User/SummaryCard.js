@@ -238,10 +238,10 @@ function SimplePaper({ details }) {
                     </div>
 
                     <div className={classes.text}>
-                        <Typography className={classes.text1}>{Returning.DepartureDate.substring(0, 10)} . {Returning.DepartureTime} . {details.destination_name}</Typography>
-                        <Typography className={classes.text2}> Travel time:  {duration(Returning.DepartureTime, Returning.DepartureDate, Returning.ArrivalTime, Returning.ArrivalDate)}</Typography>
                         <Typography className={classes.text1}>{Returning.ArrivalDate.substring(0, 10)} . {Returning.ArrivalTime} . {details.origin_name}</Typography>
-
+                        <Typography className={classes.text2}> Travel time:  {duration(Returning.DepartureTime, Returning.DepartureDate, Returning.ArrivalTime, Returning.ArrivalDate)}</Typography>
+                        <Typography className={classes.text1}>{Returning.DepartureDate.substring(0, 10)} . {Returning.DepartureTime} . {details.destination_name}
+                        </Typography>
                     </div>
                     <hr className={classes.line}></hr>
                     <div className={classes.partition}>

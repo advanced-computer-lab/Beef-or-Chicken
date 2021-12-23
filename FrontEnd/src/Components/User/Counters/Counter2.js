@@ -31,7 +31,7 @@ function Counter2({ count, setCount, children, setChildren }) {
     //   const [count, setCount] = useState(0);
     const [count2, setCount2] = useState(0);
     const [col, setCol] = useState("disabled");
-    const [col2, setCol2] = useState("disabled");
+    const [col2, setCol2] = useState("primary");
 
     // Create handleIncrement event handler
     const handleIncrement = () => {
@@ -39,6 +39,18 @@ function Counter2({ count, setCount, children, setChildren }) {
             // setCount(1);
             setChildren(children + 1);
             setCol("primary")
+        }
+        else if (children === 8) {
+            // setCount(1);
+            setCol2("disabled")
+            setChildren(children + 1);
+
+        }
+        else if (children === 9) {
+            // setCount(1);
+            setCol2("disabled")
+            setChildren(children);
+
         }
 
         else {
@@ -61,6 +73,8 @@ function Counter2({ count, setCount, children, setChildren }) {
         // }
         else {
             setChildren(children - 1);
+            setCol2("primary")
+
         }
         console.log("handleDec ", children)
 
@@ -113,7 +127,7 @@ function Counter2({ count, setCount, children, setChildren }) {
                         {children}
                     </div>
                     <div className="sum2">
-                        <IconButton color="primary" sign="-" onClick={func2} >
+                        <IconButton color={col2} sign="-" onClick={func2} >
                             <AddBoxRoundedIcon />
                         </IconButton>
                     </div>

@@ -34,7 +34,7 @@ export function Counter({ count, setCount, Adults, setAdult }) {
 
     const [count2, setCount2] = useState(0);
     const [col, setCol] = useState("disabled");
-    const [col2, setCol2] = useState("disabled");
+    const [col2, setCol2] = useState("primary");
 
     // Create handleIncrement event handler
     const handleIncrement = () => {
@@ -43,6 +43,18 @@ export function Counter({ count, setCount, Adults, setAdult }) {
             setAdult(Adults + 1);
 
             setCol("primary")
+        }
+        else if (Adults === 8) {
+            // setCount(1);
+            setCol2("disabled")
+            setAdult(Adults + 1);
+
+        }
+        else if (Adults === 9) {
+            // setCount(1);
+            setCol2("disabled")
+            setAdult(Adults);
+
         }
 
         else {
@@ -56,9 +68,15 @@ export function Counter({ count, setCount, Adults, setAdult }) {
             setAdult(1);
             setCol("disabled")
         }
+        // else if (Adults === 8) {
+        //     setAdult(Adults - 1);
+        //     setCol("primary")
+        // }
+
 
         else {
             setAdult(Adults - 1);
+            setCol2("primary")
         }
     };
 
@@ -108,7 +126,7 @@ export function Counter({ count, setCount, Adults, setAdult }) {
                         {Adults}
                     </div>
                     <div className="sum2">
-                        <IconButton color="primary" sign="-" onClick={func2} >
+                        <IconButton color={col2} sign="-" onClick={func2} >
                             <AddBoxRoundedIcon />
                         </IconButton>
                     </div>

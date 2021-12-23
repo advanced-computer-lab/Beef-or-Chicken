@@ -86,7 +86,7 @@ function MaterialUIPickers({ setDepartureDate, departure_date, return_date, setR
                         margin="normal"
                         id="Depature Date"
                         label="Depature Date"
-                        value={DepartureDate}
+                        value={departure_date}
                         onChange={handleDepartureDate}
                         KeyboardButtonProps={{
                             "aria-label": "change date",
@@ -107,7 +107,7 @@ function MaterialUIPickers({ setDepartureDate, departure_date, return_date, setR
                         margin="normal"
                         id="Return Date"
                         label="Return Date"
-                        value={RetDate}
+                        value={return_date}
                         onChange={handleReturnDate}
                         KeyboardButtonProps={{
                             "aria-label": "change date",

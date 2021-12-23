@@ -13,6 +13,30 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import SideBar from './SideBar';
+import Header from './Header';
+import PersonIcon from '@mui/icons-material/Person';
+
+
+
+// const mapStateToProps = (state) => {
+//     //console.log(state.DetailsReducer.details.destination)
+//     return {
+//         details: state.DetailsReducer.details,
+        
+//     };
+// };
+
+
+
+const mapStateToProps = (state) => {
+    console.log(state.DetailsReducer.details)
+    return {
+        details: state.DetailsReducer.details,
+        
+        
+    };
+};
 
 
 
@@ -24,7 +48,7 @@ class viewUserInfo extends Component {
         this.state = {
             info: [],
             // id: this.props.details.UserID//added //RETURN AFTER TESTING
-            id:"61a518d86046ece4ba9ff27c"
+            id:this.props.details.UserID,
         };
         console.log("id", this.state.id)
         console.log("details", this.props.details)
@@ -33,6 +57,8 @@ class viewUserInfo extends Component {
     
 
     componentDidMount() {
+        console.log("this:", this)
+        if(this.state.id!="" && this.state.id!=null){
         let url =
             axios
                 .get(`http://localhost:8080/searchUserByID/${this.state.id}`)
@@ -48,7 +74,12 @@ class viewUserInfo extends Component {
                 .catch(err => {
                     console.log('Error');
                 })
-
+            }
+        else{
+            
+            // this.props.history.push("/Userlogin2" , { prevUrl: "/ViewUserInfo"} ); 
+            this.props.history.push("/Userlogin2");
+        }
 
 
 
@@ -76,28 +107,17 @@ class viewUserInfo extends Component {
         //         console.log("error ===>", e);
         //     });
 
-
-
-
-
-
-
     };
     
     render() {
-        // const info = this.state.info;
-        // console.log("info ", info)
-        // console.log("info: " + info);
-        // let AllUserInfo;
-
-        // console.log("looo", { AllUserInfo })
-
-
-    
+        
+       // this.props.history.push(`/Seats/2`);
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
+        <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+            <Header/>
+            <div style={{marginBottom:"-40px"}}></div>
             <div class= "padding">
                 
            
@@ -113,8 +133,11 @@ class viewUserInfo extends Component {
     >
      
     
-
-
+<div class="padding"></div>
+     <h3 class="colorHeader">
+    <PersonIcon ></PersonIcon >My Infromation
+    </h3>
+    
       <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">First Name</label>
                     <input
@@ -142,10 +165,6 @@ class viewUserInfo extends Component {
                         // onChange={event => { setLastName(event.target.value) }}
                     />
                 </div>
-
-
-
-
 
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Passport Number</label>
@@ -178,15 +197,12 @@ class viewUserInfo extends Component {
                     />
                 </div>       
 
-                  {/* <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="edit"
-                    
-                // className="btn btn-outline-warning btn-block mt-4"
-                />  */}
+                <div class="padding">
+                    </div>
 
-                <Link to={  { pathname: `/UpdateUserInfo/${this.state.id}`  } }>
+
+
+                <Link to={  { pathname: `/UpdateUserInfoNew/${this.state.id}`} }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton> */}
@@ -194,15 +210,16 @@ class viewUserInfo extends Component {
                     <input
                     class="btn btn-primary"
                     type="submit"
-                    value="edit"
-                    
+                    value="Edit"
+
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
 
-
-
-
                                 </Link>
+
+
+
+                
 
     </Box>
     </div>
@@ -213,9 +230,6 @@ class viewUserInfo extends Component {
 }
 }
 // export default viewUserInfo;
-const mapStateToProps = (state) => ({
-    details: state.DetailsReducer.details,
-});
 
 
 
