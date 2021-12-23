@@ -32,3 +32,47 @@
 
         padding-Top: 10%;
     }
+    .rectangle2{
+
+        padding: spacing(3, 2);
+        padding-right: 10%;
+        padding-left: 2%;
+        height: 75%;
+        width: 30%;
+        text-Align: center;
+        border-Radius: 30px;
+        padding-top: 35px;
+    }
+
+    .rectangle4{
+
+        padding: spacing(3, 2);
+        padding-right: 2%;
+        padding-left: 74%;
+        height: 75%;
+        width: 30%;
+        margin-top: -8px;
+        text-Align: center;
+        border-Radius: 30px;
+        padding-bottom: 10px;
+    }
+
+    .rectangle3{
+
+        padding: spacing(3, 2);
+        padding-right: 70%;
+        padding-left: -1%;
+        height: 75%;
+        width: 30%;
+        margin-top: -83px;
+        text-Align: center;
+        border-Radius: 30px;
+        padding-top: 35px;
+    }
+
+    .colorHeader{
+        color:black;
+        margin-top: -30px;
+    }
+
+

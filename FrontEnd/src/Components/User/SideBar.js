@@ -123,6 +123,7 @@ function SwipeableTemporaryDrawer({ UserID }) {
                 <Link to="/">
                     <ListItem button key='Make Resrervation' onClick={handleSubmit()}>
                         <CardTravelIcon />
+                        <SearchIcon/>
                         <ListItemText primary='&nbsp;Make Resrervation' />
                     </ListItem>
                 </Link>
@@ -130,6 +131,7 @@ function SwipeableTemporaryDrawer({ UserID }) {
                     <Link to="/ViewAllReservations">
                         <ListItem className={classes.link} style={{ textDecoration: "none" }} button key='View All Reservations' onClick={handleSubmit()}>
                             <AirplaneTicketIcon />
+                            
                             <ListItemText primary='&nbsp;View All Reservations' />
                         </ListItem>
                     </Link>
@@ -152,6 +154,27 @@ function SwipeableTemporaryDrawer({ UserID }) {
                     </Link>
                 }
 
+{/* <Link to="/">
+                    <ListItem button key='Search' onClick={handleSubmit()}>
+                        
+                        <ListItemText primary='Search' />
+                    </ListItem>
+                </Link>
+
+                <Link to="/ViewUserinfo">
+                    <ListItem button key='View User info' onClick={handleSubmit()}>
+                    <AccountBoxIcon></AccountBoxIcon>
+                        <ListItemText primary='View User info' />
+                    </ListItem>
+                </Link>
+
+
+                <Link to={  { pathname: `/ChangePassword`} }>
+                    <ListItem button key='Change Password' onClick={handleSubmit()}>
+                    <VpnKeyIcon></VpnKeyIcon>
+                        <ListItemText primary='Change Password' />
+                    </ListItem>
+                </Link> */}
             </List>
 
 

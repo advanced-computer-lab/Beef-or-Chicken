@@ -23,6 +23,8 @@ import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
 import ViewUserInfo from './Components/User/ViewUserInfo';
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
+import UpdateUserInfoNew from './Components/User/UpdateUserInfoNew'
+import ChangePassword from './Components/User/ChangePassword'
 import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
@@ -54,6 +56,8 @@ function App() {
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
+        <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
+        <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
         <Route exact path="/login" component={UserLogin} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />

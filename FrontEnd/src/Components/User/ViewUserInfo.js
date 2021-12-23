@@ -28,6 +28,17 @@ const mapStateToProps = (state) => {
 
 
 
+const mapStateToProps = (state) => {
+    console.log(state.DetailsReducer.details)
+    return {
+        details: state.DetailsReducer.details,
+        
+        
+    };
+};
+
+
+
 
 
 class viewUserInfo extends Component {
@@ -98,15 +109,8 @@ class viewUserInfo extends Component {
     };
     
     render() {
-        // const info = this.state.info;
-        // console.log("info ", info)
-        // console.log("info: " + info);
-        // let AllUserInfo;
-
-        // console.log("looo", { AllUserInfo })
-
-
-    
+        
+       // this.props.history.push(`/Seats/2`);
 
     return (
 
@@ -193,18 +197,12 @@ class viewUserInfo extends Component {
                     />
                 </div>       
 
-                  {/* <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="edit"
-                    
-                // className="btn btn-outline-warning btn-block mt-4"
-                />  */}
-
                 <div class="padding">
                     </div>
 
-                <Link to={  { pathname: `/UpdateUserInfo/${this.state.id}`  } }>
+
+
+                <Link to={  { pathname: `/ChangePassword/${this.state.id}`} }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton> */}
@@ -213,14 +211,15 @@ class viewUserInfo extends Component {
                     class="btn btn-primary"
                     type="submit"
                     value="Edit"
-                    
+
                 // className="btn btn-outline-warning btn-block mt-4"
                 />
 
-
-
-
                                 </Link>
+
+
+
+                
 
     </Box>
     </div>
