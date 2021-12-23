@@ -85,8 +85,6 @@ app.get("/flightById/:id", async (request, response) => {
 });
 
 
-
-
 app.post("/searchFlights", async (request, response) => {  //search with Criteria
   console.log("ana el request: ", request.body.From)
 
@@ -248,10 +246,6 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
     response.status(500).send(error);
   }
 });
-
-
-
-
 
 app.post("/createFlight", async (request, response) => {
   console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
@@ -430,8 +424,6 @@ app.patch("/flight/:id", async (request, response) => {  //update
 });
 
 // ...
-
-
 
 
 app.delete("/flight/:id", async (request, response) => {

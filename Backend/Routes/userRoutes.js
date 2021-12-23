@@ -128,7 +128,7 @@ app.post('/login', (req, res) => {
             const payload = {
               id: dbUser._id,
               username: dbUser.username,
-                  type:dbUser.type
+              type:dbUser.type
             }
             jwt.sign(
               payload,
@@ -224,12 +224,7 @@ console.log(takenUsername)
 })
 
 
-
-
-//pure habdddddd
-//TO BE TESTEEEDDDDDD test test test
-
-app.get("/usersflight/:id", async (request, response) => {
+app.get("/usersflight/:id", verifyJWT  ,async (request, response) => {
   var user = {};
   user.UserID = request.params.id;
   const reservedFlights = await reservationModel.find(user);
@@ -242,6 +237,30 @@ app.get("/usersflight/:id", async (request, response) => {
   }
 });
 
+
+function verifyJWT(req , res , next) {
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err ,decoded) => {
+      if(err) {
+        console.log("failed to auth")
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate"
+        })
+     
+      }
+      console.log("succeded to auth")
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      next()
+    })
+  }else{
+    console.log("Wrong Token")
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
 
 
 module.exports = app;

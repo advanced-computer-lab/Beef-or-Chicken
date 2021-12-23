@@ -124,7 +124,6 @@ function SwipeableTemporaryDrawer({ UserID }) {
                 <Link to="/">
                     <ListItem button key='Make Resrervation' onClick={handleSubmit()}>
                         <CardTravelIcon />
-                        <SearchIcon/>
                         <ListItemText primary='&nbsp;Make Resrervation' />
                     </ListItem>
                 </Link>

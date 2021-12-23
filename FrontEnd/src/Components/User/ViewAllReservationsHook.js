@@ -66,11 +66,9 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     const handleToggle = () => {
     //   setOpen(!open);
     };
-    console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-    console.log("reservation from details: ", Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;

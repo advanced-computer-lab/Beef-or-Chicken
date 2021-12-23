@@ -35,39 +35,17 @@ class AllFlights extends Component {
     };
     render() {
         const flights = this.state.flights;
-        console.log("flights ", flights)
-        console.log("PrintBook: " + flights);
         let AllFlightsList;
 
-        // if (!flights) {
-        //     AllFlightsList = "there is no book record!";
-        // } else {
-        //     AllFlightsList = flights.map((flight) =>
-        //         <Flight flight={flight} />,
-        //         //console.log({ flight }),
-        //         // console.log("looo", { AllFlightsList }),
-        //     );
-        // }
-
-        console.log("looo", { AllFlightsList })
 
         return (
-            // <div className="display">
-
-
-            //     <div className="allFlights" >
-            //         {AllFlightsList}
-            //     </div>
-
-
-            // </div>
             <div>
                 <Header />
                 <Typography align="left" style={{ color: "#0C2647", marginTop: "30px", marginBottom: "-10px", marginLeft: "100px" }} variant="h2">  All Flights</Typography>
                 <GridContainer >
                     {/* {flights.map((flight) => { */}
                     {/* return ( */}
-                    <GridItem xs={12} style={{ margin: "90px" }}>
+                    <GridItem xs={13} style={{ margin: "10px"  }}>
                         <FlightList flight={flights} />
                     </GridItem>
                     {/* ); */}

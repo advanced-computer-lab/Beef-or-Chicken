@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         position: "absolute",
-        left: "15.5%",
+        left: "15%",
         top: "57%",
     },
     rectangle: {
@@ -83,13 +83,6 @@ const useStyles = makeStyles((theme) => ({
     adult: {
 
     },
-
-
-
-
-
-
-
 
 }));
 const mapStateToProps = (state) => {

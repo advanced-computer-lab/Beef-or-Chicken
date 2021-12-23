@@ -10,7 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import LogoutButton from './LogoutButton'
 import LoginIcon from '@mui/icons-material/Login';
-
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import EditIcon from '@mui/icons-material/Edit';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -61,11 +62,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     profile2: {
-        width: "80px",
+        width: "300px",
         height: "80px",
         position: "absolute",
         top: "19px",
-        right: "35px",
+        right: "25px",
     },
     profile: {
         width: "80px",
@@ -125,6 +126,10 @@ function Header({ UserID }) {
         history.push("/userlogin2");
     };
 
+    const register = () => {
+        history.push("/Register");
+    };
+
     const editProfile = () => {
         history.push("/UpdateUserInfo/" + { UserID });
     };
@@ -169,8 +174,8 @@ function Header({ UserID }) {
                         >
 
 
-                            <MenuItem onClick={viewProfile}>Profile</MenuItem>
-                            <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
+                            <MenuItem onClick={viewProfile}><AssignmentIndIcon/>&nbsp;Profile</MenuItem>
+                            <MenuItem onClick={editProfile}><EditIcon/>&nbsp;Edit Profile</MenuItem>
                             <LogoutButton />
                         </Menu>
                     </div>
@@ -178,6 +183,23 @@ function Header({ UserID }) {
                 {!auth &&
 
                     <div className={classes.profile2}>
+
+
+
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={register}
+                            color="inherit"
+                        >
+                            <AssignmentIndIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
+                           <a style={{fontSize :16 , color : "#FFFFFF"}}>
+                               &nbsp;Create Acoount
+                               </a>
+                        </IconButton>
+
                         <IconButton
                             size="large"
                             aria-label="account of current user"

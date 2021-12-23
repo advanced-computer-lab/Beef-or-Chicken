@@ -155,17 +155,19 @@ function SignIn({ details }) {
             .post(url, body)
             .then(res => {
                 console.log(res)
-                if(res.data.message=="Invalid Username or Password")
+                if (res.data.message == "Invalid Username or Password")
                     alert("Invalid Username or Password")
-                else{
-                details.UserID = res.data.UserID
-                console.log(details)
-                if(res.data.type==1)
-                    history.goBack();
-                    // console.log("batates")
-                else{
-                    history.push("/allflights")
-                }
+                else {
+                    details.UserID = res.data.UserID
+                    details.token = res.data.token
+                    console.log(details)
+                    console.log("details after login")
+
+                    if (res.data.type == 1)
+                        history.goBack();
+                    else {
+                        history.push("/allflights")
+                    }
                 }
             })
             .catch(error => {
