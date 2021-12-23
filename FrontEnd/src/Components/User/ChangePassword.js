@@ -209,7 +209,7 @@ function UpdateUserInfo(prop) {
       <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Current Password</label>
                     <input
-                        type='text'
+                        type='password'
                         class="form-control flex-fill"
                         name='Current Password'
                         // className='form-control'
@@ -223,11 +223,11 @@ function UpdateUserInfo(prop) {
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">New Password</label>
                     <input
-                        type='text'
+                        type='password'
                         class="form-control flex-fill"
-                        name='Last Name'
+                        name='new password'
                         // className='form-control'
-                        onChange={event => { setPassword(event.target.value) }}
+                        onChange={event => { setPassword(event.target.value)}}
                     />
                 </div>
 
@@ -235,7 +235,7 @@ function UpdateUserInfo(prop) {
 
                 <div class="padding">
                     </div>
-                    <div class="rectangle4">
+                    <div class="changepassword">
 
                   <input onClick={() => {onSubmit() }}
                     class="btn btn-primary"
@@ -245,12 +245,12 @@ function UpdateUserInfo(prop) {
                     // color="blue"
                     class="btn btn-primary"
                     type="submit"
-                    value="Update"
+                    value="change"
                 // className="btn btn-outline-warning btn-block mt-4"
                     /> 
                     </div>
 
-                    <div class="rectangle3">
+                    {/* <div class="rectangle3">
                     <Link to={  { pathname: `/ViewUserInfo/` } }>
                         
                      
@@ -261,7 +261,7 @@ function UpdateUserInfo(prop) {
                     
                      />   
                 
-                    </Link>
+                    </Link> */}
 
                 {/* <button class="rectangle2"
                 onClick={() => {
@@ -272,7 +272,7 @@ function UpdateUserInfo(prop) {
             </button> */}
 
                     
-                  </div>
+                  {/* </div> */}
 
                   {/* <div class= "rectangle3">
                   <input   onClick={() => {onSubmit() }}

@@ -177,8 +177,6 @@ function UpdateUserInfo(prop) {
                     />
                 </div>
 
-
-
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Last Name</label>
                     <input

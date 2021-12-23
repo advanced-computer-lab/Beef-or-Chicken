@@ -78,5 +78,17 @@
     .paddingup{
         padding-top:3%;
     }
+    .changepassword{
+
+        padding: spacing(3, 2);
+        padding-right: 58%;
+        padding-left: 42%;
+        height: 75%;
+        width: 30%;
+        margin-top: -18px;
+        text-Align: center;
+        border-Radius: 30px;
+        padding-bottom: 50px;
+    }
 
 
