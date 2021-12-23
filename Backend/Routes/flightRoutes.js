@@ -374,8 +374,6 @@ app.patch("/flightSeats/:id", async (request, response) => {  //update
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
 
-    console.log("ana el request: ", request.body)
-
     var q = {}
     if (request.body.From.From != "") {
       q.From = request.body.From.From
@@ -384,10 +382,10 @@ app.patch("/flight/:id", async (request, response) => {  //update
       q.To = request.body.To.To
     }
     if (request.body.DepartureDate.DepartureDate != "") {
-      q.DepartureDate = request.body.DepartureDate.DepartureDate + "T00:00:00.000Z"
+      q.DepartureDate = request.body.DepartureDate.DepartureDate 
     }
     if (request.body.ArrivalDate.ArrivalDate != "") {
-      q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
+      q.ArrivalDate = request.body.ArrivalDate.ArrivalDate 
     }
     if (request.body.FirstSeats.FirstSeats != null && request.body.FirstSeats.FirstSeats != "") {
       q.FirstSeats = request.body.FirstSeats.FirstSeats
@@ -426,13 +424,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
       q.FlightNumber = request.body.FlightNumber.FlightNo
     }
 
-
-
-    console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
-    console.log("first line");
-    //  await flightModel.save();
-    // console.log("Second line");
     response.send();
   } catch (error) {
     response.status(500).send(error);

@@ -26,6 +26,8 @@ import UpdateUserInfo from './Components/User/UpdateUserInfo'
 import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
+import UserRegistration from './Components/User/Registration'
+
 
 import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
@@ -59,6 +61,7 @@ function App() {
         <Route exact path="/Userlogin2" component={UserLogin2} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
         <Route exact path="/FullSummaryPage" component={FullSummaryPage} />
+        <Route exact path="/register" component={UserRegistration} />
 
       </Router>
     </div>

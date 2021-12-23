@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import MenuItem from '@mui/material/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -56,7 +57,6 @@ const mapDispatchToState = (dispatch) => {
             dispatch({ type: 'setReservationID', payload: ReservationID });
         },
 
-
         setAllOffers: (allOffers) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
         },
@@ -82,7 +82,10 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
         e.preventDefault();
         // console.log("detailsssssss: ", details)
         // //console.log("allahu akbar", details.allOffers)
+
         setUserID("");
+        window.location.reload(true);
+        history.push("/");
     }
 
     //resluts.slices.semg.length
@@ -94,28 +97,19 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
     // console.log("length:", response.data.cheapestFlights[0].length)
 
     return (
-        <div className={classes.buttonDiv}>
-            <ul>
-               
-                    <div className={classes.button}>
-
-                        {/* This Button uses a Font Icon, see the installation instructions in the Icon component docs. */}
-                        <Button
-                            style={{ background: "#10404c ", color: "wheat", marginTop: "10%", marginRight: "50%" }}
-                            classname={classes.button2}
+        <div >
+            <MenuItem 
+                            style={{ background: "#c70808 ", color: "#FFFFFF", marginTop: "10%" , marginBottom:"-7px"}}
                             variant="contained"
-
                             size="medium"
                             className={classes.button}
                             // startIcon={<SearchIcon />}
                             onClick={(e) => { func(e) }}
                         >
                             Logout
-                        </Button>
+                      
+            </MenuItem>
 
-                    </div>
-                
-            </ul>
         </div>
     );
 }

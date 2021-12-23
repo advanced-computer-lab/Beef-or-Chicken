@@ -138,39 +138,26 @@ function SignIn({ details }) {
     console.log("ANA GEEEEEEEEEEEEEEEET")
     const classes = useStyles();
     let history = useHistory();
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [wrongCredentials, setwrongCredentials] = useState(false);
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-
-
-
 
         let body = {
-            'email': { email },
-            'password': { password },
-
+            'username': username ,
+            'password': password ,
         }
         console.log("body: ", body)
-        let url = "http://localhost:8080/searchUser"
+        let url = "http://localhost:8080/login"
 
         axios
             .post(url, body)
             .then(res => {
-                if (res.data[0].type == 1) {
-                    details.UserID = res.data[0]._id
-                    history.goBack();
-                }
-                else {
-                    console.log("not user")
-                }
-                console.log("gamed louji!")
+                details.UserID = res.data.UserID
+                history.goBack();
             })
             .catch(error => {
-                console.log("idiot!");
                 console.log(error.message);
             })
 
@@ -200,11 +187,10 @@ function SignIn({ details }) {
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                onChange={(e) => setEmail(e.target.value)}
-                                //  autoComplete="email"
+                                id="username"
+                                label="Username"
+                                name="Username"
+                                onChange={(e) => setUsername(e.target.value)}
                                 autoFocus
                             />
                             <TextField

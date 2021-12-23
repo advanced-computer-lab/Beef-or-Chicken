@@ -22,6 +22,7 @@ import Button from '@material-ui/core/Button';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import ChairIcon from '@mui/icons-material/Chair';
 import allSeats from './Images/allSeats.png';
+import Header from './Header';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 // import { useHistory } from "react-router-dom";
 
@@ -65,9 +66,6 @@ class SeatPicker extends Component {
         console.log("ddddddddddd: ", this.props)
     }
 
-
-
-
     updateChoice = (index, change) => {
         var temporaryArray = this.state.seats
         temporaryArray[index] = change
@@ -89,7 +87,6 @@ class SeatPicker extends Component {
                 })
         });
     }
-
 
     settingArrays = () => {
         if (this.props.DepartingSeats != null) {
@@ -155,10 +152,6 @@ class SeatPicker extends Component {
 
 
     }
-
-
-
-
 
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
@@ -363,14 +356,12 @@ class SeatPicker extends Component {
 
     };
 
-
-
-
-
     render() {
 
         return (
-            <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+            <div >
+                <Header />
+                <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent:"center", display:"flex",width:"100%" , overflowX:"hidden" ,backgroundSize: "cover" }}>
                 <div style={{ paddingTop: "100px" }}>
                     <Grid container spacing={0}>
                         <Grid item xs={6}>
@@ -426,6 +417,7 @@ class SeatPicker extends Component {
                         </Grid>
 
                     </Grid>
+                </div>
                 </div>
 
 

@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
-
+import Header from "./Header";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -101,8 +101,10 @@ function UpdateUserInfo(prop) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-                <SideBar />
+            <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+                <Header />
+            <div style={{marginBottom:"-40px"}}></div>
+
             <div className={classes.padding}>
            
 <div className={classes.rectangle}>

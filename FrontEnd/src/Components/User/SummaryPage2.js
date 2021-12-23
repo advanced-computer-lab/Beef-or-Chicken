@@ -3,6 +3,7 @@ import ResultCard from './ResultCard'
 import { makeStyles } from "@material-ui/core/styles";
 import ResultBack from "../../images/Results2.png";
 import SummaryCard from './SummaryCard2'
+import Header from './Header';
 const useStyles = makeStyles((theme) => ({
     root: {
         // display: 'flex',
@@ -31,9 +32,13 @@ function DepartingResults() {
 
     return (
 
-        <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
-
-            <div className={classes.page}>
+        <div style={{
+            backgroundImage: `url(${ResultBack})`, minheight: "100vh", backgroundSize: "cover",
+            backgroundRepeat: "repeat-y",
+            paddingBottom: "100px"
+        }}>
+            <Header />
+            <div className={classes.page} >
                 <div className={classes.results}>
                     <SummaryCard />
 

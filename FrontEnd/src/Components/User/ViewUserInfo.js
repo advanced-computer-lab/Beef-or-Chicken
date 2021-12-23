@@ -13,7 +13,8 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import SideBar from './SideBar'
+import SideBar from './SideBar';
+import Header from './Header';
 
 
 
@@ -109,8 +110,9 @@ class viewUserInfo extends Component {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-            <SideBar />
+        <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+            <Header/>
+            <div style={{marginBottom:"-40px"}}></div>
             <div class= "padding">
                 
            

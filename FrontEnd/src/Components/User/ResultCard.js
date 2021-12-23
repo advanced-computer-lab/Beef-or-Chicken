@@ -167,7 +167,8 @@ const useStyles = makeStyles((theme) => ({
     },
     accordion: {
         boxShadow: "0px 0px 4px 1px rgba(0, 0, 0, 0.25)",
-        paddingTop: "2%"
+//        paddingTop: "2%"
+            marginTop:"2%"
         // background: "#415a5c",
         // backgroundColor: '#415a5c',
         // borderColor: '#415a5c',
