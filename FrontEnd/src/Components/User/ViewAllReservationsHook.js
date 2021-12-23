@@ -7,7 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
 import Button from '@material-ui/core/Button';
-import MailButton from './MailButton'
+import MailButton from './MailButton';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -22,6 +22,12 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Mailer } from 'nodemailer-react';
+import nodemailer from "nodemailer";
+
+
+//var nodemailer = require('nodemailer');
+//const nodemailer = require("nodemailer");
 //import Button from 'react-bootstrap/Button';
 //BACKEND DEPENDENT COMMENTED => BACKEND
 const mapStateToProps = (state) => {
@@ -79,6 +85,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     if (reservation.TakenSeatsArriving.length === 0) {
         Object.assign(reservation, { TakenSeatsArriving: ["None"] })
     }
+
     const handleEdit = (type) => { //1 is departing and 2 is returning
 
         console.log(props)
@@ -138,6 +145,92 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
     };
 
+
+    const handleMail = () => {
+
+        let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+        axios
+            .get(url2)
+            .then(res => {
+                //console.log("respnose: ", res)
+                console.log("gamed louji!")
+                props.setReservation(res.data);
+                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                axios
+                    .get(url2)
+                    .then(res => {
+                        //  console.log("respnose: ", res)
+                        //console.log("gamed louji!")
+                        
+                        props.setDepartingFlight(res.data);
+                        
+                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                        axios
+                            .get(url2)
+                            .then(res => {
+                                // console.log("respnose: ", res)
+                                
+                                props.setReturnFlight(res.data);
+                                
+                                console.log("props:",props)
+                                // HENA 
+                                url2 = `http://localhost:8080/userById/${reservation.UserID}`
+                                axios
+                                    .get(url2)
+                                    .then(res => {
+                                        console.log("respnose: ", res)
+                                        console.log("gamed louji!")
+                                        let User = res.data
+                                       
+                                       
+                                        url2 = `http://localhost:8080/mail`
+                                        let body = {
+
+                                            Reservation: reservation,
+                                            thisUser: User,
+                                            Departing : props.DepartingFlight,
+                                            Returning : props.ReturnFlight
+                                            
+                                        }
+                                        axios
+                                            .post(url2, body)
+                                            .then(res => {
+                                                console.log("ba3atna el mail: ", res)
+                                                console.log("gamed louji!")
+
+                                                // this.props.history.push(`/Seats/1`);
+                                            })
+                                    })
+
+                                // this.props.history.push(`/Seats/1`);
+                            })
+                            .catch(error => {
+                                console.log("idiot!");
+                                console.log(error.message);
+                            })
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+
+                // this.props.history.push(`/Seats/1`);
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+
+        ////////////////////////////////
+
+
+
+    }
+
+
     const flightDuration = (initDate, finalDate, initTime, finalTime) => {
         let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
         let final = moment(finalDate.substring(0, 10) + " " + finalTime + ":00");
@@ -187,7 +280,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
         axios.get('http://localhost:8080/flightById/' + props.reservation.ReturnFlightID).then(
             Result =>    {setReturnFlight([Result.data]);
                 console.log(returnFlight);
-
+ 
                     }
                         ).catch(err => { console.log(err) })
         }
@@ -594,16 +687,16 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
 
                                             <Button
-                                                variant="outlined" size="medium" color="primary"
+                                                variant="outlined" size="medium" color="primary" margin={5}
 
                                                 onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
+                                            <Button sx={{mt: 2}}
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
 
                                             {/*  */}
-                                            <MailButton />
-
-
-
                                         </form>
                                     </div>
 

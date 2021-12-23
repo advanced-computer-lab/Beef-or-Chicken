@@ -277,7 +277,8 @@ class SeatPicker extends Component {
             let url = "http://localhost:8080/reserveSeats"
             let body = {
                 reservationId: this.state.ReservationId,
-                seatsReturning: this.state.chosenSeats
+                seatsReturning: this.state.chosenSeats,
+                email:true
 
             }
             this.state.returnSeats.push(this.state.chosenSeats)

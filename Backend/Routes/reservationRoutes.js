@@ -5,7 +5,8 @@ app.use(cors())
 const flightModel = require("../Models/Flight");
 const userModel = require("../Models/User");
 const reservationModel = require("../Models/Reservation");
-const nodemailer = require("nodemailer");
+//const nodemailer = require("nodemailer");
+var nodemailer = require('nodemailer');
 
 
 app.get("/allReservations", async (request, response) => {
@@ -27,30 +28,32 @@ app.get("/reservationByID/:id", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+
 app.patch("/reserveSeats", async (request, response) => {  //updateUser
   try {
 
     console.log("Request: ", request.body)
     var q = {}
 
-    var reservationId= request.body.reservationId;
+    var reservationId = request.body.reservationId;
     if (request.body.seatsDeparting != null)
-      q.TakenSeatsDeparting =  request.body.seatsDeparting
+      q.TakenSeatsDeparting = request.body.seatsDeparting
     if (request.body.seatsReturning != null)
       q.TakenSeatsArriving = request.body.seatsReturning
-    if (request.body.email != null)
-      //do shtuff
-    console.log("q: ", q)
-    await reservationModel.findByIdAndUpdate(reservationId, q);
+    if (request.body.email == true) {
 
-       //send mail with itineraire
-        //IF PAID
-        //const seats = await reservationModel.findById(ReservationId);
-        const reservation = await reservationModel.findById(reservationId);
-        const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
-        const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
-        const User = await userModel.findById(reservation.UserID);
-        const totalPrice = reservation.TotalPrice.toString();
+      console.log("f email true", q)
+      await reservationModel.findByIdAndUpdate(reservationId, q);
+
+      //send mail with itineraire
+      //IF PAID
+      //const seats = await reservationModel.findById(ReservationId);
+      const reservation = await reservationModel.findById(reservationId);
+      const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
+      const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
+      const User = await userModel.findById(reservation.UserID);
+      const totalPrice = reservation.TotalPrice.toString();
 
       let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -69,10 +72,10 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
         from: "BeefOrChickenACL@gmail.com",
         to: User.email,
         subject: "Reservation confirmation",
-        text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ", 
+        text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ",
       };
-console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
-console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
+      console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
+      console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
       transporter.sendMail(mailOptions, function (err, success) {
         if (err) {
           console.log(err)
@@ -81,7 +84,84 @@ console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
         }
       });
 
-      
+
+    }
+    if (request.body.email != true) {
+
+      console.log("f email false", q)
+      await reservationModel.findByIdAndUpdate(reservationId, q);
+    }
+
+
+
+    response.send();
+  } catch (error) {
+    response.status(5000).send(error);
+  }
+});
+
+/////////////////////////////////HABD BAS////////////////////////////
+
+app.post("/mail", async (request, response) => {
+  try {
+
+    // console.log("Request: ", request.body)
+    //var q = {}
+
+    //var reservationId= request.body.reservationId;
+    // if (request.body.seatsDeparting != null)
+    //   q.TakenSeatsDeparting =  request.body.seatsDeparting
+    // if (request.body.seatsReturning != null)
+    //   q.TakenSeatsArriving = request.body.seatsReturning
+
+
+    //send mail with itineraire
+    //IF PAID
+    //const seats = await reservationModel.findById(ReservationId);
+    console.log("ana el request ya ninja", request.body)
+    const reservation = request.body.Reservation;
+
+    const User = request.body.thisUser;
+    const DepartureFlight = request.body.Departing;
+    const ReturnFlight = request.body.Returning;
+
+    const totalPrice = reservation.TotalPrice.$numberDecimal;
+
+    console.log("reservation", reservation)
+    console.log("User", User)
+    console.log("DepartureFlight", DepartureFlight)
+    console.log("ReturnFlight", ReturnFlight)
+    console.log("test1")
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "BeefOrChickenACL@gmail.com",
+        pass: "beeforchicken"
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    console.log("test2")
+    let mailOptions = {
+
+      from: "BeefOrChickenACL@gmail.com",
+      to: User.email,
+      subject: "Reservation confirmation",
+      text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ",
+    };
+    console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
+    console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
+    transporter.sendMail(mailOptions, function (err, success) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log("Mail sent successfully");
+      }
+    });
+    console.log("test3")
+
     response.send();
   } catch (error) {
     response.status(5000).send(error);
@@ -104,9 +184,9 @@ console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
 //         v.Seats = request.body.ReturningSeats
 //         await flightModel.findByIdAndUpdate(request.body.ReturningId, v);
 //       }
-    
-    
-    
+
+
+
 
 //     response.send();
 //   } catch (error) {
@@ -156,17 +236,17 @@ app.post("/createReservation", async (request, response) => {
 
 
   try {
-    await reservation.save(async function(err, savedReservatoion) {
+    await reservation.save(async function (err, savedReservatoion) {
       if (err) console.log(err);
-      else{
-          var ReservationId = savedReservatoion._id;
-          console.log("success", ReservationId);
-          var edit = {};
-          edit.Number =  ReservationId.valueOf().substring(18) ;
-          await reservationModel.findByIdAndUpdate(ReservationId, edit);
-          response.send(ReservationId);
+      else {
+        var ReservationId = savedReservatoion._id;
+        console.log("success", ReservationId);
+        var edit = {};
+        edit.Number = ReservationId.valueOf().substring(18);
+        await reservationModel.findByIdAndUpdate(ReservationId, edit);
+        response.send(ReservationId);
       }
-  });
+    });
     // await reservation.save();
     // response.send("reserved successfully");
   } catch (error) {
@@ -226,18 +306,18 @@ app.delete("/reservation/:id", async (request, response) => {
         var q = {};
         let newBusinessSeatsArray = DepartureFlight.BusinessSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
-          newBusinessSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+          newBusinessSeatsArray[reservation.TakenSeatsDeparting[i] - 1] = 0;
         }
         q.BusinessSeatsArray = newBusinessSeatsArray;
         q.RemBusiness = DepartureFlight.RemBusiness + reservation.TakenSeatsDeparting.length;
         //console.log(q);
         await flightModel.findByIdAndUpdate(DepartureFlight.id, q);
         //console.log('7amdellah 3al salama');
-      
+
         var p = {};
         let newBusinessSeatsArray2 = ReturnFlight.BusinessSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
-          newBusinessSeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+          newBusinessSeatsArray2[reservation.TakenSeatsArriving[i] - 1] = 0;
         }
         p.BusinessSeatsArray = newBusinessSeatsArray2;
 
@@ -252,7 +332,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         let newFirstSeatsArray = DepartureFlight.FirstSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
-          newFirstSeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+          newFirstSeatsArray[reservation.TakenSeatsDeparting[i] - 1] = 0;
         }
         q.FirstSeatsArray = newFirstSeatsArray;
 
@@ -263,7 +343,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         let newFirstSeatsArray2 = ReturnFlight.FirstSeatsArray;
         for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
-          newFirstSeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+          newFirstSeatsArray2[reservation.TakenSeatsArriving[i] - 1] = 0;
         }
         p.FirstSeatsArray = newFirstSeatsArray2;
 
@@ -278,7 +358,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         let newEconomySeatsArray = DepartureFlight.EconomySeatsArray;
         for (let i = 0; i < reservation.TakenSeatsDeparting.length; i++) {
-          newEconomySeatsArray[reservation.TakenSeatsDeparting[i]-1] = 0;
+          newEconomySeatsArray[reservation.TakenSeatsDeparting[i] - 1] = 0;
         }
         q.EconomySeatsArray = newEconomySeatsArray;
 
@@ -289,7 +369,7 @@ app.delete("/reservation/:id", async (request, response) => {
 
         let newEconomySeatsArray2 = ReturnFlight.EconomySeatsArray;
         for (let i = 0; i < reservation.TakenSeatsArriving.length; i++) {
-          newEconomySeatsArray2[reservation.TakenSeatsArriving[i]-1] = 0;
+          newEconomySeatsArray2[reservation.TakenSeatsArriving[i] - 1] = 0;
         }
         p.EconomySeatsArray = newEconomySeatsArray2;
 

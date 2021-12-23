@@ -213,7 +213,7 @@ function SignIn({ details, setUserID }) {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Username"
                                 name="email"
                                 onChange={(e) => setEmail(e.target.value)}
                                 //  autoComplete="email"
