@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ResultBack from "../../images/Results2.png";
 import Pagination from './Paginations'
 import LoginCard from './LoginCardCopy'
+import Header from './Header'
 const useStyles = makeStyles((theme) => ({
     root: {
         // display: 'flex',
@@ -33,9 +34,9 @@ function DepartingResults() {
 
     return (
 
-        <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
-
-            <div className={classes.page}>
+        <div>
+<Header/>
+            <div className={classes.page}  style={{ backgroundImage: `url(${ResultBack})`, minHeight: "120vh", backgroundSize: "cover" }}>
                 <div className={classes.results}>
                     <LoginCard />
 

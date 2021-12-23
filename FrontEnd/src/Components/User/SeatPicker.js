@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import Button from '@material-ui/core/Button';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import ChairIcon from '@mui/icons-material/Chair';
+import Header from './Header';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 // import { useHistory } from "react-router-dom";
 
@@ -64,9 +65,6 @@ class SeatPicker extends Component {
         console.log("ddddddddddd: ", this.props)
     }
 
-
-
-
     updateChoice = (index, change) => {
         var temporaryArray = this.state.seats
         temporaryArray[index] = change
@@ -88,7 +86,6 @@ class SeatPicker extends Component {
                 })
         });
     }
-
 
     settingArrays = () => {
         if (this.props.DepartingSeats != null) {
@@ -154,10 +151,6 @@ class SeatPicker extends Component {
 
 
     }
-
-
-
-
 
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
@@ -361,15 +354,13 @@ class SeatPicker extends Component {
 
     };
 
-
-
-
-
     render() {
 
         return (
-            <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
-                <div style={{ paddingTop: "100px" }}>
+            <div >
+                <Header />
+                <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent:"center", display:"flex",width:"100%" , overflowX:"hidden" ,backgroundSize: "cover" }}>
+                <div style={{ marginTop: "100px" }} >
                     <Card className="paper" sx={{ minWidth: 275 }}>
                         <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
                             Please pick your desired seats from your {flightType} flight
@@ -411,6 +402,7 @@ class SeatPicker extends Component {
                                 onClick={() => { this.handleSubmit() }} >Confirm</Button>
                         </div>
                     </Card>
+                </div>
                 </div>
 
 

@@ -27,7 +27,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-
+import Header from './Header';
 var option = ""
 var sum = 0;
 var t = "One way";
@@ -37,7 +37,6 @@ var t = "One way";
 const useStyles = makeStyles((theme) => ({
     search: {
         //  display: "flex",
-
     },
     selectors: {
         display: "flex",
@@ -65,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         position: "absolute",
-        left: "222px",
-        top: "573px",
+        left: "15.5%",
+        top: "57%",
     },
     rectangle: {
         /* position: absolute; */
@@ -228,8 +227,8 @@ function Home({ setError, tripType, setTripType, errorOccurred, setCabinClass, c
     return (
 
         <div style={{ backgroundImage: `url(${bg2})`, height: "100vh", backgroundSize: "cover" }}>
-            <SideBar />
-            <div>
+            <Header />
+            <div >
                 <Box sx={{ width: '100%' }}>
                     <Collapse in={handleError()}>
                         <Alert severity="error"
