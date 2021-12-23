@@ -672,12 +672,12 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                             </div>
 
 
-
+                                            <DeleteButton reservation={reservation._id} />
                                             <Button
                                                 variant="outlined" size="medium" color="primary" margin={5}
 
                                                 onClick={() => { handleEdit(1) }} >Edit Flight</Button>
-                                            <DeleteButton reservation={reservation._id} />
+                                          
                                             <Button sx={{mt: 2}}
                                                 variant="outlined" size="medium" color="primary"
 
