@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
 import Button from '@material-ui/core/Button';
-import MailButton from './MailButton'
+import MailButton from './MailButton';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Mailer } from 'nodemailer-react';
 import nodemailer from "nodemailer";
+
+
 //var nodemailer = require('nodemailer');
 //const nodemailer = require("nodemailer");
 //import Button from 'react-bootstrap/Button';
@@ -671,20 +673,16 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
 
                                             <Button
-                                                variant="outlined" size="medium" color="primary"
+                                                variant="outlined" size="medium" color="primary" margin={5}
 
                                                 onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
-                                            <Button
+                                            <Button sx={{mt: 2}}
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleMail() }} >Mail me my itinerary</Button>
 
                                             {/*  */}
-
-
-
-
                                         </form>
                                     </div>
 
