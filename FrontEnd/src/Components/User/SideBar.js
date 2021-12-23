@@ -18,6 +18,7 @@ import LogoutButton from './LogoutButton';
 import { connect } from 'react-redux';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import LoginIcon from '@mui/icons-material/Login';
+import SearchIcon from '@mui/icons-material/Search';
 
 const useStyles = makeStyles((theme) => ({
     logo: {

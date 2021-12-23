@@ -15,16 +15,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import SideBar from './SideBar';
 import Header from './Header';
+import PersonIcon from '@mui/icons-material/Person';
 
 
 
-const mapStateToProps = (state) => {
-    //console.log(state.DetailsReducer.details.destination)
-    return {
-        details: state.DetailsReducer.details,
+// const mapStateToProps = (state) => {
+//     //console.log(state.DetailsReducer.details.destination)
+//     return {
+//         details: state.DetailsReducer.details,
         
-    };
-};
+//     };
+// };
 
 
 
@@ -132,8 +133,11 @@ class viewUserInfo extends Component {
     >
      
     
-
-
+<div class="padding"></div>
+     <h3 class="colorHeader">
+    <PersonIcon ></PersonIcon >My Infromation
+    </h3>
+    
       <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">First Name</label>
                     <input
