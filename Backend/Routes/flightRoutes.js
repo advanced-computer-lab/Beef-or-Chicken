@@ -19,7 +19,7 @@ app.get("/allflights", async (request, response) => {
 
 
 app.post("/searchUser", async (request, response) => {  //search with Criteria
-  console.log("ana el request:------- ")
+  //console.log("ana el request:------- ")
 
   var q = {}
   //if (request.body.From.From != "") {
@@ -40,7 +40,7 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
   // console.log("1: ", request.body.FlightNumber)
   // console.log("2: ", request.body.FlightNumber.FlightNumber)
   // console.log(request.body.FlightNumber.FlightNumber != "")
-  console.log("q", q)
+  //console.log("q", q)
 
   // // let v = JSON.stringify(q)
   // console.log("v", v)

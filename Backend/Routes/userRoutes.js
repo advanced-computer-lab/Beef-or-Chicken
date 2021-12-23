@@ -41,7 +41,16 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
     response.status(500).send(error);
   }
 });
+app.get("/userById/:id", async (request, response) => {
+  const user = await userModel.findById(request.params.id);
 
+  try {
+    response.send(user);
+  }
+  catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 app.patch("/user/:id", async (request, response) => {  //updateUser
   try {
