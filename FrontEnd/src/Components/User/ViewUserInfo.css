@@ -47,14 +47,14 @@
     .rectangle4{
 
         padding: spacing(3, 2);
-        padding-right: 2%;
-        padding-left: 74%;
+        padding-right: 1%;
+        padding-left: 77%;
         height: 75%;
         width: 30%;
-        margin-top: -8px;
+        margin-top: -18px;
         text-Align: center;
         border-Radius: 30px;
-        padding-bottom: 10px;
+        padding-bottom: 50px;
     }
 
     .rectangle3{
@@ -64,7 +64,7 @@
         padding-left: -1%;
         height: 75%;
         width: 30%;
-        margin-top: -83px;
+        margin-top: -122px;
         text-Align: center;
         border-Radius: 30px;
         padding-top: 35px;
@@ -73,6 +73,10 @@
     .colorHeader{
         color:black;
         margin-top: -30px;
+    }
+
+    .paddingup{
+        padding-top:3%;
     }
 
 
