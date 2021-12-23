@@ -96,6 +96,7 @@ app.post('/login', (req, res) => {
             const payload = {
               id: dbUser._id,
               username: dbUser.username,
+                  type:dbUser.type
             }
             jwt.sign(
               payload,
@@ -106,7 +107,8 @@ app.post('/login', (req, res) => {
                 return res.json({
                   message: "Success",
                   token: "Bearer " + token,
-                  UserID : payload.id
+                  UserID : payload.id,
+                  type:payload.type
                 })
               }
             )

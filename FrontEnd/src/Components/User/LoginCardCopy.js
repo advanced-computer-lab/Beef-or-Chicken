@@ -160,7 +160,12 @@ function SignIn({ details }) {
                 else{
                 details.UserID = res.data.UserID
                 console.log(details)
-               history.goBack();
+                if(res.data.type==1)
+                    history.goBack();
+                    // console.log("batates")
+                else{
+                    history.push("/allflights")
+                }
                 }
             })
             .catch(error => {
