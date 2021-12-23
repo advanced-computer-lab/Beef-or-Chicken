@@ -12,7 +12,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
-
+import FlightIcon from '@mui/icons-material/Flight';
+import ContentPasteSearchIcon from '@mui/icons-material/ManageSearch';
+import AddCircleIcon from '@mui/icons-material/AddCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -69,9 +71,6 @@ export default function SwipeableTemporaryDrawer() {
         right: false,
     });
     const handleSubmit = () => {
-
-
-
     }
 
     const toggleDrawer = (anchor, open) => (event) => {
@@ -104,7 +103,7 @@ export default function SwipeableTemporaryDrawer() {
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                             
                         </ListItemIcon> */}
-
+                        <FlightIcon/>&nbsp;
                         <ListItemText primary='View All Flights' />
                     </ListItem>
                 </Link>
@@ -113,14 +112,13 @@ export default function SwipeableTemporaryDrawer() {
 
                     <ListItem button key='Search for Flights' onClick={handleSubmit()}>
 
-
+                    <ContentPasteSearchIcon/>&nbsp;
                         <ListItemText primary='Search for Flights' />
                     </ListItem>
                 </Link>
                 <Link to="/Create">
                     <ListItem button key='Create Flights' onClick={handleSubmit()}>
-
-
+                    <AddCircleIcon/>&nbsp;
                         <ListItemText primary='Create Flights' />
                     </ListItem>
                 </Link>

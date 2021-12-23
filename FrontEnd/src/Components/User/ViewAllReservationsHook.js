@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewAllReservations.css'
 import Accordion from 'react-bootstrap/Accordion'
+import Backdrop from '@mui/material/Backdrop';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
@@ -9,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import MailButton from './MailButton';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import CircularProgress from '@mui/material/CircularProgress';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -20,7 +22,7 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Mailer } from 'nodemailer-react';
+// import { Mailer } from 'nodemailer-react';
 import nodemailer from "nodemailer";
 
 
@@ -55,13 +57,20 @@ const mapDispatchToState = (dispatch) => {
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
-function ViewAllReservations(props, { Reservation, setReservation, setDepartingFlight, setReturnFlight, DepartingFlight, ReturnFlight, UserID }) {
+function ViewAllReservations(props, { Reservation, setReservation, setDepartingFlight, setReturnFlight, DepartingFlight, ReturnFlight }) {
     let history = useHistory();
-    // console.log("props: ",props)
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+    //   setOpen(!open);
+    };
+    console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-    //console.log("reservation from details: ",Reservation)
+    console.log("reservation from details: ", Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;
@@ -79,27 +88,27 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
     const handleEdit = (type) => { //1 is departing and 2 is returning
 
-        //console.log(props)
-
+        console.log(props)
+        setOpen(true)
         let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
         axios
             .get(url2)
             .then(res => {
-                //console.log("respnose: ", res)
+                console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.setReservation(res.data);
                 url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
                 axios
                     .get(url2)
                     .then(res => {
-                        //  console.log("respnose: ", res)
-                        //console.log("gamed louji!")
+                        console.log("respnose: ", res)
+                        console.log("gamed louji!")
                         props.setDepartingFlight(res.data);
                         url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
                         axios
                             .get(url2)
                             .then(res => {
-                                // console.log("respnose: ", res)
+                                console.log("respnose: ", res)
                                 console.log("gamed louji!")
                                 props.setReturnFlight(res.data);
                                 if (type == 1)
@@ -119,7 +128,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                         console.log("idiot!");
                         console.log(error.message);
                     })
-
+                
                 // this.props.history.push(`/Seats/1`);
             })
             .catch(error => {
@@ -288,6 +297,13 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
         return (
             <div>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={open}
+                    //onClick={handleClose}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <Accordion className="accordion" >
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>
@@ -511,8 +527,6 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleMail() }} >Mail me my itinerary</Button>
-
-
 
 
                                         </form>

@@ -2,8 +2,10 @@
 import ResultCard from './ResultCard'
 import { makeStyles } from "@material-ui/core/styles";
 import ResultBack from "../../images/Results2.png";
-import Pagination from './Pagination2'
-import Header from './Header'
+import PaymentCard from './PaymentCard'
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import InjectedCheckoutForm from './CheckoutForm';
 const useStyles = makeStyles((theme) => ({
     root: {
         // display: 'flex',
@@ -24,20 +26,24 @@ const useStyles = makeStyles((theme) => ({
     }
 
 }));
-function ReturningResults() {
+function PaymentPage() {
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200&family=Inter:wght@100;200;300&family=Montserrat:wght@100;200;300&display=swap" rel="stylesheet"></link>
 
-
+    const stripePromise = loadStripe('pk_test_51K8WOHIYl2C21a0ipNQ7WCFMRnk9uH4PWjzveKHYpTvSZDSpeRiSFzngUad1KrMlMgH4Gj2abYkBKgkiZU0I15k200aw9HHZ2P');
     const classes = useStyles();
-
+    const options = {
+        // passing the client secret obtained from the server
+        clientSecret: '{{CLIENT_SECRET}}',
+    };
     return (
 
-        <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", maxWidth :"100%", backgroundSize: "cover" ,overflowX : "hidden" }}>
-<Header/>
+        <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+
             <div className={classes.page}>
                 <div className={classes.results}>
-                    <Pagination />
-
+                    <Elements stripe={stripePromise} >
+                        <PaymentCard />
+                    </Elements>
                 </div>
             </div>
         </div>
@@ -45,4 +51,4 @@ function ReturningResults() {
     );
 }
 
-export default ReturningResults;
+export default PaymentPage;

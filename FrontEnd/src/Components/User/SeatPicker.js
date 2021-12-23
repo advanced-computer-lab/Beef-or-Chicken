@@ -21,6 +21,8 @@ import { connect } from "react-redux";
 import Button from '@material-ui/core/Button';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import ChairIcon from '@mui/icons-material/Chair';
+import allSeats from './Images/allSeats.png';
+import Header from './Header';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 // import { useHistory } from "react-router-dom";
 
@@ -64,9 +66,6 @@ class SeatPicker extends Component {
         console.log("ddddddddddd: ", this.props)
     }
 
-
-
-
     updateChoice = (index, change) => {
         var temporaryArray = this.state.seats
         temporaryArray[index] = change
@@ -88,7 +87,6 @@ class SeatPicker extends Component {
                 })
         });
     }
-
 
     settingArrays = () => {
         if (this.props.DepartingSeats != null) {
@@ -155,10 +153,6 @@ class SeatPicker extends Component {
 
     }
 
-
-
-
-
     handleChange = event => {
         // setState({ [event.target.id]: event.target.checked })
         if (event.target.checked) {
@@ -182,9 +176,9 @@ class SeatPicker extends Component {
         }
     };
     handleSubmit = () => {
-        console.log("state", this.state)
-        console.log("details", this.props)
-        console.log("seats", this.state.chosenSeats)
+        console.log("submit state", this.state)
+        console.log("submit details", this.props)
+        console.log("submit seats", this.state.chosenSeats)
 
         this.state.DepartureSeats.push(this.state.chosenSeats)
         if (this.state.flight == 1) {
@@ -195,22 +189,22 @@ class SeatPicker extends Component {
 
                     body2 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy -(this.state.maxSeats))
+                        RemEconomy: (this.props.details.DepartingFlight.RemEconomy - (this.state.maxSeats))
                     }
 
                     break;
                 case "Business":
 
                     body2 = {
-                        BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness -(this.state.maxSeats))
+                        BusinessSeatsArray: this.state.seats,
+                        RemBusiness: (this.props.details.DepartingFlight.RemBusiness - (this.state.maxSeats))
                     }
                     break;
                 case "First Class":
 
                     body2 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.DepartingFlight.RemFirst -(this.state.maxSeats))
+                        RemFirst: (this.props.details.DepartingFlight.RemFirst - (this.state.maxSeats))
                     }
                     break;
                 default:
@@ -309,25 +303,26 @@ class SeatPicker extends Component {
 
                     body1 = {
                         EconomySeatsArray: this.state.seats,
-                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy -(this.state.maxSeats)),
-                       
+                        RemEconomy: (this.props.details.ReturnFlight.RemEconomy - (this.state.maxSeats)),
+
                     }
 
 
                     break;
                 case "Business":
+                    console.log("in business")
                     body1 = {
-                        BussinessSeatsArray: this.state.seats,
-                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats)),
-                      
+                        BusinessSeatsArray: this.state.seats,
+                        RemBusiness: (this.props.details.ReturnFlight.RemBusiness - (this.state.maxSeats)),
+
                     }
 
                     break;
                 case "First Class":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
-                        RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats)),
-                        
+                        RemFirst: (this.props.details.ReturnFlight.RemFirst - (this.state.maxSeats)),
+
                     }
 
                     break;
@@ -344,7 +339,7 @@ class SeatPicker extends Component {
                     console.log(this.props.TakenSeatsReturn)
                     this.props.history.push('/FullSummaryPage');
                     alert("Trip Reserved Successfully!")
-                   
+
 
 
                     // this.props.history.push(`/Seats/1`);
@@ -361,56 +356,68 @@ class SeatPicker extends Component {
 
     };
 
-
-
-
-
     render() {
 
         return (
-            <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+            <div >
+                <Header />
+                <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent:"center", display:"flex",width:"100%" , overflowX:"hidden" ,backgroundSize: "cover" }}>
                 <div style={{ paddingTop: "100px" }}>
-                    <Card className="paper" sx={{ minWidth: 275 }}>
-                        <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                            Please pick your desired seats from your {flightType} flight
-                        </Typography>
+                    <Grid container spacing={0}>
+                        <Grid item xs={9}>
+                            <Card className="paper" sx={{ minWidth: 275 }}>
+                                <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
+                                    Please pick your desired seats from your {flightType} flight
+                                </Typography>
 
-                        <hr />
+                                <hr />
 
-                        <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
-                            {this.props.details.cabin_class + " class"}
-                        </Typography>
-                        <CardContent raised="true">
-                            <Grid container spacing={{ xs: 3 }} >
-                                {Array.from(this.state.seats).map((_, index) => (
-                                    <Grid item xs={3} key={index}>
-                                        <Checkbox
-                                            //checked={this.state.initEcon[index]}
+                                <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
+                                    {this.props.details.cabin_class + " class"}
+                                </Typography>
+                                <CardContent raised="true">
+                                    <Grid container spacing={{ xs: 2 }} >
+                                        {Array.from(this.state.seats).map((_, index) => (
+                                            <Grid item xs={2} key={index}>
+                                                <Checkbox
+                                                    //checked={this.state.initEcon[index]}
 
-                                            checked={this.state.seats[index]}
-                                            disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
-                                            icon={<ChairOutlinedIcon />}
-                                            checkedIcon = { <ChairIcon/>}
-                                            onChange={this.handleChange}
-                                            id={(index)}
-                                            label={index + 1}
-                                        />
-                                    
+                                                    checked={this.state.seats[index]}
+                                                    disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
+                                                    icon={<ChairOutlinedIcon />}
+                                                    checkedIcon={<ChairIcon />}
+                                                    onChange={this.handleChange}
+                                                    id={(index)}
+                                                    label={index + 1}
+                                                />
 
+
+                                            </Grid>
+
+
+                                        ))}
                                     </Grid>
+                                </CardContent>
+                                <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
+                                    {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                                    <Button
+                                        variant="outlined" size="medium" color="primary"
+                                        disabled={!this.state.maxReached}
+                                        onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                                </div>
+                            </Card>
+                        </Grid>
 
+                        <Grid item xs={1}>
+                            {/* <Paper style={styles.paperContainer}>
+            
+                                </Paper> */}
+                            <img src={allSeats} />
+                            {/* <img src={image} /> */}
+                        </Grid>
 
-                                ))}
-                            </Grid>
-                        </CardContent>
-                        <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
-                            {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
-                            <Button
-                                variant="outlined" size="medium" color="primary"
-                                disabled={!this.state.maxReached}
-                                onClick={() => { this.handleSubmit() }} >Confirm</Button>
-                        </div>
-                    </Card>
+                    </Grid>
+                </div>
                 </div>
 
 

@@ -65,8 +65,6 @@ app.get("/searchUserByID/:id", async (request, response) => {  //search with Cri
   // const user = await userModel.findById(q);
 
   const user = await userModel.findById(request.params.id);
-
-
   try {
     response.send(user);
   } catch (error) {
@@ -266,17 +264,32 @@ app.post("/createFlight", async (request, response) => {
   var EconomySeatsArray = [];
   var BusinessSeatsArray = [];
   var FirstSeatsArray = [];
+  try {
+
+  if (EconomySeats> 54 || BusinessSeats > 36 || FirstSeats > 12)
+  throw new UserException('InvalidMonthNo');
+
 
   for (let i = 0; i < EconomySeats; i++) {
     EconomySeatsArray.push(0);
   }
+  for (let i = EconomySeats; i < 54; i++) {
+    EconomySeatsArray.push(1);
+  }
+  
 
   for (let i = 0; i < BusinessSeats; i++) {
     BusinessSeatsArray.push(0);
   }
+  for (let i = BusinessSeats; i < 36; i++) {
+    BusinessSeatsArray.push(1);
+  }
 
   for (let i = 0; i < FirstSeats; i++) {
     FirstSeatsArray.push(0);
+  }
+  for (let i = FirstSeats; i < 12; i++) {
+    FirstSeatsArray.push(1);
   }
 
 
@@ -286,11 +299,11 @@ app.post("/createFlight", async (request, response) => {
     'To': request.body.To,
     'DepartureDate': request.body.DepartureDate,
     'ArrivalDate': request.body.ArrivalDate,
-    'EconomySeats': request.body.EconomySeats,
+    'EconomySeats': 54,
     'RemEconomy': request.body.EconomySeats,
-    'BusinessSeats': request.body.BusinessSeats,
+    'BusinessSeats': 36,
     'RemBusiness': request.body.BusinessSeats,
-    'FirstSeats': request.body.FirstSeats,
+    'FirstSeats': 12,
     'RemFirst': request.body.FirstSeats,
     'DepartureTime': (request.body.DepartureTime) + "",
     'ArrivalTime': (request.body.ArrivalTime) + "",
@@ -306,7 +319,7 @@ app.post("/createFlight", async (request, response) => {
     'FirstSeatsArray': FirstSeatsArray,
   });
 
-  try {
+  
     await flight.save();
     response.send("Flight sent successfully");
   } catch (error) {
@@ -322,15 +335,27 @@ app.patch("/flightSeats/:id", async (request, response) => {  //update
     var q = {}
 
     if (request.body.EconomySeatsArray != null) {
-      q.EconomySeatsArray = request.body.EconomySeatsArray,
-        q.RemEconomy = request.body.RemEconomy
+      q.EconomySeatsArray = request.body.EconomySeatsArray
+       
+    }
+    if (request.body.RemEconomy != null) {
+      q.RemEconomy = request.body.RemEconomy
     }
     if (request.body.BusinessSeatsArray != null) {
-      q.BusinessSeatsArray = request.body.BusinessSeatsArray,
-        q.RemBusiness = request.body.RemBusiness
+      q.BusinessSeatsArray = request.body.BusinessSeatsArray
+       
     }
+    if (request.body.RemBusiness != null) {
+      q.RemBusiness = request.body.RemBusiness
+       
+    }
+
+   
     if (request.body.FirstSeatsArray != null) {
-      q.FirstSeatsArray = request.body.FirstSeatsArray,
+      q.FirstSeatsArray = request.body.FirstSeatsArray
+        
+    }
+    if (request.body.RemFirst != null) {
         q.RemFirst = request.body.RemFirst
     }
 
@@ -349,8 +374,6 @@ app.patch("/flightSeats/:id", async (request, response) => {  //update
 app.patch("/flight/:id", async (request, response) => {  //update
   try {
 
-    console.log("ana el request: ", request.body)
-
     var q = {}
     if (request.body.From.From != "") {
       q.From = request.body.From.From
@@ -359,10 +382,10 @@ app.patch("/flight/:id", async (request, response) => {  //update
       q.To = request.body.To.To
     }
     if (request.body.DepartureDate.DepartureDate != "") {
-      q.DepartureDate = request.body.DepartureDate.DepartureDate + "T00:00:00.000Z"
+      q.DepartureDate = request.body.DepartureDate.DepartureDate 
     }
     if (request.body.ArrivalDate.ArrivalDate != "") {
-      q.ArrivalDate = request.body.ArrivalDate.ArrivalDate + "T00:00:00.000Z"
+      q.ArrivalDate = request.body.ArrivalDate.ArrivalDate 
     }
     if (request.body.FirstSeats.FirstSeats != null && request.body.FirstSeats.FirstSeats != "") {
       q.FirstSeats = request.body.FirstSeats.FirstSeats
@@ -401,13 +424,7 @@ app.patch("/flight/:id", async (request, response) => {  //update
       q.FlightNumber = request.body.FlightNumber.FlightNo
     }
 
-
-
-    console.log(request.params.id);
     await flightModel.findByIdAndUpdate(request.params.id, q);
-    console.log("first line");
-    //  await flightModel.save();
-    // console.log("Second line");
     response.send();
   } catch (error) {
     response.status(500).send(error);

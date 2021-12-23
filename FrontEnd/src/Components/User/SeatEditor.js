@@ -21,6 +21,11 @@ import { connect } from "react-redux";
 import Button from '@material-ui/core/Button';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import ChairIcon from '@mui/icons-material/Chair';
+import FlightIcon from '@mui/icons-material/Flight';
+import allSeats from './Images/allSeats.png';
+import EconImage from './Images/Economy.png';
+import BusSeats from './Images/Business.png';
+import FirstSeats from './Images/First Class.png';
 //http://localhost:3000/Seats/61a160d2320b88bd7f1b1f18
 // import { useHistory } from "react-router-dom";
 
@@ -30,7 +35,12 @@ import ChairIcon from '@mui/icons-material/Chair';
 //     details: state.DetailsReducer.details,
 // });
 var flightType = ""
-
+var image;
+const styles = {
+    1: {
+      backgroundColor: 'red',
+    }
+  };
 class SeatPicker extends Component {
 
 
@@ -45,21 +55,22 @@ class SeatPicker extends Component {
         this.state = {
 
             //  id: this.details.DepartingFlight._id,
-            id: this.props.details.DepartingFlight._id,
+            //id: this.props.details.DepartingFlight._id,
             flight: this.props.match.params.flight,
             // ReservationId: this.props.history.location.state.ReservationId,
             ReservationId: this.props.details.Reservation._id,
             seats: [], //current seats in flight
             initial: [], // initially reserved
             chosenSeats: [], // seat numbers picked
-            currSeats: this.props.details.Reservation.Adults + this.props.details.Reservation.Children, 
+            currSeats: this.props.details.Reservation.Adults + this.props.details.Reservation.Children,
             maxSeats: this.props.details.Reservation.Adults + this.props.details.Reservation.Children,
             //cabin: 1,  // 0 for econ, 1 for business, 2 first
             maxReached: true,
             // flag : false,
             returnSeats: this.props.details.Reservation.TakenSeatsArriving,
             DepartureSeats: this.props.details.Reservation.TakenSeatsDeparting,
-            
+            loading: 1,
+
 
         };
         console.log("ddddddddddd: ", this.props)
@@ -91,15 +102,16 @@ class SeatPicker extends Component {
     }
 
 
-    settingArrays = () => {
-        console.log("start of setting arrays:" ,this)
-        let seatsArr =[]
+
+
+    settingArrays = async () => {
+
+        console.log("start of setting arrays:", this)
+        let seatsArr = []
         let initialArray = []
         //let url = `http://localhost:8080/flightById/${this.state.id.id}`;
         if (this.state.flight == 1) {
             flightType = "departing"
-
-            // console.log("curr flight isa: ", this.state.currFlight)
 
             switch (this.props.details.Reservation.CabinType) {
                 case "Economy":
@@ -107,21 +119,22 @@ class SeatPicker extends Component {
 
                     // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
                     // this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray))
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.EconomySeatsArray))
                     break;
                 case "Business":
-                   // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
-                   // this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray))
-                    
+                    console.log("in business")
+                    // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                    // this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray)) })
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.BusinessSeatsArray))
+
                     break;
                 case "First Class":
-                   // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
+                    // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
                     //this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray))
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.DepartingFlight.FirstSeatsArray))
                     break;
                 default:
                 // code block
@@ -137,62 +150,77 @@ class SeatPicker extends Component {
 
                     //this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
                     //this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray))
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.EconomySeatsArray))
                     break;
                 case "Business":
                     // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
                     // this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray))
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.BusinessSeatsArray))
                     break;
                 case "First Class":
                     // this.setState({ seats: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
                     // this.setState({ initial: JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray)) })
-                    seatsArr=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray))
-                    initialArray=JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray))
+                    seatsArr = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray))
+                    initialArray = JSON.parse(JSON.stringify(this.props.details.ReturnFlight.FirstSeatsArray))
                     break;
                 default:
                 // code block
             }
         }
-    // altering initial
-  
-      
-        
+        // altering initial
+
+
+        let mySeats = []
         if (this.state.flight == 1) {
-            let mySeats = this.props.details.Reservation.TakenSeatsDeparting;
-            this.setState({ chosenSeats: mySeats })
-        for (let x in mySeats) {
-            initialArray[mySeats[x]-1] = 0
-          }
+            mySeats = this.props.details.Reservation.TakenSeatsDeparting;
         }
-        else{
-            let mySeats = this.props.details.Reservation.TakenSeatsArriving;
-          //  console.log("mySeats: ",mySeats)
-            this.setState({ chosenSeats: mySeats })
-            for (let x in mySeats) {
-                initialArray[mySeats[x]-1] = 0
-              }
-            }
-            
-            this.setState({ seats: seatsArr })
-            this.setState({ initial: initialArray}, () => {
-                console.log("props: ",this.props)
-        
+        else {
+            mySeats = this.props.details.Reservation.TakenSeatsArriving;
+
+        }
+        console.log("my seats", mySeats)
+        for (let x in mySeats) {
+            console.log("x", x)
+            console.log("mySeats[x]", mySeats[x])
+            initialArray[mySeats[x] - 1] = 0
+        }
+        console.log("my seats", mySeats)
+        console.log("Before set state", this.state)
+        this.setState({ chosenSeats: mySeats }, () => {
+            this.setState({ seats: seatsArr }, () => {
+                this.setState({ initial: initialArray }, () => {
+                    console.log("props: ", this.props)
+                    console.log("ffs", this.state)
+
+                    console.log("after set state", this.state)
+                    image = require('./Images/Economy.png').default
+
+                })
             })
-            
-            console.log("end of setting arrays:" ,this)
-            
-        
-    }
-    componentDidMount = () => {
+        })
 
+
+
+
+
+
+
+    }
+
+    componentDidMount = async () => {
         this.settingArrays()
+        this.setState({ loading: 0 })
 
-    
+        console.log("done")
+
+
 
     }
+    // componentDidUpdate = () =>{
+    //     this.settingArrays()
+    // }
 
 
 
@@ -302,7 +330,7 @@ class SeatPicker extends Component {
                 this.props.setTakenSeatsDeparture(this.state.DepartureSeats)
                 console.log("details departure---->", this.props.details)
                 //this.settingArrays()
-               // this.props.history.push(`/Seats/2`);
+                // this.props.history.push(`/Seats/2`);
                 //REDIRECT TO WHERE?
 
 
@@ -318,7 +346,7 @@ class SeatPicker extends Component {
                 seatsReturning: this.state.chosenSeats
 
             }
-           // this.state.returnSeats.push(this.state.chosenSeats)
+            // this.state.returnSeats.push(this.state.chosenSeats)
             // setTakenSeatsReturn(this.state.chosenSeats)
             axios
                 .patch(url, body)
@@ -355,14 +383,14 @@ class SeatPicker extends Component {
                 case "Business":
                     body1 = {
                         BussinessSeatsArray: this.state.seats,
-                       // RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats))
+                        // RemBusiness: (this.props.details.ReturnFlight.RemBusiness -(this.state.maxSeats))
                     }
 
                     break;
                 case "First Class":
                     body1 = {
                         FirstSeatsArray: this.state.seats,
-                      //  RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats))
+                        //  RemFirst: (this.props.details.ReturnFlight.RemFirst -(this.state.maxSeats))
                     }
 
                     break;
@@ -378,8 +406,8 @@ class SeatPicker extends Component {
                     console.log("details return---->", this.props.details)
                     console.log(this.props.TakenSeatsReturn)
                     //this.props.history.push('/FullSummaryPage');
-                  //  alert("Trip Reserved Successfully!")
-                   
+                    //  alert("Trip Reserved Successfully!")
+
 
 
                     // this.props.history.push(`/Seats/1`);
@@ -393,11 +421,11 @@ class SeatPicker extends Component {
 
 
         }
-        
+
         this.props.history.push('/ViewAllReservations');
     };
 
-
+   
 
 
 
@@ -405,48 +433,62 @@ class SeatPicker extends Component {
 
         return (
             <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
-                <div style={{ paddingTop: "100px" }}>
-                    <Card className="paper" sx={{ minWidth: 275 }}>
-                        <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                            Please pick your desired seats from your {flightType} flight
-                        </Typography>
+                <div style={{ paddingTop: "100px",marginLeft:"25%",marginRight:"auto" }}>
+                    <Grid container spacing={0}>
+                        <Grid item xs={6}>
+                            <Card className="paper" style={{marginTop:"10%"}} sx={{ minWidth: 275 }}>
+                                <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
+                                    Please pick your desired seats from your {flightType} flight
+                                </Typography> 
+                                {/* <FlightIcon style={styles.${this.props.match.params.flight}}/> */}
 
-                        <hr />
+                                <hr />
 
-                        <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
-                            {this.props.details.cabin_class + " class"}
-                        </Typography>
-                        <CardContent raised="true">
-                            <Grid container spacing={{ xs: 3 }} >
-                                {Array.from(this.state.seats).map((_, index) => (
-                                    <Grid item xs={3} key={index}>
-                                        <Checkbox
-                                            //checked={this.state.initEcon[index]}
+                                <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
+                                    {this.props.details.Reservation.CabinType + " class"}
+                                </Typography>
+                                <CardContent raised="true">
+                                    <Grid container spacing={{ xs: 2 }} >
+                                        {Array.from(this.state.seats).map((_, index) => (
+                                            <Grid item xs={2} key={index}>
+                                                <Checkbox
+                                                    //checked={this.state.initEcon[index]}
 
-                                            checked={this.state.seats[index]}
-                                            disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
-                                            icon={<ChairOutlinedIcon />}
-                                            checkedIcon = { <ChairIcon/>}
-                                            onChange={this.handleChange}
-                                            id={(index)}
-                                            label={index + 1}
-                                        />
-                                    
+                                                    checked={this.state.seats[index]}
+                                                    disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
+                                                    icon={<ChairOutlinedIcon />}
+                                                    checkedIcon={<ChairIcon />}
+                                                    onChange={this.handleChange}
+                                                    id={(index)}
+                                                    label={index + 1}
+                                                />
 
+
+                                            </Grid>
+
+
+                                        ))}
                                     </Grid>
-
-
-                                ))}
-                            </Grid>
-                        </CardContent>
-                        <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
-                            {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
-                            <Button
-                                variant="outlined" size="medium" color="primary"
-                                disabled={!this.state.maxReached}
-                                onClick={() => { this.handleSubmit() }} >Confirm</Button>
-                        </div>
-                    </Card>
+                                </CardContent>
+                                <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
+                                    {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                                    <Button
+                                        variant="outlined" size="medium" color="primary"
+                                        disabled={!this.state.maxReached}
+                                        onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                                </div>
+                            </Card>
+                        </Grid>
+                        
+                        <Grid item xs={1}>
+                            {/* <Paper style={styles.paperContainer}>
+            
+                                </Paper> */}
+                                <img src={allSeats} />
+                                {/* <img src={image} /> */}
+                        </Grid>
+                        
+                    </Grid>
                 </div>
 
 

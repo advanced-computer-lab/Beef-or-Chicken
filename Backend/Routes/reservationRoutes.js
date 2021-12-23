@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 var cors = require('cors')
+const jwt = require("jsonwebtoken")
 app.use(cors())
 const flightModel = require("../Models/Flight");
 const userModel = require("../Models/User");
@@ -9,7 +10,37 @@ const reservationModel = require("../Models/Reservation");
 var nodemailer = require('nodemailer');
 
 
-app.get("/allReservations", async (request, response) => {
+
+//TO APPLY AUTHENTICATION
+//app.post("/createReservation",verifyJWT, async (request, response ) => {
+  //  console.log(request.user.id);
+  //  console.log(request.user.username);
+
+
+
+
+function verifyJWT(req , res , next) {
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+  
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err ,decoded) => {
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed To Authenticate"
+      })
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      next()
+    })
+  }else{
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
+
+
+
+app.get("/allReservations" , async (request, response) => {
   const reservations = await reservationModel.find({});
 
   try {
@@ -194,9 +225,11 @@ app.post("/mail", async (request, response) => {
 //   }
 // });
 
-app.post("/createReservation", async (request, response) => {
-  //console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
 
+app.post("/createReservation", async (request, response ) => {
+
+
+  /*
   // var EconomySeats = request.body.EconomySeats;
   // var BusinessSeats = request.body.BusinessSeats;
   // var FirstSeats = request.body.FirstSeats;
@@ -216,7 +249,7 @@ app.post("/createReservation", async (request, response) => {
   //   tmpFirst.push(0);
   // }
   // seats.push(tmpFirst);
-
+*/
 
   const reservation = new reservationModel({
     'UserID': request.body.UserID,
@@ -230,10 +263,7 @@ app.post("/createReservation", async (request, response) => {
     'Adults': request.body.Adults,
     'Number': (request.body.DepartureFlightID.substring(20) + request.body.ReturnFlightID.substring(20) + request.body.UserID.substring(20))
 
-
   });
-
-
 
   try {
     await reservation.save(async function (err, savedReservatoion) {
@@ -252,9 +282,8 @@ app.post("/createReservation", async (request, response) => {
   } catch (error) {
     response.status(500).send(error);
   }
+
 });
-
-
 
 
 app.delete("/reservation/:id", async (request, response) => {

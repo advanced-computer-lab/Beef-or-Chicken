@@ -23,9 +23,14 @@ import ViewAllReservations from './Components/User/ViewAllReservations'
 import { Router, Route, Switch } from "react-router-dom";
 import ViewUserInfo from './Components/User/ViewUserInfo';
 import UpdateUserInfo from './Components/User/UpdateUserInfo'
+import UpdateUserInfoNew from './Components/User/UpdateUserInfoNew'
+import ChangePassword from './Components/User/ChangePassword'
 import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
+import UserRegistration from './Components/User/Registration'
+
+import Payment from "./Components/User/PaymentPage"
 
 import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
@@ -52,13 +57,18 @@ function App() {
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
+        <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
+        <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
         <Route exact path="/login" component={UserLogin} />
+        <Route exact path="/Payment" component={Payment} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
         <Route exact path="/Userlogin2" component={UserLogin2} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
         <Route exact path="/FullSummaryPage" component={FullSummaryPage} />
+        <Route exact path="/register" component={UserRegistration} />
 
       </Router>
     </div>

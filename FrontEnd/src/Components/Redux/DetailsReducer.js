@@ -35,7 +35,9 @@ const initState = {
         returningOffers: [],
         ReservationID: "",
         errorOccurred: false,
-        Reservation :["marky"],
+        token:"",
+        //Reservation :["marky"],
+        Reservation: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
@@ -120,6 +122,12 @@ const DetailsReducer = (state = initState, action) => {
     }
     if (action.type == 'setUserID') {
         state.details.UserID = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setToken') {
+        state.details.token = action.payload;
         return {
             ...state,
         };
