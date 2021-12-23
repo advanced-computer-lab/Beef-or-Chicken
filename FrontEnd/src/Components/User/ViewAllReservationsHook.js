@@ -500,17 +500,18 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
 
                                             <DeleteButton reservation={reservation._id} />
-                                            <Button variant="contained">Contained</Button>
-                                            <Button variant="contained" disabled>
-                                                Disabled
-                                            </Button>
-                                            <Button variant="contained" href="#contained-buttons">
-                                                Link
-                                            </Button>
+                        
+                
+                                        
                                             <Button
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleEdit(2) }} >Edit Flight</Button>
+                                                 <Button sx={{mt: 2}}
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
+
 
 
 
