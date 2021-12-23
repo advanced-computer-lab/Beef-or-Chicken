@@ -8,19 +8,23 @@ import { createStore } from 'redux'
 import store from './Components/Redux/ReduxStore.js';
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from 'redux-persist/integration/react'
+import { StripeProvider } from 'react-stripe-elements';
 
 ReactDOM.render(
+
   <BrowserRouter>
-    <Provider store={store.store}>
-      <PersistGate loading={null} persistor={store.persistor}>
-        <React.StrictMode>
+    <StripeProvider apiKey="pk_test_51K8WOHIYl2C21a0ipNQ7WCFMRnk9uH4PWjzveKHYpTvSZDSpeRiSFzngUad1KrMlMgH4Gj2abYkBKgkiZU0I15k200aw9HHZ2P">
+      <Provider store={store.store}>
+        <PersistGate loading={null} persistor={store.persistor}>
+          <React.StrictMode>
 
-          <App />
+            <App />
 
 
-        </React.StrictMode>
-      </PersistGate>
-    </Provider>
+          </React.StrictMode>
+        </PersistGate>
+      </Provider>
+    </StripeProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );

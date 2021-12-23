@@ -36,7 +36,8 @@ const initState = {
         ReservationID: "",
         errorOccurred: false,
         token:"",
-        Reservation :["marky"],
+        //Reservation :["marky"],
+        Reservation: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {

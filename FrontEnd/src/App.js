@@ -30,6 +30,7 @@ import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
 import UserRegistration from './Components/User/Registration'
 
+import Payment from "./Components/User/PaymentPage"
 
 import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
@@ -58,7 +59,9 @@ function App() {
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
         <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
         <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
         <Route exact path="/login" component={UserLogin} />
+        <Route exact path="/Payment" component={Payment} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
