@@ -12,7 +12,24 @@ import Card from 'react-bootstrap/Card'
 import { connect } from "react-redux";
 import DetailsReducer from '../Redux/DetailsReducer';
 import { useHistory } from "react-router-dom";
+import { Button } from '@material-ui/core';
+import FlightOutlinedIcon from '@mui/icons-material/FlightOutlined';
+import ResultBack from "../../images/Background3.jpeg";
 
+/*
+
+axios.post('https://example.com/postSomething', {
+ email: varEmail, //varEmail is a variable which holds the email
+ password: varPassword
+},
+{
+  headers: {
+    Authorization: 'Bearer ' + varToken
+    x-access-token : token
+  }
+})
+
+*/
 
   
 const mapStateToProps = (state) => {
@@ -29,12 +46,13 @@ class ViewAllReservations extends Component {
         const { history } = this.props;
         if(props.details.UserID === ""){
             alert("You need to login to view your reservations!")
-            history.push("/UserLoginRes");
-}
+            history.push("/Userlogin2");
+        }
         this.state = {
             reservations: [],
             //userId : "61a518d86046ece4ba9ff27c"
             userId : props.details.UserID,
+            userName : "",
         };
     }
     
@@ -47,13 +65,20 @@ class ViewAllReservations extends Component {
     */
    
    async componentDidMount() {
-       console.log(this.state.userId);
        const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
        const result = await response.data;
        this.setState({ reservations: result });
-       console.log(this.state.reservations);
+
+       const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId);
+       const resultUser = await responseUser.data;
+       const name = resultUser.firstName + " " + resultUser.lastName ; 
+       this.setState({ userName: name});
+
     }
     
+    makeReservation = () =>{
+        this.props.history.push("/");
+    }
     
     /*  
     componentDidMount() {
@@ -68,11 +93,13 @@ class ViewAllReservations extends Component {
     */
    render() {
        const reservations = this.state.reservations;
-       
+       const userName= this.state.userName;
        
        return (
-           <div>
+                <div>
+
                 <Header />
+{/*
                 <Card className="bg-dark text-white">
                     <Card.Img style={{maxHeight: "280px" , objectFit: "cover"}} src="https://www.kotak.com/content/dam/Kotak/digital-banking/insta-services/kaymall/1440X400-Flight.jpg" />
                     <Card.ImgOverlay style={{ fontFamily: "Arial" , paddingTop : "35px" , color :"#226AC7" , fontWeight :"bold" }}>
@@ -84,17 +111,24 @@ class ViewAllReservations extends Component {
                         </Card.Text>
                     </Card.ImgOverlay>
                 </Card>
+*/}
+<div  style={{ backgroundImage: `url(${ResultBack})`, minHeight: "200vh", backgroundSize: "cover" , backgroundRepeat: "repeat-y"}}>
 
-                {reservations.length === 0 ?(
-                    <div className="accordions" styles={{fontWeight:"bold", color:"#000000"}}>You don't have any reservations!</div>
-                    ):(
-                        <div className="accordions">
+                {reservations.length === 0 || userName===""?(
+                    <div className="accordions2" style={{fontWeight:"bold", color:"#FF0000"}}>
+                        <h5>You don't have any reservations!</h5>
+                        <Button variant="contained" style = {{marginLeft:"42%" , marginTop:"20px"}}
+                                                        onClick={this.makeReservation}
+                                                        >Start Booking&nbsp; <FlightOutlinedIcon /></Button></div>
+                                                        ):(
+                                                            <div className="accordions2">
                     {this.state.reservations.map(r =>
-                        <ViewSingleReservation reservation={r} key={r._id} />
+                        <ViewSingleReservation reservation={r} userName={this.state.userName} key={r._id} />
                         )}
                 </div>
                 )
             }
+            </div>
             </div>
         );
         

@@ -13,7 +13,19 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import SideBar from './SideBar'
+import SideBar from './SideBar';
+import Header from './Header';
+import PersonIcon from '@mui/icons-material/Person';
+
+
+
+// const mapStateToProps = (state) => {
+//     //console.log(state.DetailsReducer.details.destination)
+//     return {
+//         details: state.DetailsReducer.details,
+        
+//     };
+// };
 
 
 
@@ -36,7 +48,7 @@ class viewUserInfo extends Component {
         this.state = {
             info: [],
             // id: this.props.details.UserID//added //RETURN AFTER TESTING
-            id:"61a518d86046ece4ba9ff27c"
+            id:this.props.details.UserID,
         };
         console.log("id", this.state.id)
         console.log("details", this.props.details)
@@ -45,8 +57,8 @@ class viewUserInfo extends Component {
     
 
     componentDidMount() {
-       // console.log("this:", this)
-        if(this.state.id!="" && this.state.id!=null){}
+        console.log("this:", this)
+        if(this.state.id!="" && this.state.id!=null){
         let url =
             axios
                 .get(`http://localhost:8080/searchUserByID/${this.state.id}`)
@@ -62,7 +74,12 @@ class viewUserInfo extends Component {
                 .catch(err => {
                     console.log('Error');
                 })
-
+            }
+        else{
+            
+            // this.props.history.push("/Userlogin2" , { prevUrl: "/ViewUserInfo"} ); 
+            this.props.history.push("/Userlogin2");
+        }
 
 
 
@@ -90,12 +107,6 @@ class viewUserInfo extends Component {
         //         console.log("error ===>", e);
         //     });
 
-
-
-
-
-
-
     };
     
     render() {
@@ -104,8 +115,9 @@ class viewUserInfo extends Component {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-            <SideBar />
+        <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+            <Header/>
+            <div style={{marginBottom:"-40px"}}></div>
             <div class= "padding">
                 
            
@@ -121,8 +133,11 @@ class viewUserInfo extends Component {
     >
      
     
-
-
+<div class="padding"></div>
+     <h3 class="colorHeader">
+    <PersonIcon ></PersonIcon >My Infromation
+    </h3>
+    
       <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">First Name</label>
                     <input
@@ -215,9 +230,6 @@ class viewUserInfo extends Component {
 }
 }
 // export default viewUserInfo;
-// const mapStateToProps = (state) => ({
-//     details: state.DetailsReducer.details,
-// });
 
 
 

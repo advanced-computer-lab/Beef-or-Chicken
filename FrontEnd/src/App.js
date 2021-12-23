@@ -8,6 +8,7 @@ import Home from './Components/User/HomePage'
 import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
+import SeatEditor from './Components/User/SeatEditor'
 import ReturningResults from './Components/User/ReturningResults'
 // import CreateFlight from './Components/CreateFlight'
 import Seats from './Components/User/Seats'
@@ -25,8 +26,13 @@ import UpdateUserInfo from './Components/User/UpdateUserInfo'
 import UpdateUserInfoNew from './Components/User/UpdateUserInfoNew'
 import ChangePassword from './Components/User/ChangePassword'
 import UserLogin from "./Components/User/Login"
+import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
+import UserRegistration from './Components/User/Registration'
 
+import Payment from "./Components/User/PaymentPage"
+
+import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
   var hist = createBrowserHistory();
   return (
@@ -46,17 +52,23 @@ function App() {
         <Route exact path="/Create" component={CreateFlight} />
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:flight" component={SeatPicker} />
+        <Route exact path="/EditSeats/:flight" component={SeatEditor} />
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
         <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
         <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
         <Route exact path="/login" component={UserLogin} />
+        <Route exact path="/Payment" component={Payment} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin} />
+        <Route exact path="/Userlogin2" component={UserLogin2} />
         <Route exact path="/UserLoginRes" component={UserLoginRes} />
+        <Route exact path="/FullSummaryPage" component={FullSummaryPage} />
+        <Route exact path="/register" component={UserRegistration} />
 
       </Router>
     </div>

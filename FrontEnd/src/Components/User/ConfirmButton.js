@@ -44,12 +44,17 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        ReservationID: state.DetailsReducer.details.ReservationID,
     };
 };
 
 const mapDispatchToState = (dispatch) => {
     return {
+        setReservationID: (ReservationID) => {
+            dispatch({ type: 'setReservationID', payload: ReservationID });
+        },
+
 
         setAllOffers: (allOffers) => {
             dispatch({ type: 'setAllOffers', payload: allOffers });
@@ -63,7 +68,7 @@ const mapDispatchToState = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToState)(IconLabelButtons);
 
 
-function IconLabelButtons({ details, setAllOffers, allOffers }) {
+function IconLabelButtons({ details, setReservationID, ReservationID }) {
 
     let history = useHistory();
     const classes = useStyles();
@@ -99,10 +104,12 @@ function IconLabelButtons({ details, setAllOffers, allOffers }) {
                 .then(res => {
                     console.log("respnose: ", res)
                     console.log("response data", res.data)
-                    
 
 
-                    history.push('/Seats/1',{ReservationId: res.data});
+                    setReservationID(res.data)
+                    console.log("ReservationID-----> ", ReservationID)
+                    console.log("details-----> ", details)
+                    history.push('/Seats/1', { ReservationId: res.data });
                 })
                 .catch(error => {
                     console.log("idiot!");

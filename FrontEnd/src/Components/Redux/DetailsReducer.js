@@ -10,6 +10,7 @@ const initState = {
         destination: "",
         destination_name: "",
         // today: new Date(),
+
         departure_date: date,
         return_date: date,
         tripType: "Round Trip",
@@ -23,15 +24,56 @@ const initState = {
         selectedDepartingFlightID: "",
         selectedReturningFlightID: "",
         UserID: "",
-        TakenSeats: [],
+        TakenSeatsDeparture: [],
+        TakenSeatsReturn: [],
         DeparturePrice: 0,
         ReturnPrice: 0,
         DepartingFlight: [],
         ReturnFlight: [],
         DepartingSeats: [],
+        departingOffers: [],
+        returningOffers: [],
+        ReservationID: "",
+        errorOccurred: false,
+        token:"",
+        //Reservation :["marky"],
+        Reservation: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
+    if (action.type == 'setReservation') {
+        state.details.Reservation = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setError') {
+        state.details.errorOccurred = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setReservationID') {
+        state.details.ReservationID = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setDepartingOffers') {
+        state.details.departingOffers = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setReturningOffers') {
+        state.details.returningOffers = action.payload;
+        return {
+            ...state,
+        };
+    }
+
 
     if (action.type == 'setDepartingFlight') {
         state.details.DepartingFlight = action.payload;
@@ -66,14 +108,26 @@ const DetailsReducer = (state = initState, action) => {
             ...state,
         };
     }
-    if (action.type == 'setTakenSeats') {
-        state.details.TakenSeats = action.payload;
+    if (action.type == 'setTakenSeatsReturn') {
+        state.details.TakenSeatsReturn = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setTakenSeatsDeparture') {
+        state.details.TakenSeatsDeparture = action.payload;
         return {
             ...state,
         };
     }
     if (action.type == 'setUserID') {
         state.details.UserID = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setToken') {
+        state.details.token = action.payload;
         return {
             ...state,
         };

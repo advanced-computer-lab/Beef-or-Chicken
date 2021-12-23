@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
+import Header from "./Header";
 import { Link } from 'react-router-dom';
 
 
@@ -84,10 +85,11 @@ function UpdateUserInfo(prop) {
         axios.patch(url, body)
             .then(async (response) => {
                 console.log("response ===> ", response)
+                alert("Info Updated Successfully!")
                 // history.push("/usersflight");
             })
             .catch((e) => {
-
+                
                 console.log("ana hena")
                 console.log("error ===>", e);
             });
@@ -110,8 +112,10 @@ function UpdateUserInfo(prop) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-                <SideBar />
+            <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+                <Header />
+            <div style={{marginBottom:"-40px"}}></div>
+
             <div className={classes.padding}>
            
 <div className={classes.rectangle}>

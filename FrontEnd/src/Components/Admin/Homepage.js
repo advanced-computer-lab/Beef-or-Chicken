@@ -45,7 +45,7 @@ function HomePage() {
             <Header />
             {/* <div className={classes.page}> */}
             {/* <AllFlights /> */}
-            <Login />
+            <AllFlights />
             {/* </div> */}
         </div>
 

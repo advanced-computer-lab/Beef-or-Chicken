@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
+        returningOffers: state.DetailsReducer.details.returningOffers,
         allOffers: state.DetailsReducer.details.allOffers
     };
 };
@@ -20,10 +21,11 @@ const mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps)(Paginations);
-function Paginations({ allOffers, details }) {
+function Paginations({ allOffers, returningOffers, details }) {
 
-    console.log("ANAAA ELOFFFFERRR: ", allOffers)
+    console.log("ANAAA ELOFFFFERRR: ", returningOffers)
     console.log("ANAAA ELDETAILSSSSS: ", details)
+    console.log("ANAAA ELALLLLOFFFFERRR: ", allOffers)
 
     // this.state = {
     //     page: 1,
@@ -52,18 +54,26 @@ function Paginations({ allOffers, details }) {
     // console.log("offers", this.props.offers)
     // console.log("filtered", this.props.filtered)
     // console.log("filtered offers", this.props.filteredOffers)
-
-
-
     const currentPage = page;
     const offersPerPage = 1;
     const indexOfLastOffer = offersPerPage * currentPage;
     const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
 
-    console.log("FUNCCCCTTTT", Math.ceil(allOffers.data.data.length / offersPerPage))
+    // console.log("FUNCCCCTTTT", Math.ceil(allOffers.data.length / offersPerPage))
     // const currentArray = allOffers.slice(indexOfFirstOffer, indexOfLastOffer);
-    console.log("OFFFFFF: ", allOffers.data.data)
-    console.log("Detailss: ", allOffers.data.data.length)
+    console.log("OFFFFFF: ", allOffers)
+    console.log("Detailss: ", allOffers.details)
+
+
+    // const currentPage = page;
+    // const offersPerPage = 1;
+    // const indexOfLastOffer = offersPerPage * currentPage;
+    // const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
+
+    // console.log("FUNCCCCTTTT", Math.ceil(details.returningOffers.length / offersPerPage))
+    // // const currentArray = allOffers.slice(indexOfFirstOffer, indexOfLastOffer);
+    // console.log("OFFFFFF: ", details.returningOffers)
+    // console.log("Detailss: ", details.returningOffers.length)
     return (
         <div>
             <GridContainer >
@@ -71,7 +81,7 @@ function Paginations({ allOffers, details }) {
 
                 <GridItem xs={12} style={{ marginTop: "100px" }}>
 
-                    <ResultCardReturn offer={allOffers} details={details} />
+                    <ResultCardReturn />
                     {/* <ResultCard />
                     <ResultCard />
                     <ResultCard /> */}
@@ -88,7 +98,8 @@ function Paginations({ allOffers, details }) {
                     <Pagination
                         //style={{ background: "#10404c ", color: "wheat" }}
                         style={{ marginLeft: "47%", color: "wheat" }}
-                        count={Math.ceil(allOffers.data.data.length / offersPerPage)}
+                        //   count={Math.ceil(details.returningOffers.length / offersPerPage)}
+                        // count={Math.ceil(allOffers.data.length / offersPerPage)}
 
                         //{Math.ceil(allOffers.data / offersPerPage)}
                         page={currentPage}
