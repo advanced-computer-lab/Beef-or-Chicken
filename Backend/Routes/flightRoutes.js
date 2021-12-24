@@ -1,10 +1,12 @@
 const express = require("express");
 const flightModel = require("../Models/Flight");
+const reservationModel = require("../Models/Reservation");
 const app = express();
 var cors = require('cors')
+var nodemailer = require('nodemailer');
 app.use(cors())
-
 const userModel = require("../Models/User");
+
 app.get("/allflights", async (request, response) => {
   const flights = await flightModel.find({});
 
@@ -426,9 +428,62 @@ app.patch("/flight/:id", async (request, response) => {  //update
 // ...
 
 
+
+
+// app.delete("/flight/:id", async (request, response) => {
+//   try {
+//     const flight = await flightModel.findByIdAndDelete(request.params.id);
+
+//     if (!flight) response.status(404).send("No item found");
+//     response.status(200).send();
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
+
 app.delete("/flight/:id", async (request, response) => {
   try {
     const flight = await flightModel.findByIdAndDelete(request.params.id);
+    var query1 = { DepartureFlightID: request.params.id}
+    var query2 = {ReturnFlightID: request.params.id };
+    const reservation = await reservationModel.deleteMany({ $or: [query1, query2] });
+
+    ////////////////////////////////////////////////////
+
+    //const User = await userModel.findById(reservation.UserID);
+
+    // //refund (via email) 
+    // const totalPrice = reservation.TotalPrice.toString();
+
+    // let transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: "BeefOrChickenACL@gmail.com",
+    //     pass: "beeforchicken"
+    //   },
+    //   tls: {
+    //     rejectUnauthorized: false,
+    //   },
+    // });
+
+    // let mailOptions = {
+
+    //   from: "BeefOrChickenACL@gmail.com",
+    //   to: User.email,
+    //   subject: "Your reservation has been canceled",
+    //   text: "Dear " + User.firstName + ", your reservation with Beef or Chicken airlines has been canceled due to flight cancellation, your refund amount is " + totalPrice + " EGP",
+    // };
+
+    // transporter.sendMail(mailOptions, function (err, success) {
+    //   if (err) {
+    //     console.log(err)
+    //   } else {
+    //     console.log("Gedid Mail sent successfully");
+    //   }
+    // });
+
+    ////////////////////////////////////////////////////
+
 
     if (!flight) response.status(404).send("No item found");
     response.status(200).send();
