@@ -26,7 +26,7 @@ import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserLoginRes from "./Components/User/loginReservations"
 import Payment from "./Components/User/PaymentPage"
-
+import InfoForm from './Components/User/PassengersFunctional'
 import FullSummaryPage from './Components/User/SummaryPage2'
 function App() {
   var hist = createBrowserHistory();
@@ -48,6 +48,7 @@ function App() {
         <Route exact path="/Update/:id" component={UpdateFlight} />
         <Route exact path="/Seats/:flight" component={SeatPicker} />
         <Route exact path="/Summary" component={SummaryPage} />
+        <Route exact path="/pass" component={InfoForm} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
