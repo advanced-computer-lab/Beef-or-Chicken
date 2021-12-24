@@ -12,6 +12,8 @@ import LogoutButton from './LogoutButton'
 import LoginIcon from '@mui/icons-material/Login';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import EditIcon from '@mui/icons-material/Edit';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -134,6 +136,10 @@ function Header({ UserID }) {
         history.push("/UpdateUserInfo/" + { UserID });
     };
 
+    const changePassword = () => {
+        history.push("/ChangePassword/" + { UserID });
+    };
+
 
 
     const classes = useStyles();
@@ -176,6 +182,7 @@ function Header({ UserID }) {
 
                             <MenuItem onClick={viewProfile}><AssignmentIndIcon/>&nbsp;Profile</MenuItem>
                             <MenuItem onClick={editProfile}><EditIcon/>&nbsp;Edit Profile</MenuItem>
+                            <MenuItem onClick={changePassword}><VpnKeyIcon></VpnKeyIcon> Change Password</MenuItem>
                             <LogoutButton />
                         </Menu>
                     </div>
