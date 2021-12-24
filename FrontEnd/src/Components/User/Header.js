@@ -83,8 +83,14 @@ const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
         token: state.DetailsReducer.details.token,
+        user: state.DetailsReducer.details.user,
+        test: state.DetailsReducer.details,
     };
+    
+    
 };
+
+console.log("ana el detaiillss",test);
 /*
 const mapDispatchToState = (dispatch) => {
     return {
@@ -127,10 +133,10 @@ function Header({ UserID }) {
     };
 
     const editProfile = () => {
-        history.push("/UpdateUserInfo/" + { UserID });
+        history.push("/ViewUserInfo/" + { UserID });
     };
 
-    const changePassword = () => {
+    const changePassword = (user) => {
         history.push("/ChangePassword/" + { UserID });
     };
 
@@ -175,7 +181,7 @@ function Header({ UserID }) {
 
 
                             <MenuItem onClick={viewProfile}>Profile</MenuItem>
-                            <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
+                            <MenuItem onClick={editProfile}>View Profile</MenuItem>
                             <MenuItem onClick={changePassword}><VpnKeyIcon></VpnKeyIcon> Change Password</MenuItem>
                             <LogoutButton />
                         </Menu>

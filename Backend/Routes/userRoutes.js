@@ -209,6 +209,39 @@ app.post('/register', async (req, res) => {
 )
 
 
+
+app.post('/changePassword/:id', async (req, res) => {
+  const user = req.body;
+  console.log(user);
+  //const takenUsername = await userModel.findOne({ username: user.username })
+ //console.log(takenUsername);
+
+ user.password = await bcrypt.hash(req.body.newPassword, 10);
+ try {
+
+  console.log("Request: ", request.body)
+  var q = {}
+
+  if (request.body.newPassword.newPassword != "") {
+    q.newPassword = user.password
+  }
+  
+
+  console.log(q);
+  console.log(request.params.id);
+  await userModel.findByIdAndUpdate(request.params.id, q);
+  response.send();
+} catch (error) {
+  response.status(500).send(error);
+}
+
+
+      
+  
+  }
+  )
+
+
 app.post('/CheckUsername', async (req, res) => {
   const user = req.body;
   console.log(user);

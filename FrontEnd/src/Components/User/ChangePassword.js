@@ -62,52 +62,80 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function UpdateUserInfo(prop) {
-
-    const user = prop.match.params
+function ChangePassword(userr) {
+    // console.log(props.details)
+    const user = userr
+    console.log("USER HENNNAA",user)
 
 
     
     let history = useHistory();
-    const [password, setPassword] = useState("");
+    const [CurrentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setnewPassword] = useState("");
     const onSubmit = (event) => {
-        event.preventDefault();
+      //  console.log("abl el url")
+
+        let url = `http://localhost:8080/searchUserByID/${user.id}`;
+
+        //console.log("b3d el url")
+       // event.preventDefault();
         // const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console  
 
 
 
 
         let body = {
-            'password': { password },
+            'username':{this:user.username},
+            'password': { CurrentPassword },
+            
 
         }
 
 
-        console.log("body: ", body)
-        let url = "http://localhost:8080/searchUser"
+        console.log("body: 7AGA MOMYAZA ", body)
+        //let url = "http://localhost:8080/searchUser"
 
-        axios
-            .post(url, body)
-            .then(res => {
-                console.log("respnose: ", res.data)
+        axios.get(url)
+        .then(async (response) => {
 
-                // setResult(res.data)
-                // window.scroll(0, 9950)
-                console.log("cond: ", res)
-                if (res.data[0].type == 1) {
-                    prop.UserID = res.data[0]._id
-                    history.push('/Summary');
-                }
-                else {
-                    console.log("not user")
-                }
-                console.log("gamed louji!")
+
+
+
+            if(response.password==CurrentPassword){
+                console.log("gowa le if")
+            console.log("abl el url")
+            let url = `http://localhost:8080/changePassword/${user.id}`;
+            console.log("b3d el url")
+
+            let body = {
+                
+                'password': { newPassword },
+            }
+
+
+            axios.patch(url, body)
+            .then(async (response) => {
+                console.log("Password Changed Successfully!")
+            alert("Password Changed Successfully!")
+
             })
-            .catch(error => {
-                console.log("idiot!");
-                console.log(error.message);
-            })
+
+            .catch((e) => {
+                console.log("Password doesn't match minimum requirments!")
+                alert("Password doesn't match minimum requirments!")
+                console.log("ana hena")
+                console.log("error ===>", e);
+            });
+        }
+            // history.push("/usersflight");
+        })
+        .catch((e) => {
+            console.log("wrong password!")
+            alert("wrong password!")
+            console.log("ana hena")
+            console.log("error ===>", e);
+        });
 
     };
 
@@ -214,7 +242,7 @@ function UpdateUserInfo(prop) {
                         name='Current Password'
                         // className='form-control'
                         
-                        onChange={event => { setPassword(event.target.value) }}
+                        onChange={event => { setCurrentPassword(event.target.value) }}
                     />
                 </div>
 
@@ -227,7 +255,7 @@ function UpdateUserInfo(prop) {
                         class="form-control flex-fill"
                         name='new password'
                         // className='form-control'
-                        onChange={event => { setPassword(event.target.value)}}
+                        onChange={event => { setnewPassword(event.target.value)}}
                     />
                 </div>
 
@@ -300,4 +328,4 @@ function UpdateUserInfo(prop) {
     );
 }
 
-export default UpdateUserInfo;
+export default ChangePassword;
