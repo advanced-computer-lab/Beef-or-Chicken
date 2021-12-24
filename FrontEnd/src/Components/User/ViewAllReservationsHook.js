@@ -38,6 +38,7 @@ const mapStateToProps = (state) => {
         Reservation: state.DetailsReducer.details.Reservation,
         DepartingFlight: state.DetailsReducer.details.DepartingFlight,
         ReturnFlight: state.DetailsReducer.details.ReturnFlight,
+        details: state.DetailsReducer.details,
     };
 };
 const mapDispatchToState = (dispatch) => {
@@ -61,10 +62,10 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     let history = useHistory();
     const [open, setOpen] = React.useState(false);
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
     const handleToggle = () => {
-    //   setOpen(!open);
+        //   setOpen(!open);
     };
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
@@ -77,6 +78,11 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     const baggageDeparture = { baggage: 0 };
     const cabin = reservation.CabinType;
     const passengers = reservation.Adults + reservation.Children;
+
+    console.log("HOOKS");
+    console.log(props.details.token);
+
+
     if (reservation.TakenSeatsDeparting.length === 0) {
         Object.assign(reservation, { TakenSeatsDeparting: ["None"] })
     }
@@ -95,38 +101,59 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.setReservation(res.data);
-                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                url2 = `http://localhost:8080/flightByIdUser/${reservation.DepartureFlightID}`
                 axios
-                    .get(url2)
+                    .get(url2,
+                        {
+                            headers: {
+                                "x-access-token": props.details.token
+                            }
+                        })
                     .then(res => {
-                        console.log("respnose: ", res)
-                        console.log("gamed louji!")
-                        props.setDepartingFlight(res.data);
-                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                        axios
-                            .get(url2)
-                            .then(res => {
-                                console.log("respnose: ", res)
-                                console.log("gamed louji!")
-                                props.setReturnFlight(res.data);
-                                if (type == 1)
-                                    history.push('/EditSeats/1');
-                                else if (type == 2)
-                                    history.push('/EditSeats/2');
+                        const resultt = res.data;
+                        if (resultt.isLoggedIn !== false) {
+                            props.setDepartingFlight(res.data);
+                            url2 = `http://localhost:8080/flightByIdUser/${reservation.ReturnFlightID}`
+                            axios
+                                .get(url2,
+                                    {
+                                        headers: {
+                                            "x-access-token": props.details.token
+                                        }
+                                    })
+                                .then(res => {
+                                    const resultt = res.data;
+                                    if (resultt.isLoggedIn !== false) {
+                                        console.log("respnose: ", res)
+                                        console.log("gamed louji!")
+                                        props.setReturnFlight(res.data);
+                                        if (type == 1)
+                                            history.push('/EditSeats/1');
+                                        else if (type == 2)
+                                            history.push('/EditSeats/2');
 
-                                // this.props.history.push(`/Seats/1`);
-                            })
-                            .catch(error => {
-                                console.log("idiot!");
-                                console.log(error.message);
-                            })
-                        // this.props.history.push(`/Seats/1`);
+                                        // this.props.history.push(`/Seats/1`);
+                                    }
+                                    else {
+                                        alert("You need to login to edit your profile!")
+                                        history.push("/userlogin2");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log("idiot!");
+                                    console.log(error.message);
+                                })
+                            // this.props.history.push(`/Seats/1`);
+                        } else {
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
                     })
                     .catch(error => {
                         console.log("idiot!");
                         console.log(error.message);
                     })
-                
+
                 // this.props.history.push(`/Seats/1`);
             })
             .catch(error => {
@@ -153,60 +180,77 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 //console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.setReservation(res.data);
-                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                url2 = `http://localhost:8080/flightByIdUser/${reservation.DepartureFlightID}`
                 axios
-                    .get(url2)
+                    .get(url2,
+                        {
+                            headers: {
+                                "x-access-token": props.details.token
+                            }
+                        })
                     .then(res => {
                         //  console.log("respnose: ", res)
                         //console.log("gamed louji!")
-                        
-                        props.setDepartingFlight(res.data);
-                        
-                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                        axios
-                            .get(url2)
-                            .then(res => {
-                                // console.log("respnose: ", res)
-                                
-                                props.setReturnFlight(res.data);
-                                
-                                console.log("props:",props)
-                                // HENA 
-                                url2 = `http://localhost:8080/userById/${reservation.UserID}`
-                                axios
-                                    .get(url2)
-                                    .then(res => {
-                                        console.log("respnose: ", res)
-                                        console.log("gamed louji!")
-                                        let User = res.data
-                                       
-                                       
-                                        url2 = `http://localhost:8080/mail`
-                                        let body = {
+                        const resultt = res.data;
+                        if (resultt.isLoggedIn !== false) {
+                            props.setDepartingFlight(res.data);
 
-                                            Reservation: reservation,
-                                            thisUser: User,
-                                            Departing : props.DepartingFlight,
-                                            Returning : props.ReturnFlight
-                                            
+                            url2 = `http://localhost:8080/flightByIdUser/${reservation.ReturnFlightID}`
+                            axios
+                                .get(url2,
+                                    {
+                                        headers: {
+                                            "x-access-token": props.details.token
                                         }
-                                        axios
-                                            .post(url2, body)
-                                            .then(res => {
-                                                console.log("ba3atna el mail: ", res)
-                                                console.log("gamed louji!")
-
-                                                // this.props.history.push(`/Seats/1`);
-                                            })
                                     })
+                                .then(res => {
+                                    const resultt = res.data;
+                                    if (resultt.isLoggedIn !== false) {
+                                    // console.log("respnose: ", res)
 
-                                // this.props.history.push(`/Seats/1`);
-                            })
-                            .catch(error => {
-                                console.log("idiot!");
-                                console.log(error.message);
-                            })
-                        // this.props.history.push(`/Seats/1`);
+                                    props.setReturnFlight(res.data);
+
+                                    console.log("props:", props)
+                                    // HENA 
+                                    url2 = `http://localhost:8080/userById/${reservation.UserID}`
+                                    axios
+                                        .get(url2)
+                                        .then(res => {
+                                            let User = res.data
+
+
+                                            url2 = `http://localhost:8080/mail`
+                                            let body = {
+
+                                                Reservation: reservation,
+                                                thisUser: User,
+                                                Departing: props.DepartingFlight,
+                                                Returning: props.ReturnFlight
+
+                                            }
+                                            axios
+                                                .post(url2, body)
+                                                .then(res => {
+                                                    console.log("ba3atna el mail: ", res)
+
+                                                    // this.props.history.push(`/Seats/1`);
+                                                })
+                                        })
+                                    } else {
+                                        alert("You need to login to edit your profile!")
+                                        history.push("/userlogin2");
+                                    }
+                                    // this.props.history.push(`/Seats/1`);
+                                })
+                                .catch(error => {
+                                    console.log("idiot!");
+                                    console.log(error.message);
+                                })
+                            // this.props.history.push(`/Seats/1`);
+                        } else {
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
                     })
                     .catch(error => {
                         console.log("idiot!");
@@ -298,7 +342,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={open}
-                    //onClick={handleClose}
+                //onClick={handleClose}
                 >
                     <CircularProgress color="inherit" />
                 </Backdrop>
@@ -514,14 +558,14 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
 
                                             <DeleteButton reservation={reservation._id} />
-                        
-                
-                                        
+
+
+
                                             <Button
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleEdit(2) }} >Edit Flight</Button>
-                                                 <Button sx={{mt: 2}}
+                                            <Button sx={{ mt: 2 }}
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleMail() }} >Mail me my itinerary</Button>
@@ -689,8 +733,8 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                                 variant="outlined" size="medium" color="primary" margin={5}
 
                                                 onClick={() => { handleEdit(1) }} >Edit Flight</Button>
-                                          
-                                            <Button sx={{mt: 2}}
+
+                                            <Button sx={{ mt: 2 }}
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleMail() }} >Mail me my itinerary</Button>

@@ -84,7 +84,7 @@ app.get("/userById/:id", async (request, response) => {
   }
 });
 
-app.patch("/user/:id", async (request, response) => {  //updateUser
+app.patch("/user/:id", verifyJWT ,async (request, response) => {  //updateUser
   try {
 
     console.log("Request: ", request.body)

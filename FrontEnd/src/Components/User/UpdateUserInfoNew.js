@@ -152,11 +152,27 @@ function UpdateUserInfo(prop,{ details , setUserID , setToken }) {
             "telephoneNumber2":{telephoneNumber2},
             "address":{address},
         }
+        if(prop.details.UserID === ""){
+            alert("You need to login to edit your profile!")
+            history.push("/userlogin2");
+        }
+        else{
 
-        axios.patch(url, body)
+        axios.patch(url, body ,
+            {
+                headers: {
+                  "x-access-token" : prop.details.token
+                }
+            })
             .then(async (response) => {
+                const result = response.data;
+                if(result.isLoggedIn !== false){
                 alert("Info Updated Successfully!")
                 // history.push("/usersflight");
+                }else{
+                    alert("You need to login to edit your profile!")
+                    history.push("/userlogin2");
+                }
             })
             .catch((e) => {
                 
@@ -164,7 +180,7 @@ function UpdateUserInfo(prop,{ details , setUserID , setToken }) {
                 console.log("error ===>", e);
             });
         // window.location.reload(false);
-
+        }
     };
 
     const classes = useStyles()
