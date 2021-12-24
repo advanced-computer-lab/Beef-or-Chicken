@@ -166,10 +166,6 @@ class viewUserInfo extends Component {
                     />
                 </div>
 
-
-
-
-
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Passport Number</label>
                     <input
@@ -206,7 +202,7 @@ class viewUserInfo extends Component {
 
 
 
-                <Link to={  { pathname: `/ChangePassword/${this.state.id}`} }>
+                <Link to={  { pathname: `/UpdateUserInfoNew/${this.state.id}`} }>
                                     {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton> */}

@@ -67,13 +67,16 @@ function UpdateUserInfo(prop) {
     console.log("User: ", user)
     console.log("userID: ", user.id)
     const [open, setOpen] = React.useState(false);
-    const [info, setInfo] =React.useState({firstName:"",lastName:"",email:"",passportNumber:""});
+    const [info, setInfo] =React.useState({firstName:"", lastName:"", email:"", passportNumber:"", telephoneNumber1:"", telephoneNumber2:"", address:""});
     // let history = useHistory();
     
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [passportNumber, setPassportNumber] = useState("")
     const [email, setEmail] = useState("")
+    const [telephoneNumber1, setTelephoneNumber1] = useState("")
+    const [telephoneNumber2, setTelephoneNumber2] = useState("")
+    const [address, setAddress] = useState("")
 
 
     
@@ -87,6 +90,9 @@ function UpdateUserInfo(prop) {
                 setLastName(res.data.lastName)
                 setEmail(res.data.email)
                 setPassportNumber(res.data.passportNumber)
+                setTelephoneNumber1(res.data.telephone1)
+                setTelephoneNumber2(res.data.telephone2)
+                setAddress(res.data.address)
 
 
                 console.log(firstName)
@@ -110,7 +116,10 @@ function UpdateUserInfo(prop) {
             "firstName": { firstName },
             "lastName": { lastName },
             "passportNumber": { passportNumber },
-            "email": { email }
+            "email": { email },
+            "telephoneNumber1":{telephoneNumber1},
+            "telephoneNumber2":{telephoneNumber2},
+            "address":{address},
         }
 
         axios.patch(url, body)
@@ -137,8 +146,8 @@ function UpdateUserInfo(prop) {
 
         <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
                 <SideBar />
-            <div className={classes.padding}>
-           
+            <div >
+           <div class="paddingup"></div>
 <div className={classes.rectangle}>
 <Box 
       component="form"
@@ -167,8 +176,6 @@ function UpdateUserInfo(prop) {
                         onChange={event => { setFirstName(event.target.value) }}
                     />
                 </div>
-
-
 
                 <div class="col-md-6" className='form-group form-inline'>
                     <label class="form-label">Last Name</label>
@@ -211,6 +218,42 @@ function UpdateUserInfo(prop) {
                     />
                 </div>    
 
+                <div class="col-md-6" className='form-group form-inline'>
+                    <label class="form-label">Telephone Number 1</label>
+                    <input
+                        type='text'
+                        class="form-control flex-fill"
+                        placeholder={telephoneNumber1}
+                        name='Telephone Number 1'
+                        // className='form-control'
+                        onChange={event => { setTelephoneNumber1(event.target.value) }}
+                    />
+                </div>    
+
+                <div class="col-md-6" className='form-group form-inline'>
+                    <label class="form-label">Telephone Number 2</label>
+                    <input
+                        type='text'
+                        class="form-control flex-fill"
+                        placeholder={telephoneNumber2}
+                        name='Telephone Number 2'
+                        // className='form-control'
+                        onChange={event => { setTelephoneNumber2(event.target.value) }}
+                    />
+                </div>    
+
+                <div class="col-md-6" className='form-group form-inline'>
+                    <label class="form-label">Address</label>
+                    <input
+                        type='text'
+                        class="form-control flex-fill"
+                        placeholder={address}
+                        name='Address'
+                        // className='form-control'
+                        onChange={event => { setAddress(event.target.value) }}
+                    />
+                </div>    
+
                 <div class="padding">
                     </div>
                     <div class="rectangle4">
@@ -230,15 +273,12 @@ function UpdateUserInfo(prop) {
 
                     <div class="rectangle3">
                     <Link to={  { pathname: `/ViewUserInfo/` } }>
-                        
-                     
                     <input
                     class="btn btn-primary"
                     type="submit"
                     value="Back"
                     
                      />   
-                
                     </Link>
 
                 {/* <button class="rectangle2"
