@@ -11,13 +11,27 @@ import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-
+import Header from "./Header";
+import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        
+        UserID: state.DetailsReducer.details.UserID,
+        token : state.DetailsReducer.details.token,
+    };
+};
+
+const mapDispatchToState = (dispatch) => {
+    return {
+        setUserID: (UserID) => {
+            dispatch({ type: 'setUserID', payload: UserID });
+        },
+        setToken: (token) => {
+            dispatch({ type: 'setToken', payload: token });
+        },  
     };
 };
 
@@ -60,15 +74,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+export default connect(mapStateToProps, mapDispatchToState)(UpdateUserInfo);
 
-function UpdateUserInfo(prop) {
-
+function UpdateUserInfo(prop,{ details , setUserID , setToken }) {
+    console.log(prop)
     const user = prop.match.params
-    console.log("User: ", user)
-    console.log("userID: ", user.id)
+    console.log("User: ", user.id)
+    console.log("token : ", prop.details.token)
+    console.log("id : ", prop.details.UserID)
+
     const [open, setOpen] = React.useState(false);
     const [info, setInfo] =React.useState({firstName:"", lastName:"", email:"", passportNumber:"", telephoneNumber1:"", telephoneNumber2:"", address:""});
-    // let history = useHistory();
+    let history = useHistory();
     
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -82,29 +99,43 @@ function UpdateUserInfo(prop) {
     
 
     useEffect(() => {
-        
-        axios.get('http://localhost:8080/searchUserByID/'+ user.id ).then(
+
+        if(prop.details.UserID === ""){
+            alert("You need to login to edit your profile!")
+            history.push("/userlogin2");
+        }
+        else{
+        axios.get('http://localhost:8080/searchUserByID/'+ user.id ,
+        {
+            headers: {
+              "x-access-token" : prop.details.token
+            }
+        }
+        ).then(
             res => {
-                console.log(res.data )
-                setFirstName(res.data.firstName)
-                setLastName(res.data.lastName)
-                setEmail(res.data.email)
-                setPassportNumber(res.data.passportNumber)
-                setTelephoneNumber1(res.data.telephone1)
-                setTelephoneNumber2(res.data.telephone2)
-                setAddress(res.data.address)
-
-
-                console.log(firstName)
+                const result = res.data;
+                if(result.isLoggedIn !== false){
+                    console.log(res.data )
+                    setFirstName(res.data.firstName)
+                    setLastName(res.data.lastName)
+                    setEmail(res.data.email)
+                    setPassportNumber(res.data.passportNumber)
+                    setTelephoneNumber1(res.data.telephone1)
+                    setTelephoneNumber2(res.data.telephone2)
+                    setAddress(res.data.address)
+                }
+                 else{
+                     console.log("OH NO OH NO OH NO NO NO NO NO");
+                     alert("You need to login to edit your profile!")
+                     history.push("/userlogin2");
+                 }
             })
 
             .catch(err => {
                 console.log('Error');
-            })
-                
-            
+            })    
         }
-            , []);
+    }, []);
 
 
             
@@ -144,10 +175,12 @@ function UpdateUserInfo(prop) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-                <SideBar />
+        <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "130vh", backgroundSize: "cover" ,
+        backgroundRepeat: "repeat-y" ,
+    }}>
+<Header/>
             <div >
-           <div class="paddingup"></div>
+           <div class="paddingup"  ></div>
 <div className={classes.rectangle}>
 <Box 
       component="form"
@@ -317,5 +350,3 @@ function UpdateUserInfo(prop) {
 
     );
 }
-
-export default UpdateUserInfo;

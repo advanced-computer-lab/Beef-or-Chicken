@@ -67,7 +67,6 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
     const func = async (e) => {
         e.preventDefault();
         setUserID("");
-        window.location.reload(true);
         history.push("/");
     }
 

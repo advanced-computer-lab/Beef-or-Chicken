@@ -18,7 +18,7 @@ var nodemailer = require('nodemailer');
 
 
 
-
+/// AUTHENTICATION EL USERS --> ADMIN AUTH IS IN THE OTHER ROUTES
 function verifyJWT(req , res , next) {
   const token = req.headers["x-access-token"]?.split(' ')[1]
   
@@ -31,14 +31,19 @@ function verifyJWT(req , res , next) {
       req.user = {};
       req.user.id = decoded.id
       req.user.username = decoded.username
+      req.user.type = decoded.type
+      if(req.user.type !== 1){
+        return res.json({
+          isLoggedIn: false,
+          message: "Access Restricted To Users Only"
+        })
+      }
       next()
     })
   }else{
     res.json({message : "Incorrect Token Given" , isLoggedIn:false})
   }
 }
-
-
 
 app.get("/allReservations" , async (request, response) => {
   const reservations = await reservationModel.find({});

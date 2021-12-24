@@ -54,10 +54,10 @@ function App() {
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
-        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} /> 
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} /> 
         <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
         <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
-        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} />
         <Route exact path="/login" component={UserLogin2} />
         <Route exact path="/Payment" component={Payment} />
         {/* add /:id */}

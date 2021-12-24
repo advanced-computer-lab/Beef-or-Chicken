@@ -157,7 +157,6 @@ app.post('/login', (req, res) => {
 })
 
 
-
 app.post('/register', async (req, res) => {
   const user = req.body;
   console.log(user);
@@ -209,6 +208,11 @@ app.post('/register', async (req, res) => {
 )
 
 
+app.get('/CheckAdmin',verifyJWTAdmin ,  async (req, res) => {
+      res.json({ message: "ADMIN" })
+})
+
+
 app.post('/CheckUsername', async (req, res) => {
   const user = req.body;
   console.log(user);
@@ -254,10 +258,43 @@ function verifyJWT(req , res , next) {
       req.user = {};
       req.user.id = decoded.id
       req.user.username = decoded.username
+      req.user.type = decoded.type
+      if(req.user.type !== 1){
+        return res.json({
+          isLoggedIn: false,
+          message: "Access Restricted To Users Only"
+        })
+      }
       next()
     })
   }else{
     console.log("Wrong Token")
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
+
+function verifyJWTAdmin(req , res , next) {
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+  
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err ,decoded) => {
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed To Authenticate"
+      })
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      req.user.type = decoded.type
+      if(req.user.type !== 0){
+        return res.json({
+          isLoggedIn: false,
+          message: "Access Restricted To Admin Only"
+        })
+      }
+      next()
+    })
+  }else{
     res.json({message : "Incorrect Token Given" , isLoggedIn:false})
   }
 }

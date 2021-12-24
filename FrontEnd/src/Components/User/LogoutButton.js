@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { createBrowserHistory } from "history";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -77,14 +79,15 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
 
     let history = useHistory();
     const classes = useStyles();
+    const history2 = createBrowserHistory()
 
     const func = async (e) => {
         e.preventDefault();
-        // console.log("detailsssssss: ", details)
-        // //console.log("allahu akbar", details.allOffers)
-
         setUserID("");
-        window.location.reload(true);
+        console.log(history2.location.pathname)
+        if( history2.location.pathname === "/"){
+            window.location.reload(true);
+            }
         history.push("/");
     }
 
@@ -105,7 +108,7 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
                             className={classes.button}
                             // startIcon={<SearchIcon />}
                             onClick={(e) => { func(e) }}
-                        >
+                        ><LogoutIcon/>&nbsp;
                             Logout
                       
             </MenuItem>

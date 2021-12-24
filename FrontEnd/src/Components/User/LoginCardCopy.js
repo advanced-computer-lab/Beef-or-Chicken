@@ -166,7 +166,7 @@ function SignIn({ details }) {
                     if (res.data.type == 1)
                         history.goBack();
                     else {
-                        history.push("/allflights")
+                        history.goBack();
                     }
                 }
             })

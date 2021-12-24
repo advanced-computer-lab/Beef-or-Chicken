@@ -133,13 +133,12 @@ function Header({ UserID }) {
     };
 
     const editProfile = () => {
-        history.push("/UpdateUserInfo/" + { UserID });
+        history.push("/UpdateUserInfoNew/" + UserID );
     };
 
     const changePassword = () => {
-        history.push("/ChangePassword/" + { UserID });
+        history.push("/ChangePassword/" + UserID );
     };
-
 
 
     const classes = useStyles();
@@ -182,7 +181,7 @@ function Header({ UserID }) {
 
                             <MenuItem onClick={viewProfile}><AssignmentIndIcon/>&nbsp;Profile</MenuItem>
                             <MenuItem onClick={editProfile}><EditIcon/>&nbsp;Edit Profile</MenuItem>
-                            <MenuItem onClick={changePassword}><VpnKeyIcon></VpnKeyIcon> Change Password</MenuItem>
+                            <MenuItem onClick={changePassword}><VpnKeyIcon></VpnKeyIcon>&nbsp;Change Password</MenuItem>
                             <LogoutButton />
                         </Menu>
                     </div>

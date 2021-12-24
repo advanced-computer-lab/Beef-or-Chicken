@@ -77,12 +77,17 @@ class ViewAllReservations extends Component {
 
 
        const result = await response.data;
-       console.log(result.isLoggedIn);
-       console.log(result.message);
-
+    
        if(result.isLoggedIn !== false){
+           console.log(result);
             this.setState({ reservations: result });
-            const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId);
+            const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId ,
+             {
+                headers: {
+                  "x-access-token" : this.state.token
+                }
+            }
+            );
             const resultUser = await responseUser.data;
             const name = resultUser.firstName + " " + resultUser.lastName ; 
             this.setState({ userName: name});

@@ -23,7 +23,7 @@ import PersonIcon from '@mui/icons-material/Person';
 //     //console.log(state.DetailsReducer.details.destination)
 //     return {
 //         details: state.DetailsReducer.details,
-        
+
 //     };
 // };
 
@@ -33,8 +33,8 @@ const mapStateToProps = (state) => {
     console.log(state.DetailsReducer.details)
     return {
         details: state.DetailsReducer.details,
-        
-        
+
+
     };
 };
 
@@ -48,42 +48,51 @@ class viewUserInfo extends Component {
         this.state = {
             info: [],
             // id: this.props.details.UserID//added //RETURN AFTER TESTING
-            id:this.props.details.UserID,
+            id: this.props.details.UserID,
         };
         console.log("id", this.state.id)
-        console.log("details", this.props.details)
+        console.log("details", this.props.details.token)
     }
 
-    
+
 
     componentDidMount() {
         console.log("this:", this)
-        if(this.state.id!="" && this.state.id!=null){
-        let url =
-            axios
-                .get(`http://localhost:8080/searchUserByID/${this.state.id}`)
-                .then(res => {
-                    this.setState({
-                        info: res.data,
-
+        if (this.state.id != "" && this.state.id != null) {
+            let url =
+                axios
+                    .get(`http://localhost:8080/searchUserByID/${this.state.id}`,
+                        {
+                            headers: {
+                                "x-access-token": this.props.details.token
+                            }
+                        })
+                    .then(res => {
+                        const result = res.data;
+                        if (result.isLoggedIn !== false) {
+                            this.setState({
+                                info: res.data,
+                            })
+                        }
+                        else {
+                            alert("You need to login to view your profile!")
+                            this.props.history.push("/Userlogin2");
+                         }
                     })
-                    console.log(res.data)
-                    console.log(this.state.id)
-                })
 
-                .catch(err => {
-                    console.log('Error');
-                })
-            }
-        else{
-            
-            // this.props.history.push("/Userlogin2" , { prevUrl: "/ViewUserInfo"} ); 
+                    .catch(err => {
+                        console.log('Error');
+                    })
+        }
+        else {
+
+            alert("You need to login to view your profile!")
             this.props.history.push("/Userlogin2");
         }
 
 
 
-        
+
         // let url = 'http://localhost:8080/searchUser';
 
         // let body = {
@@ -108,126 +117,126 @@ class viewUserInfo extends Component {
         //     });
 
     };
-    
+
     render() {
-        
-       // this.props.history.push(`/Seats/2`);
 
-    return (
+        // this.props.history.push(`/Seats/2`);
 
-        <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
-            <Header/>
-            <div style={{marginBottom:"-40px"}}></div>
-            <div class= "padding">
-                
-           
-<div class="rectangle">
-<Box 
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 5, width: '25ch' ,color: "black"},
-      }}
-      
-      noValidate
-      autoComplete="off"
-    >
-     
-    
-<div class="padding"></div>
-     <h3 class="colorHeader">
-    <PersonIcon ></PersonIcon >My Infromation
-    </h3>
-    
-      <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">First Name</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder='First Name'
-                        name='First Name'
-                        // className='form-control'
-                        value={ this.state.info.firstName }
-                        // onChange={event => { setFirstName(event.target.value) }}
-                    />
-                </div>
+        return (
 
-
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Last Name</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder='Last Name'
-                        name='Last Name'
-                        // className='form-control'
-                        value={this.state.info.lastName}
-                        // onChange={event => { setLastName(event.target.value) }}
-                    />
-                </div>
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Passport Number</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder='XXXXXXXX'
-                        name='Passport Number'
-                        // className='form-control'
-                        value={this.state.info.passportNumber}
-                        // onChange={event => { setPassportNumber(event.target.value) }}
-                    />
-                </div>
-
-
-
-
-
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Email</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder='example@example.com'
-                        name='Email'
-                        // className='form-control'
-                        value={this.state.info.email}
-                        // onChange={event => { setEmail(event.target.value) }}
-                    />
-                </div>       
-
+            <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
+                <Header />
+                <div style={{ marginBottom: "-40px" }}></div>
                 <div class="padding">
-                    </div>
+
+
+                    <div class="rectangle">
+                        <Box
+                            component="form"
+                            sx={{
+                                '& .MuiTextField-root': { m: 5, width: '25ch', color: "black" },
+                            }}
+
+                            noValidate
+                            autoComplete="off"
+                        >
+
+
+                            <div class="padding"></div>
+                            <h3 class="colorHeader">
+                                <PersonIcon ></PersonIcon >My Infromation
+                            </h3>
+
+                            <div class="col-md-6" className='form-group form-inline'>
+                                <label class="form-label">First Name</label>
+                                <input
+                                    type='text'
+                                    class="form-control flex-fill"
+                                    placeholder='First Name'
+                                    name='First Name'
+                                    // className='form-control'
+                                    value={this.state.info.firstName}
+                                // onChange={event => { setFirstName(event.target.value) }}
+                                />
+                            </div>
 
 
 
-                <Link to={  { pathname: `/UpdateUserInfoNew/${this.state.id}`} }>
-                                    {/* <IconButton  onClick={handleSubmit}>
+                            <div class="col-md-6" className='form-group form-inline'>
+                                <label class="form-label">Last Name</label>
+                                <input
+                                    type='text'
+                                    class="form-control flex-fill"
+                                    placeholder='Last Name'
+                                    name='Last Name'
+                                    // className='form-control'
+                                    value={this.state.info.lastName}
+                                // onChange={event => { setLastName(event.target.value) }}
+                                />
+                            </div>
+
+                            <div class="col-md-6" className='form-group form-inline'>
+                                <label class="form-label">Passport Number</label>
+                                <input
+                                    type='text'
+                                    class="form-control flex-fill"
+                                    placeholder='XXXXXXXX'
+                                    name='Passport Number'
+                                    // className='form-control'
+                                    value={this.state.info.passportNumber}
+                                // onChange={event => { setPassportNumber(event.target.value) }}
+                                />
+                            </div>
+
+
+
+
+
+
+                            <div class="col-md-6" className='form-group form-inline'>
+                                <label class="form-label">Email</label>
+                                <input
+                                    type='text'
+                                    class="form-control flex-fill"
+                                    placeholder='example@example.com'
+                                    name='Email'
+                                    // className='form-control'
+                                    value={this.state.info.email}
+                                // onChange={event => { setEmail(event.target.value) }}
+                                />
+                            </div>
+
+                            <div class="padding">
+                            </div>
+
+
+
+                            <Link to={{ pathname: `/UpdateUserInfoNew/${this.state.id}` }}>
+                                {/* <IconButton  onClick={handleSubmit}>
                                         <EditIcon />
                                     </IconButton> */}
 
-                    <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="Edit"
+                                <input
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    value="Edit"
 
-                // className="btn btn-outline-warning btn-block mt-4"
-                />
+                                // className="btn btn-outline-warning btn-block mt-4"
+                                />
 
-                                </Link>
+                            </Link>
 
 
 
-                
 
-    </Box>
-    </div>
-        </div>
-        </div>
 
-    );
-}
+                        </Box>
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
 }
 // export default viewUserInfo;
 

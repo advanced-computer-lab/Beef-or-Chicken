@@ -4,10 +4,16 @@ const reservationModel = require("../Models/Reservation");
 const app = express();
 var cors = require('cors')
 var nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+require("dotenv").config();
+const uuid = require('uuidv4')
 app.use(cors())
 const userModel = require("../Models/User");
 
-app.get("/allflights", async (request, response) => {
+
+
+app.get("/allflights", verifyJWTAdmin ,async (request, response) => {
   const flights = await flightModel.find({});
 
   try {
@@ -16,8 +22,6 @@ app.get("/allflights", async (request, response) => {
     response.status(500).send(error);
   }
 });
-
-
 
 
 app.post("/searchUser", async (request, response) => {  //search with Criteria
@@ -57,14 +61,12 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
 
 
 
-app.get("/searchUserByID/:id", async (request, response) => {  //search with Criteria
-
-  console.log("ana el request:------- ")
-
+app.get("/searchUserByID/:id",verifyJWT, async (request, response) => {  //search with Criteria
   // var q = JSON.stringify(request.body.id)
   // const user = await userModel.findById(q);
-
   const user = await userModel.findById(request.params.id);
+  console.log("hennnnnnnnnnnnnnnnnnnnnnnnnnnna")
+  console.log(user);
   try {
     response.send(user);
   } catch (error) {
@@ -73,9 +75,19 @@ app.get("/searchUserByID/:id", async (request, response) => {  //search with Cri
 });
 
 
+app.get("/flightByIdUser/:id",verifyJWT ,async (request, response) => {
+  const flight = await flightModel.findById(request.params.id);
+
+  try {
+    response.send(flight);
+  }
+  catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 
-app.get("/flightById/:id", async (request, response) => {
+app.get("/flightById/:id",verifyJWTAdmin ,async (request, response) => {
   const flight = await flightModel.findById(request.params.id);
 
   try {
@@ -157,7 +169,6 @@ app.post("/searchFlights", async (request, response) => {  //search with Criteri
     response.status(500).send(error);
   }
 });
-
 
 
 app.post("/searchAvailableFlights", async (request, response) => {  //search with Criteria
@@ -249,8 +260,10 @@ app.post("/searchAvailableFlights", async (request, response) => {  //search wit
   }
 });
 
-app.post("/createFlight", async (request, response) => {
-  console.log((request.body.DepartureTime) + "")  //createFlights -> currently with Json and postman
+app.post("/createFlight", verifyJWTAdmin ,async (request, response) => {
+  console.log((request.body.EconomySeats) + "ECOSEATS")  //createFlights -> currently with Json and postman
+  console.log((request.body.BusinessSeats) + " busi SEATS")  //createFlights -> currently with Json and postman
+  console.log((request.body.FirstSeats) + " first SEATS")  //createFlights -> currently with Json and postman
 
   var EconomySeats = request.body.EconomySeats;
   var BusinessSeats = request.body.BusinessSeats;
@@ -261,7 +274,7 @@ app.post("/createFlight", async (request, response) => {
   try {
 
   if (EconomySeats> 54 || BusinessSeats > 36 || FirstSeats > 12)
-  throw new UserException('InvalidMonthNo');
+  throw new UserException('Invalid Seats Number');
 
 
   for (let i = 0; i < EconomySeats; i++) {
@@ -365,7 +378,7 @@ app.patch("/flightSeats/:id", async (request, response) => {  //update
   }
 });
 
-app.patch("/flight/:id", async (request, response) => {  //update
+app.patch("/flight/:id", verifyJWTAdmin , async (request, response) => {  //update
   try {
 
     var q = {}
@@ -491,6 +504,60 @@ app.delete("/flight/:id", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+function verifyJWTAdmin(req , res , next) {
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+  
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err ,decoded) => {
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed To Authenticate"
+      })
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      req.user.type = decoded.type
+      if(req.user.type !== 0){
+        return res.json({
+          isLoggedIn: false,
+          message: "Access Restricted To Admin Only"
+        })
+      }
+      next()
+    })
+  }else{
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
+
+function verifyJWT(req , res , next) {
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+  
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err ,decoded) => {
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed To Authenticate"
+      })
+      req.user = {};
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      req.user.type = decoded.type
+      if(req.user.type !== 1){
+        return res.json({
+          isLoggedIn: false,
+          message: "Access Restricted To Users Only"
+        })
+      }
+      next()
+    })
+  }else{
+    res.json({message : "Incorrect Token Given" , isLoggedIn:false})
+  }
+}
+
+
 
 
 

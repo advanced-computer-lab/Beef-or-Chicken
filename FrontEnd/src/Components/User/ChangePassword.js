@@ -12,7 +12,8 @@ import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useHistory } from "react-router-dom";
-
+import Header from "./Header";
+import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
@@ -22,6 +23,16 @@ const mapStateToProps = (state) => {
     };
 };
 
+const mapDispatchToState = (dispatch) => {
+    return {
+        setUserID: (UserID) => {
+            dispatch({ type: 'setUserID', payload: UserID });
+        },
+        setToken: (token) => {
+            dispatch({ type: 'setToken', payload: token });
+        },  
+    };
+};
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -61,48 +72,34 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+export default connect(mapStateToProps, mapDispatchToState)(UpdateUserInfo);
 function UpdateUserInfo(prop) {
 
     const user = prop.match.params
 
+    let history = useHistory();
 
     
-    let history = useHistory();
     const [password, setPassword] = useState("");
     const onSubmit = (event) => {
         event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-
-
-
-
+      
         let body = {
             'password': { password },
-
         }
 
-
-        console.log("body: ", body)
         let url = "http://localhost:8080/searchUser"
 
         axios
             .post(url, body)
             .then(res => {
-                console.log("respnose: ", res.data)
-
-                // setResult(res.data)
-                // window.scroll(0, 9950)
-                console.log("cond: ", res)
-                if (res.data[0].type == 1) {
+               if (res.data[0].type == 1) {
                     prop.UserID = res.data[0]._id
                     history.push('/Summary');
                 }
                 else {
                     console.log("not user")
                 }
-                console.log("gamed louji!")
             })
             .catch(error => {
                 console.log("idiot!");
@@ -186,8 +183,8 @@ function UpdateUserInfo(prop) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-                <SideBar />
+        <div style={{ backgroundImage: `url(${flightsback})`, height: "130vh", backgroundSize: "cover" }}>
+                <Header />
             <div className={classes.padding}>
            
 <div className={classes.rectangle}>
@@ -300,4 +297,3 @@ function UpdateUserInfo(prop) {
     );
 }
 
-export default UpdateUserInfo;
