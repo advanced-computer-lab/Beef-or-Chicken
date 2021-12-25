@@ -192,7 +192,7 @@ export class InfoForm extends Component {
 
                                 </GridContainer>
                                 <div style={{ marginLeft: "50%" }}>
-                                    <ScrollDown ></ScrollDown>
+                                    {/* <ScrollDown ></ScrollDown> */}
                                 </div>
 
                             </MuiThemeProvider>

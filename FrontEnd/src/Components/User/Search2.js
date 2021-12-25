@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Search from "./Searchbar2"
 import Where from "./Where2"
 //import { Button } from './Button';
-import DatePicker from './DatePicker.js'
+import DatePicker from './DatePicker2.js'
 //import BasicDateRangePicker from '../components/BasicDateRangePicker.js'
 // import AddBoxRoundedIcon from "@material-ui/icons/AddBoxRounded";
 // import IconButton from "@material-ui/core/IconButton";

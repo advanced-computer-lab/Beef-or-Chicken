@@ -21,6 +21,8 @@ import { connect } from 'react-redux';
 import moment, { duration } from 'moment'
 import { useHistory } from "react-router-dom";
 import { Select } from '@material-ui/core';
+import Checkbox from '@mui/material/Checkbox';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '65%',
@@ -151,6 +153,14 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "left",
 
     },
+    text5: {
+        marginLeft: "11%",
+        // marginTop: "-8%",
+        fontSize: theme.typography.pxToRem(14),
+        // color:'#70757A',
+        textAlign: "left",
+
+    },
     text4: {
         marginLeft: "20%",
         marginTop: "-8%",
@@ -219,6 +229,8 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
     console.log("OFFRAAATTTAAA: ", detail)
     const offer = detail.returningOffers
     const oldPrice = details.ReturnPrice
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
     //const departuretime = offer[0].DepartureTime
 
     console.log("RETURN: ", details.Adults)
@@ -273,11 +285,6 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
         setReturnPrice(ReturnPrice)
         // details.ReturnPrice = ReturnPrice
         console.log("selecteeeeeddddddd: ", details.ReturnPrice)
-
-
-
-        history.push("/Summary");
-
 
     };
     const duration = (DepartureTime, DepartureDate, ArrivalTime, ArrivalDate) => {
@@ -370,8 +377,9 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
 
                         </AccordionDetails>
                         <AccordionActions className={classes.action}>
+                            <Typography className={classes.text5}> Select Flight</Typography> <Checkbox  {...label} onChange={() => { handleSubmit(offers) }} />
 
-                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button>
+                            {/* <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button> */}
 
                         </AccordionActions>
                         <Divider />

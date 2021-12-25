@@ -207,7 +207,7 @@ function SimplePaper({ details, setInfantsIS }) {
         console.log("yallaaa ", details.infants_on_lap)
         console.log("yala ya koko mattanahsh")
         //  this.history.push("/");
-        window.location.assign("/payment");
+        window.location.assign("/payment/2");
         //this.props.history.push("/payment");
     };
     const passengers = (adults, children) => {

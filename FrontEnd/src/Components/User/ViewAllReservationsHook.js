@@ -23,6 +23,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ChangeDepartingFlight from './ChangeDepartingFlight';
+import ChangeRetFlight from './ChangeRetFlight'
 // import { Mailer } from 'nodemailer-react';
 // import nodemailer from "nodemailer";
 
@@ -554,22 +555,23 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
 
+                                                <Button
+                                                    style={{ background: "#10404c ", color: "wheat", }}
+                                                    variant="outlined" size="medium" margin={5}
 
+                                                    onClick={() => { handleEdit(2) }} >Edit Seats</Button>
+                                                <ChangeRetFlight></ChangeRetFlight>
 
-                                            <DeleteButton reservation={reservation._id} />
+                                                <Button sx={{ mt: 2 }}
+                                                    style={{ background: "#10404c ", color: "wheat", }}
+                                                    variant="outlined" size="medium"
 
-                                            <ChangeDepartingFlight></ChangeDepartingFlight>
+                                                    onClick={() => { handleMail() }} >Mail me my itinerary</Button>
+                                                <DeleteButton reservation={reservation._id} />
+                                            </div>
 
-
-                                            <Button
-                                                variant="outlined" size="medium" color="primary"
-
-                                                onClick={() => { handleEdit(2) }} >Edit Seats</Button>
-                                            <Button sx={{ mt: 2 }}
-                                                variant="outlined" size="medium" color="primary"
-
-                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
 
 
                                         </form>
@@ -728,19 +730,22 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                                 </div>
                                             </div>
 
+                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
 
-                                            <DeleteButton reservation={reservation._id} />
-                                            <Button
-                                                variant="outlined" size="medium" color="primary" margin={5}
+                                                <Button
+                                                    style={{ background: "#10404c ", color: "wheat", }}
+                                                    variant="outlined" size="medium" margin={5}
 
-                                                onClick={() => { handleEdit(1) }} >Edit Seats</Button>
-                                            <DeleteButton reservation={reservation._id} />
+                                                    onClick={() => { handleEdit(1) }} >Edit Seats</Button>
+                                                <ChangeDepartingFlight></ChangeDepartingFlight>
 
-                                            <Button sx={{ mt: 2 }}
-                                                variant="outlined" size="medium" color="primary"
+                                                <Button sx={{ mt: 2 }}
+                                                    style={{ background: "#10404c ", color: "wheat", }}
+                                                    variant="outlined" size="medium"
 
-                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
-
+                                                    onClick={() => { handleMail() }} >Mail me my itinerary</Button>
+                                                <DeleteButton reservation={reservation._id} />
+                                            </div>
                                             {/*  */}
                                         </form>
                                     </div>

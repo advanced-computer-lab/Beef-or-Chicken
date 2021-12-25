@@ -156,7 +156,7 @@ function IconLabelButtons({ details, Reservation, setReservation, setDepartingFl
 
 
 
-        history.push("/ChangeDepFlight")
+        history.push("/ChangeRetFlight")
 
         // console.log("props.reservation:" ,props.Reservation)
         // need to set flights too
