@@ -92,7 +92,7 @@ function ChangePassword(prop) {
             }
 
             console.log("body2 hennaaaaa",body2)
-            axios.get(url2,body2)
+            axios.post(url2,body2)
             .then(async (response) => {
                 console.log("foo2 el if b3d url2 ya rab")
                 console.log("7aga",response.message)

@@ -159,7 +159,7 @@ app.post('/login', (req, res) => {
 
 
 
-app.get('/passwordCheck', (req, res) => {
+app.post('/passwordCheck', (req, res) => {
   console.log("araf")
   const userLoggedIn = req.body
   console.log("araf2",userLoggedIn)
@@ -173,9 +173,12 @@ app.get('/passwordCheck', (req, res) => {
         })
       }
 
+      console.log("inpassword", userLoggedIn.password, "password from data base", dbUser.password)
+
       bcrypt.compare(userLoggedIn.password, dbUser.password)
         .then(isCorrect => {
           console.log("abl el if iscorrect")
+          console.log(isCorrect)
           if (isCorrect) {
             //const payload = {//change password here
               // id: dbUser._id,
