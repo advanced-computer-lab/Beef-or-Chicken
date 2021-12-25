@@ -3,7 +3,9 @@ import MenuList from "@material-ui/core/MenuList";
 import { makeStyles } from "@material-ui/core/styles";
 import { fabClasses } from '@mui/material';
 import { height } from '@mui/system';
-import SideBar from './SideBar'
+import IconButton from '@mui/material/IconButton';
+import SideBar from './SideBar';
+import LogoutButton from './LogoutButton';
 const useStyles = makeStyles((theme) => ({
     logo: {
         // display: 'flex',
@@ -55,6 +57,14 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         align: "left",
         marginTop: "25px"
+    },
+    
+    profile2: {
+        width: "50px",
+        height: "80px",
+        position: "absolute",
+        top: "35px",
+        right: "93px",
     }
 }));
 const Header = () => {
@@ -67,11 +77,8 @@ const Header = () => {
             <nav className={classes.nav}>
                 <img src={logo} alt="logohear" className={classes.logo} />
 
-
-                <div className="username">
-                    {/* <img src={avatar} alt="logohear" className="avatar" /> */}
-                    {/* <h1>User name</h1> */}
-                    {/* <img src={dropdown} alt="" className="dropdownicon"/> */}
+                <div className={classes.profile2}>
+                        <LogoutButton  />                        
                 </div>
             </nav>
         </div>

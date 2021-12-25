@@ -21,9 +21,21 @@ import StepLabel from '@mui/material/StepLabel';
 import * as airports from "airportsjs";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import CloseButton from 'react-bootstrap/CloseButton'
+import CancelCreateFlight from "./CancelForm";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+    console.log(state.DetailsReducer.details)
+    return {
+        details: state.DetailsReducer.details,
 
 
-import CloseIcon from '@mui/icons-material/Close';
+    };
+};
+
+
+
 
 // number of Economy seats, number of Business class seats,
 class CreateFlight extends Component {
@@ -31,10 +43,10 @@ class CreateFlight extends Component {
     // let current = new Date();
     // let date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
-    constructor() {
+    constructor(props) {
         var today = new Date(),
             date = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2)
-        super();
+        super(props);
         this.state = {
             From: '',
             To: '',
@@ -58,16 +70,54 @@ class CreateFlight extends Component {
             open: false,
             fail: false,
             step: 0,
-            filteredData :[],
-            wordEntered :'',
-            filteredData2 :[],
-            wordEntered2 :'',
+            filteredData: [],
+            wordEntered: '',
+            filteredData2: [],
+            wordEntered2: '',
             // flag : false,
 
         };
+        console.log(this.props.details.UserID);
 
     }
     steps = ['', ''];
+
+
+
+
+    componentDidMount() {
+        if (this.props.details.UserID != "" && this.props.details.UserID != null) {
+            let url =
+                axios
+                    .get('http://localhost:8080/CheckAdmin',
+                        {
+                            headers: {
+                                "x-access-token": this.props.details.token
+                            }
+                        })
+                    .then(res => {
+                        const result = res.data;
+                        if (result.isLoggedIn !== false) {
+                        }
+                        else {
+                            alert("You need to login as an admin to get access!!")
+                            this.props.history.push("/Userlogin2");
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Error');
+                    })
+        }
+        else {
+            alert("You need to login as an admin to get access!!")
+            this.props.history.push("/Userlogin2");
+        }
+    };
+
+
+
+
+
 
     handleFilter = (event) => {
         const searchWord = event.target.value;
@@ -114,12 +164,56 @@ class CreateFlight extends Component {
     };
 
     onChange2 = e => {
-        if (e.target.value < 0) {
-            this.setState({ [e.target.name]: '0' })
-
+        if (e.target.name === "EconomySeats") {
+            if (e.target.value > 54) {
+                this.setState({ [e.target.name]: '54' })
+            }
+            else {
+                if (e.target.value < 0) {
+                    this.setState({ [e.target.name]: '0' })
+                }
+                else {
+                    this.setState({ [e.target.name]: e.target.value })
+                }
+            }
         }
         else {
-            this.setState({ [e.target.name]: e.target.value })
+            if (e.target.name === "BusinessSeats") {
+                if (e.target.value > 36) {
+                    this.setState({ [e.target.name]: '36' })
+                }
+                else {
+                    if (e.target.value < 0) {
+                        this.setState({ [e.target.name]: '0' })
+                    }
+                    else {
+                        this.setState({ [e.target.name]: e.target.value })
+                    }
+                }
+            }
+            else {
+                if (e.target.name === "FirstSeats") {
+                    if (e.target.value > 12) {
+                        this.setState({ [e.target.name]: '12' })
+                    }
+                    else {
+                        if (e.target.value < 0) {
+                            this.setState({ [e.target.name]: '0' })
+                        }
+                        else {
+                            this.setState({ [e.target.name]: e.target.value })
+                        }
+                    }
+                }
+                else {
+                    if (e.target.value < 0) {
+                        this.setState({ [e.target.name]: '0' })
+                    }
+                    else {
+                        this.setState({ [e.target.name]: e.target.value })
+                    }
+                }
+            }
         }
     };
     onChange = e => {
@@ -151,10 +245,10 @@ class CreateFlight extends Component {
             step: 0,
             open: true,
             fail: false,
-            filteredData :[],
-            wordEntered :'',
-            filteredData2 :[],
-            wordEntered2 :'',
+            filteredData: [],
+            wordEntered: '',
+            filteredData2: [],
+            wordEntered2: '',
         })
 
 
@@ -185,52 +279,60 @@ class CreateFlight extends Component {
 
         };
         let url = "http://localhost:8080/createFlight"
+        if (this.props.details.UserID != "" && this.props.details.UserID != null) {
+            axios
+                .post(url, data,
+                    {
+                        headers: {
+                            "x-access-token": this.props.details.token
+                        }
+                    })
+                .then(res => {
+                    const result = res.data;
+                    if (result.isLoggedIn !== false) {
+                        this.setState({
+                            From: '',
+                            To: '',
+                            DepartureDate: '',
+                            ArrivalDate: '',
+                            EconomySeats: '',
+                            BusinessSeats: '',
+                            FirstSeats: '',
+                            DepartureTime: '',
+                            ArrivalTime: '',
+                            FlightNumber: '',
+                            EconomyPrice: '',
+                            BusinessPrice: '',
+                            FirstPrice: '',
+                            EconomyBags: '',
+                            BusinessBags: '',
+                            FirstBags: '',
+                            step: 2,
+                            open: false,
+                            fail: false,
+                            filteredData: [],
+                            wordEntered: '',
+                            filteredData2: [],
+                            wordEntered2: '',
+                        },
+                            console.log(res))
+                    } else {
+                        alert("You need to login as an admin to get access!!")
+                        this.props.history.push("/Userlogin2");
+                    }
+                })
 
-        axios
-            .post(url, data)
-            .then(res => {
-                this.setState({
-                    From: '',
-                    To: '',
-                    DepartureDate: '',
-                    ArrivalDate: '',
-                    EconomySeats: '',
-                    BusinessSeats: '',
-                    FirstSeats: '',
-                    DepartureTime: '',
-                    ArrivalTime: '',
-                    FlightNumber: '',
-                    EconomyPrice: '',
-                    BusinessPrice: '',
-                    FirstPrice: '',
-                    EconomyBags: '',
-                    BusinessBags: '',
-                    FirstBags: '',
-                    step: 2,
-                    open: false,
-                    fail: false,
-                    filteredData :[],
-                    wordEntered :'',
-                    filteredData2 :[],
-                    wordEntered2 :'',
-                },
-                    console.log(res))
+                //this.props.history.push('/');
 
-                //
-
-                //alert.show('Flight Added!')
-            })
-
-            //this.props.history.push('/');
-
-            .catch(error => {
-                this.setState({ fail: true })
-                console.log(error.message);
-            })
-
+                .catch(error => {
+                    this.setState({ fail: true })
+                    console.log(error.message);
+                })
+        } else {
+            alert("You need to login as an admin to get access!!")
+            this.props.history.push("/Userlogin2");
+        }
     };
-
-    //handleClose = () => {this.setState({ open: false })}
 
 
     render() {
@@ -251,7 +353,7 @@ class CreateFlight extends Component {
                             <Alert severity="error"
                                 sx={{ mb: 2 }}
                             >
-                                Please Enter All Details Correctly!
+                                Please Enter All Details Correctly & Use a Unique Flight Number!
                             </Alert>
                         </Collapse>
 
@@ -259,7 +361,17 @@ class CreateFlight extends Component {
 
 
                     <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit} >
-                        <h3>Add Flight <FlightTakeoffIcon /></h3>
+                        {this.state.step < 2 ? (
+                            <div>
+                                <CancelCreateFlight />
+                                <h3>Add Flight <FlightTakeoffIcon /></h3>
+                            </div>
+
+                        ) : (
+                            <h3>Add Flight <FlightTakeoffIcon /></h3>
+                        )
+                        }
+
                         <Stepper activeStep={this.state.step}>
                             {this.steps.map((label, index) => {
                                 const stepProps = {};
@@ -273,7 +385,7 @@ class CreateFlight extends Component {
                         </Stepper>
                         {this.state.step === 2 ?
                             (
-                                 <div>
+                                <div>
                                     <React.Fragment>
 
                                         <h4 sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}>
@@ -336,20 +448,21 @@ class CreateFlight extends Component {
                                                                 startAdornment: <InputAdornment position="start"></InputAdornment>,
                                                             }} />
                                                         {this.state.filteredData.length !== 0 && (
-                                                            <div style = {{ position: "absolute",
-                                                                            left: "0px",
-                                                                            top: "58px",
-                                                                            zIndex: "1",
-                                                                            backgroundColor:"#FFFFFF",
-                                                                            border: "0.8px groove #F0F0F0",
-                                                                            paddingTop : "15px"
-                                                                        }}
+                                                            <div style={{
+                                                                position: "absolute",
+                                                                left: "0px",
+                                                                top: "58px",
+                                                                zIndex: "1",
+                                                                backgroundColor: "#FFFFFF",
+                                                                border: "0.8px groove #F0F0F0",
+                                                                paddingTop: "15px"
+                                                            }}
                                                             >
                                                                 {this.state.filteredData.slice(0, 15).map((value, key) => {
-                                                                    return (<a onClick={(e) => this.clicked(value, e)} target="_blank" 
-                                                                                onMouseOver={(e) =>e.target.style.background = "#F0F0F0"}
-                                                                                onMouseOut= {(e) =>e.target.style.background = "#FFFFFF"}
-                                                                            >
+                                                                    return (<a onClick={(e) => this.clicked(value, e)} target="_blank"
+                                                                        onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
+                                                                        onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
+                                                                    >
                                                                         <p>{value.name} </p>
                                                                     </a>
                                                                     );
@@ -441,7 +554,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.ArrivalDate}
                                                             onChange={this.onChange}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                             </div>
@@ -457,7 +570,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.DepartureTime}
                                                             onChange={this.onChange}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
 
@@ -473,7 +586,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.ArrivalTime}
                                                             onChange={this.onChange}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                             </div>
@@ -486,14 +599,14 @@ class CreateFlight extends Component {
                                                     this.state.To === "" ||
                                                     this.state.ArrivalTime === "" ||
                                                     this.state.DepartureTime === ""}
-                                                    onClick={this.nextStep}
-                                                    style={{ marginLeft: "82.5%", marginBottom: "15px" }}
-                                                    >
+                                                onClick={this.nextStep}
+                                                style={{ marginLeft: "82.5%", marginBottom: "15px" }}
+                                            >
                                                 Continue
                                             </Button>
                                         </div>
 
-:
+                                        :
                                         <div>
 
                                             <h6>Economy Class</h6>
@@ -508,7 +621,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.EconomySeats}
                                                             onChange={this.onChange2}
-                                                            />                        </FloatingLabel>
+                                                        />                        </FloatingLabel>
 
                                                 </div>
                                                 <div className="col-md-4 mb-4">
@@ -522,7 +635,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.EconomyPrice}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
 
                                                 </div>
@@ -558,7 +671,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.BusinessSeats}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                                 <div className="col-md-4 mb-4">
@@ -571,7 +684,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.BusinessPrice}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                                 <div className="col-md-4 mb-4">
@@ -584,7 +697,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.BusinessBags}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                             </div>
@@ -614,7 +727,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.FirstPrice}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                                 <div className="col-md-4 mb-4">
@@ -628,7 +741,7 @@ class CreateFlight extends Component {
                                                             //  className='form-control'
                                                             value={this.state.FirstBags}
                                                             onChange={this.onChange2}
-                                                            />
+                                                        />
                                                     </FloatingLabel>
                                                 </div>
                                             </div>
@@ -656,7 +769,7 @@ class CreateFlight extends Component {
                                                     this.state.FirstPrice === "" ||
                                                     this.state.FirstSeats === ""
                                                 }
-                                                >
+                                            >
                                                 Submit
                                             </Button>
 
@@ -667,7 +780,7 @@ class CreateFlight extends Component {
 
                                         </div>
 
-}
+                                    }
                                 </div>
                             )}
 
@@ -680,7 +793,7 @@ class CreateFlight extends Component {
     }
 }
 
-export default CreateFlight;
+export default connect(mapStateToProps)(CreateFlight);
 
 
 

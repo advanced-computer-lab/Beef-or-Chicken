@@ -14,7 +14,6 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { createBrowserHistory } from "history";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -23,22 +22,7 @@ const useStyles = makeStyles((theme) => ({
         //alignSelf: "center",
         bottom: 8,
     },
-    button2: {
-        //margin: theme.spacing(1),
-        // alignItems: "center",
-        //alignSelf: "center",
-        backgroundColor: '#10404C',
-        borderColor: '#10404C',
-    },
-
-    buttonDiv: {
-
-        flex: 1,
-        display: "flex",
-        /* align-items: center; */
-        //marginTop: "-10px",
-        justifyContent: "center",
-    },
+   
 }));
 
 
@@ -79,34 +63,20 @@ function IconLabelButtons({ details, setReservationID, ReservationID,UserID, set
 
     let history = useHistory();
     const classes = useStyles();
-    const history2 = createBrowserHistory()
 
     const func = async (e) => {
         e.preventDefault();
         setUserID("");
-        console.log(history2.location.pathname)
-        if( history2.location.pathname === "/"){
-            window.location.reload(true);
-            }
         history.push("/");
     }
 
-    //resluts.slices.semg.length
-
-    // let response = await axios.post("http://app.stamped.travel:8080/offers/pagination", reqBody)
-    // console.log("lllllllll", response)
-    // console.log("lllllllll", response.data.cheapestFlights[0][0].owner.name)
-    // console.log("origin:", details.origin)
-    // console.log("length:", response.data.cheapestFlights[0].length)
-
-    return (
+   return (
         <div >
             <MenuItem 
-                            style={{ background: "#c70808 ", color: "#FFFFFF", marginTop: "10%" , marginBottom:"-7px"}}
+                            style={{ color: "#FFFFFF", marginTop: "10%" , marginBottom:"-7px"}}
                             variant="contained"
                             size="medium"
                             className={classes.button}
-                            // startIcon={<SearchIcon />}
                             onClick={(e) => { func(e) }}
                         ><LogoutIcon/>&nbsp;
                             Logout

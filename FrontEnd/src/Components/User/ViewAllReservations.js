@@ -50,9 +50,9 @@ class ViewAllReservations extends Component {
         }
         this.state = {
             reservations: [],
-            //userId : "61a518d86046ece4ba9ff27c"
             userId : props.details.UserID,
             userName : "",
+            token : props.details.token,
         };
     }
     
@@ -65,32 +65,44 @@ class ViewAllReservations extends Component {
     */
    
    async componentDidMount() {
-       const response = await axios.get('http://localhost:8080/usersflight/' + this.state.userId);
+       const response = await axios.get
+                    ('http://localhost:8080/usersflight/' + this.state.userId ,
+                    {
+                        headers: {
+                          "x-access-token" : this.state.token
+                        }
+                    }
+                    );
+
+
+
        const result = await response.data;
-       this.setState({ reservations: result });
-
-       const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId);
-       const resultUser = await responseUser.data;
-       const name = resultUser.firstName + " " + resultUser.lastName ; 
-       this.setState({ userName: name});
-
+    
+       if(result.isLoggedIn !== false){
+           console.log(result);
+            this.setState({ reservations: result });
+            const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId ,
+             {
+                headers: {
+                  "x-access-token" : this.state.token
+                }
+            }
+            );
+            const resultUser = await responseUser.data;
+            const name = resultUser.firstName + " " + resultUser.lastName ; 
+            this.setState({ userName: name});
+       }
+        else{
+            console.log("OH NO OH NO OH NO NO NO NO NO");
+            alert("You need to login to view your reservations!")
+            this.props.history.push("/userlogin2");
+        }
     }
     
     makeReservation = () =>{
         this.props.history.push("/");
     }
     
-    /*  
-    componentDidMount() {
-        let url =
-        axios.get('http://localhost:8080/allReservations')
-        .then(res => {
-            this.setState({reservations: res.data})})
-            .catch(err => { console.log('Backend Error Occured When Getting All Reservations');
-        })
-    };
-    src="https://s.marketwatch.com/public/resources/images/MW-HE536_airpla_ZDR_20190225131547.jpg" 
-    */
    render() {
        const reservations = this.state.reservations;
        const userName= this.state.userName;

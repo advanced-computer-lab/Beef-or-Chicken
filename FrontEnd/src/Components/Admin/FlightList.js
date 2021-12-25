@@ -20,10 +20,16 @@ import DeleteButton from './DeleteButton'
 import UpdateFlight from './UpdateFlight'
 import { render } from 'react-dom';
 import { Link } from 'react-router-dom';
+import Collapse from '@mui/material/Collapse';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "#0C2647",
+        backgroundColor: "#226AC7",
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -57,10 +63,9 @@ export default function CustomizedTables(props) {
     const flight = props.flight
     console.log("hello", flight)
     const Adate = flight.ArrivalDate
-    //let formatted_date = new Date(date.toDateString());
     console.log("hiiii", Adate)
     const [open, setOpen] = React.useState(false);
-
+    const [openRow, setOpenRow] = React.useState(false);
     const handleSubmit = () => {
 
         <UpdateFlight flight={flight._id} />
@@ -70,38 +75,137 @@ export default function CustomizedTables(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    // let newDate = Adate
-    // newDate = newDate.substring(0, 10)
-    // console.log("ana hena: ", newDate)
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableContainer component={Paper} >
+            <Table sx={{ minWidth: 700 }} aria-label="collapsible table customized">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell align="center">Flight Number</StyledTableCell>
-                        <StyledTableCell align="center">From</StyledTableCell>
-                        <StyledTableCell align="center">To</StyledTableCell>
-                        <StyledTableCell align="center">Departure Date</StyledTableCell>
-                        <StyledTableCell align="center">Arrival Date</StyledTableCell>
-                        <StyledTableCell align="center">Departure Time</StyledTableCell>
-                        <StyledTableCell align="center">Arrival Time</StyledTableCell>
-                        <StyledTableCell align="center">First Seats</StyledTableCell>
-                        <StyledTableCell align="center">First Price</StyledTableCell>
-                        <StyledTableCell align="center">Bags</StyledTableCell>
-                        <StyledTableCell align="center">Business Seats</StyledTableCell>
-                        <StyledTableCell align="center">Business Price</StyledTableCell>
-                        <StyledTableCell align="center">Bags</StyledTableCell>
-                        <StyledTableCell align="center">Economy Seats</StyledTableCell>
-                        <StyledTableCell align="center">Economy Price</StyledTableCell>
-                        <StyledTableCell align="center">Bags</StyledTableCell>
-                        <StyledTableCell align="center">       </StyledTableCell>
+                        <StyledTableCell>       </StyledTableCell>
+                        <StyledTableCell>Flight Number</StyledTableCell>
+                        <StyledTableCell align="right">From</StyledTableCell>
+                        <StyledTableCell align="right">To</StyledTableCell>
+                        <StyledTableCell align="right">Departure Date</StyledTableCell>
+                        <StyledTableCell align="right">Arrival Date</StyledTableCell>
+                        <StyledTableCell align="right">Departure Time</StyledTableCell>
+                        <StyledTableCell align="right">Arrival Time</StyledTableCell>
+                        <StyledTableCell align="right">       </StyledTableCell>
 
 
                     </TableRow>
                 </TableHead>
+
+
+
+
                 <TableBody>
                     {flight.map((flight) => (
+                        <React.Fragment>
+                                <br/>
+                            <StyledTableRow  sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                <TableCell>
+                                    <IconButton aria-label="expand row" size="small" onClick={() => setOpenRow(!openRow)}>
+                                        {openRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                    </IconButton>
+                                </TableCell>
 
+                                <TableCell >{flight.FlightNumber}</TableCell>
+                                <TableCell align="right">{flight.From}</TableCell>
+                                <TableCell align="right">{flight.To}</TableCell>
+                                <TableCell align="right">{flight.DepartureDate.substring(0, 10)}</TableCell>
+                                <TableCell align="right">{flight.ArrivalDate.substring(0, 10)}</TableCell>
+                                <TableCell align="right">{flight.DepartureTime}</TableCell>
+                                <TableCell align="right">{flight.ArrivalTime}</TableCell>
+                                <TableCell align="right" style={{ display: "flex" }}>
+                                    <DeleteButton flight={flight._id} />
+                                    <Link to={{ pathname: `/Update/${flight._id}`, state: { flight: { flight } } }}>
+                                        <IconButton onClick={handleSubmit}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Link>
+                                </TableCell>
+                            </StyledTableRow >
+                            <TableRow>
+                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                                    <Collapse in={openRow} timeout="auto" unmountOnExit>
+                                        <Box sx={{ margin: 1 }}>
+                                            <Typography variant="h6" gutterBottom component="div">
+                                                Boarding Classes
+                                            </Typography>
+                                            <Table size="small" aria-label="">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <StyledTableCell align="right">First Seats</StyledTableCell>
+                                                        <StyledTableCell align="right">First Bags</StyledTableCell>
+                                                        <StyledTableCell align="right">First Price</StyledTableCell>
+                                                        <StyledTableCell align="right">Business Seats</StyledTableCell>
+                                                        <StyledTableCell align="right">Business Bags</StyledTableCell>
+                                                        <StyledTableCell align="right">Business Price</StyledTableCell>
+                                                        <StyledTableCell align="right">Economy Seats</StyledTableCell>
+                                                        <StyledTableCell align="right">Economy Price</StyledTableCell>
+                                                        <StyledTableCell align="right">Economy Bags</StyledTableCell>
+
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    <TableRow key={flight.FlightNumber}>
+                                                        <TableCell align="center">{flight.FirstSeats}</TableCell>
+                                                        <TableCell align="center">{flight.PriceFirst.$numberDecimal}</TableCell>
+                                                        <TableCell align="center">{flight.FirstBags}</TableCell>
+                                                        <TableCell align="center">{flight.BusinessSeats}</TableCell>
+                                                        <TableCell align="center">{flight.PriceBusiness.$numberDecimal}</TableCell>
+                                                        <TableCell align="center">{flight.BusinessBags}</TableCell>
+                                                        <TableCell align="center">{flight.EconomySeats}</TableCell>
+                                                        <TableCell align="center">{flight.PriceEconomy.$numberDecimal}</TableCell>
+                                                        <TableCell align="center">{flight.EconomyBags}</TableCell>
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
+                                            <br/>
+                                        </Box>
+                                    </Collapse>
+                                </TableCell>
+
+                            </TableRow>
+
+
+                        </React.Fragment>
+                    ))}
+                </TableBody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {/**
+                 
+                <TableBody>
+                    {flight.map((flight) => (
+                        
                         <StyledTableRow key={flight._id}>
                             <StyledTableCell align="center">
                                 {flight.FlightNumber}
@@ -124,9 +228,7 @@ export default function CustomizedTables(props) {
                             
                             <StyledTableCell align="right" style={{ display: "flex" }}>
 
-                                {/* <IconButton aria-label="delete" onClick={handleClickOpen}>
-                                    <DeleteIcon />
-                                </IconButton> */}
+                              
                                 <DeleteButton flight={flight._id} />
 
                                 <Link to={  { pathname: `/Update/${flight._id}`,state: { flight: {flight} } } }>
@@ -138,6 +240,7 @@ export default function CustomizedTables(props) {
                         </StyledTableRow>
                     ))}
                 </TableBody>
+            */}
             </Table>
         </TableContainer >
     );

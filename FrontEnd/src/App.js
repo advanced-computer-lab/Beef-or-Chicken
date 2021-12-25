@@ -5,7 +5,6 @@ import CreateFlight from './Components/Admin/CreateFlight'
 import AllFlights from './Components/Admin/AllFlights'
 import UpdateFlight from './Components/Admin/UpdateFlight'
 import Home from './Components/User/HomePage'
-import Admin from './Components/Admin/Homepage'
 import DepartingResults from './Components/User/DepartingResults'
 import SeatPicker from './Components/User/SeatPicker'
 import SeatEditor from './Components/User/SeatEditor'
@@ -27,7 +26,6 @@ import UpdateUserInfoNew from './Components/User/UpdateUserInfoNew'
 import ChangePassword from './Components/User/ChangePassword'
 import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
-import UserLoginRes from "./Components/User/loginReservations"
 import UserRegistration from './Components/User/Registration'
 import ChangePage from './Components/User/ChangePage'
 import Payment from "./Components/User/PaymentPage"
@@ -46,7 +44,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/DepartingFlights" component={DepartingResults} />
         <Route exact path="/ReturningingFlights" component={ReturningResults} />
-        <Route exact path="/Admin" component={Admin} />
+        <Route exact path="/Admin" component={AllFlights} />
         <Route exact path="/AllFlights" component={AllFlights} />
         <Route exact path="/Search" component={SearchPage} />
         <Route exact path="/Create" component={CreateFlight} />
@@ -58,17 +56,16 @@ function App() {
         <Route exact path="/ChangeFlight" component={ChangePage} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
-        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
-        <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} />
-        <Route exact path="/ChangePassword/:id" component={ChangePassword} />
-        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfo} />
-        <Route exact path="/login" component={UserLogin} />
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} /> 
+        <Route exact path="/UpdateUserInfoNew/:id" component={UpdateUserInfoNew} /> 
+        <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
+        <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} />
+        <Route exact path="/login" component={UserLogin2} />
         <Route exact path="/Payment" component={Payment} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
-        <Route exact path="/Userlogin" component={UserLogin} />
+        <Route exact path="/Userlogin" component={UserLogin2} />
         <Route exact path="/Userlogin2" component={UserLogin2} />
-        <Route exact path="/UserLoginRes" component={UserLoginRes} />
         <Route exact path="/FullSummaryPage" component={FullSummaryPage} />
         <Route exact path="/register" component={UserRegistration} />
 

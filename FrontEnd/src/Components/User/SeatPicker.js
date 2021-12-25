@@ -332,15 +332,9 @@ class SeatPicker extends Component {
             axios
                 .patch(url2, body1)
                 .then(res => {
-                    console.log("respnose: ", res)
-                    console.log("gamed louji!")
                     this.props.setTakenSeatsReturn(this.state.returnSeats)
-                    console.log("details return---->", this.props.details)
-                    console.log(this.props.TakenSeatsReturn)
                     this.props.history.push('/FullSummaryPage');
                     alert("Trip Reserved Successfully!")
-
-
 
                     // this.props.history.push(`/Seats/1`);
                 })

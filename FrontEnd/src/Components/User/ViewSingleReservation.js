@@ -8,8 +8,13 @@ import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
 import ViewAllReservationsHook from './ViewAllReservationsHook';
 import ViewAllReservations from './ViewAllReservations';
+import { connect } from "react-redux";
 
-
+const mapStateToProps = (state) => {
+    return {
+        details: state.DetailsReducer.details,
+    };
+};
 
 //BACKEND DEPENDENT COMMENTED => BACKEND
 
@@ -25,25 +30,59 @@ class ViewSingleReservation extends Component {
             returnFlight: [],
             flightType: 0,
         };
-
+console.log(props.details.token);
+console.log(props.details.UserID);
 
     }
 
     componentDidMount() {
+        if (this.props.details.UserID === "") {
+            alert("You need to login to view your reservations!")
+            this.props.history.push("/Userlogin2");
+        }
+        else {
+            axios.get('http://localhost:8080/flightByIdUser/' + this.props.reservation.DepartureFlightID ,
+            {
+                headers: {
+                  "x-access-token" : this.props.details.token
+                }
+            }).then(
+                Result => {
+                    console.log(Result)
+                    const res =  Result.data;
+                    if (res.isLoggedIn !== false) {
+                        this.setState({ departureFlight: [...this.state.departureFlight, Result.data] })
+                    } else {
+                        alert("You need to login to view your reservations!")
+                        this.props.history.push("/Userlogin2");
+                    }
+                }
+            ).catch(err => { console.log(err) })
+        }
 
-        axios.get('http://localhost:8080/flightById/' + this.props.reservation.DepartureFlightID).then(
-            Result => {
-                this.setState({ departureFlight: [...this.state.departureFlight, Result.data] })
+        if (this.props.details.UserID === "") {
+            alert("You need to login to view your reservations!")
+            this.props.history.push("/Userlogin2");
+        }
+        else {
+            axios.get('http://localhost:8080/flightByIdUser/' + this.props.reservation.ReturnFlightID ,
+            {
+                headers: {
+                  "x-access-token" : this.props.details.token
+                }
+            }).then(
+                Result => {
+                    const res =  Result.data;
+                    if(res.isLoggedIn !== false){
+
+                    this.setState({ returnFlight: [...this.state.returnFlight, Result.data] })
+                }else{
+                    alert("You need to login as an admin to get access!!")
+                    this.props.history.push("/Userlogin2");
+                }
             }
-        ).catch(err => { console.log(err) })
-
-
-        axios.get('http://localhost:8080/flightById/' + this.props.reservation.ReturnFlightID).then(
-            Result => {
-                this.setState({ returnFlight: [...this.state.returnFlight, Result.data] })
-            }
-        ).catch(err => { console.log(err) })
-
+            ).catch(err => { console.log(err) })
+        }
     };
 
 
@@ -71,7 +110,7 @@ class ViewSingleReservation extends Component {
         );
     }
 }
-export default ViewSingleReservation;
+export default connect(mapStateToProps)(ViewSingleReservation);
 
 
 

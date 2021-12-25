@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
         Reservation: state.DetailsReducer.details.Reservation,
         DepartingFlight: state.DetailsReducer.details.DepartingFlight,
         ReturnFlight: state.DetailsReducer.details.ReturnFlight,
+        details: state.DetailsReducer.details,
     };
 };
 const mapDispatchToState = (dispatch) => {
@@ -67,11 +68,9 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     const handleToggle = () => {
         //   setOpen(!open);
     };
-    console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-    console.log("reservation from details: ", Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;
@@ -80,6 +79,11 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     const baggageDeparture = { baggage: 0 };
     const cabin = reservation.CabinType;
     const passengers = reservation.Adults + reservation.Children;
+
+    console.log("HOOKS");
+    console.log(props.details.token);
+
+
     if (reservation.TakenSeatsDeparting.length === 0) {
         Object.assign(reservation, { TakenSeatsDeparting: ["None"] })
     }
@@ -98,32 +102,53 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.setReservation(res.data);
-                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                url2 = `http://localhost:8080/flightByIdUser/${reservation.DepartureFlightID}`
                 axios
-                    .get(url2)
+                    .get(url2,
+                        {
+                            headers: {
+                                "x-access-token": props.details.token
+                            }
+                        })
                     .then(res => {
-                        console.log("respnose: ", res)
-                        console.log("gamed louji!")
-                        props.setDepartingFlight(res.data);
-                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                        axios
-                            .get(url2)
-                            .then(res => {
-                                console.log("respnose: ", res)
-                                console.log("gamed louji!")
-                                props.setReturnFlight(res.data);
-                                if (type == 1)
-                                    history.push('/EditSeats/1');
-                                else if (type == 2)
-                                    history.push('/EditSeats/2');
+                        const resultt = res.data;
+                        if (resultt.isLoggedIn !== false) {
+                            props.setDepartingFlight(res.data);
+                            url2 = `http://localhost:8080/flightByIdUser/${reservation.ReturnFlightID}`
+                            axios
+                                .get(url2,
+                                    {
+                                        headers: {
+                                            "x-access-token": props.details.token
+                                        }
+                                    })
+                                .then(res => {
+                                    const resultt = res.data;
+                                    if (resultt.isLoggedIn !== false) {
+                                        console.log("respnose: ", res)
+                                        console.log("gamed louji!")
+                                        props.setReturnFlight(res.data);
+                                        if (type == 1)
+                                            history.push('/EditSeats/1');
+                                        else if (type == 2)
+                                            history.push('/EditSeats/2');
 
-                                // this.props.history.push(`/Seats/1`);
-                            })
-                            .catch(error => {
-                                console.log("idiot!");
-                                console.log(error.message);
-                            })
-                        // this.props.history.push(`/Seats/1`);
+                                        // this.props.history.push(`/Seats/1`);
+                                    }
+                                    else {
+                                        alert("You need to login to edit your profile!")
+                                        history.push("/userlogin2");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log("idiot!");
+                                    console.log(error.message);
+                                })
+                            // this.props.history.push(`/Seats/1`);
+                        } else {
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
                     })
                     .catch(error => {
                         console.log("idiot!");
@@ -156,60 +181,77 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 //console.log("respnose: ", res)
                 console.log("gamed louji!")
                 props.setReservation(res.data);
-                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                url2 = `http://localhost:8080/flightByIdUser/${reservation.DepartureFlightID}`
                 axios
-                    .get(url2)
+                    .get(url2,
+                        {
+                            headers: {
+                                "x-access-token": props.details.token
+                            }
+                        })
                     .then(res => {
                         //  console.log("respnose: ", res)
                         //console.log("gamed louji!")
+                        const resultt = res.data;
+                        if (resultt.isLoggedIn !== false) {
+                            props.setDepartingFlight(res.data);
 
-                        props.setDepartingFlight(res.data);
-
-                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
-                        axios
-                            .get(url2)
-                            .then(res => {
-                                // console.log("respnose: ", res)
-
-                                props.setReturnFlight(res.data);
-
-                                console.log("props:", props)
-                                // HENA 
-                                url2 = `http://localhost:8080/userById/${reservation.UserID}`
-                                axios
-                                    .get(url2)
-                                    .then(res => {
-                                        console.log("respnose: ", res)
-                                        console.log("gamed louji!")
-                                        let User = res.data
-
-
-                                        url2 = `http://localhost:8080/mail`
-                                        let body = {
-
-                                            Reservation: reservation,
-                                            thisUser: User,
-                                            Departing: props.DepartingFlight,
-                                            Returning: props.ReturnFlight
-
+                            url2 = `http://localhost:8080/flightByIdUser/${reservation.ReturnFlightID}`
+                            axios
+                                .get(url2,
+                                    {
+                                        headers: {
+                                            "x-access-token": props.details.token
                                         }
-                                        axios
-                                            .post(url2, body)
-                                            .then(res => {
-                                                console.log("ba3atna el mail: ", res)
-                                                console.log("gamed louji!")
-
-                                                // this.props.history.push(`/Seats/1`);
-                                            })
                                     })
+                                .then(res => {
+                                    const resultt = res.data;
+                                    if (resultt.isLoggedIn !== false) {
+                                    // console.log("respnose: ", res)
 
-                                // this.props.history.push(`/Seats/1`);
-                            })
-                            .catch(error => {
-                                console.log("idiot!");
-                                console.log(error.message);
-                            })
-                        // this.props.history.push(`/Seats/1`);
+                                    props.setReturnFlight(res.data);
+
+                                    console.log("props:", props)
+                                    // HENA 
+                                    url2 = `http://localhost:8080/userById/${reservation.UserID}`
+                                    axios
+                                        .get(url2)
+                                        .then(res => {
+                                            let User = res.data
+
+
+                                            url2 = `http://localhost:8080/mail`
+                                            let body = {
+
+                                                Reservation: reservation,
+                                                thisUser: User,
+                                                Departing: props.DepartingFlight,
+                                                Returning: props.ReturnFlight
+
+                                            }
+                                            axios
+                                                .post(url2, body)
+                                                .then(res => {
+                                                    console.log("ba3atna el mail: ", res)
+
+                                                    // this.props.history.push(`/Seats/1`);
+                                                })
+                                        })
+                                    } else {
+                                        alert("You need to login to edit your profile!")
+                                        history.push("/userlogin2");
+                                    }
+                                    // this.props.history.push(`/Seats/1`);
+                                })
+                                .catch(error => {
+                                    console.log("idiot!");
+                                    console.log(error.message);
+                                })
+                            // this.props.history.push(`/Seats/1`);
+                        } else {
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
                     })
                     .catch(error => {
                         console.log("idiot!");
@@ -222,7 +264,6 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 console.log("idiot!");
                 console.log(error.message);
             })
-
 
 
         ////////////////////////////////
@@ -520,6 +561,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
                                             <ChangeDepartingFlight></ChangeDepartingFlight>
 
+
                                             <Button
                                                 variant="outlined" size="medium" color="primary"
 
@@ -687,12 +729,13 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                             </div>
 
 
-
+                                            <DeleteButton reservation={reservation._id} />
                                             <Button
                                                 variant="outlined" size="medium" color="primary" margin={5}
 
                                                 onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
+
                                             <Button sx={{ mt: 2 }}
                                                 variant="outlined" size="medium" color="primary"
 

@@ -18,55 +18,77 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import * as airports from "airportsjs";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import CancelCreateFlight from './CancelForm';
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+    return {
+        details: state.DetailsReducer.details,
 
 
+    };
+};
 
-
-export default function UpateFlight(prop) {
+function UpateFlight(prop) {
     const flight = prop.match.params
     const [open, setOpen] = React.useState(false);
     const [fail, setFail] = React.useState(false);
 
     let history = useHistory();
 
-
     const onSubmit = e => {
         e.preventDefault();
         e.stopPropagation();
         let url = `http://localhost:8080/flight/${flight.id}`;
         let body = {
-            'From': {From},
-            'To': {To} ,
-            "DepartureDate":  {DepartureDate} ,
-            "ArrivalDate":  {ArrivalDate} ,
-            "FirstSeats":  {FirstSeats} ,
-            "BusinessSeats":  {BusinessSeats} ,
-            "EconomySeats":  {EconomySeats} ,
-            "ArrivalTime":  {ArrivalTime} ,
-            "DepartureTime":  {DepartureTime} ,
-            "FlightNumber":  {FlightNo} ,
-            "EconomyPrice":  {EconomyPrice} ,
-            "BusinessPrice":  {BusinessPrice} ,
-            "FirstPrice":  {FirstPrice} ,
-            
-            "EconomyBags":  {EconomyBags} ,
-            "BusinessBags":  {BusinessBags} ,
-            "FirstBags":  {FirstBags} ,
+            'From': { From },
+            'To': { To },
+            "DepartureDate": { DepartureDate },
+            "ArrivalDate": { ArrivalDate },
+            "FirstSeats": { FirstSeats },
+            "BusinessSeats": { BusinessSeats },
+            "EconomySeats": { EconomySeats },
+            "ArrivalTime": { ArrivalTime },
+            "DepartureTime": { DepartureTime },
+            "FlightNumber": { FlightNo },
+            "EconomyPrice": { EconomyPrice },
+            "BusinessPrice": { BusinessPrice },
+            "FirstPrice": { FirstPrice },
+
+            "EconomyBags": { EconomyBags },
+            "BusinessBags": { BusinessBags },
+            "FirstBags": { FirstBags },
         }
-        
-        axios.patch(url, body)
-        .then(async (response) => {
-            setStep(2);
-            //history.push("/allFlights");
-        })
-        .catch((e) => {
-            setFail(true);
-            console.log("error ===>", e);
-        });
-        // window.location.reload(false);
-        
+
+        if (prop.details.UserID === "") {
+            alert("You need to login as an admin to get access!!")
+            history.push("/userlogin2");
+        }
+        else {
+            axios.patch(url, body,
+                {
+                    headers: {
+                        "x-access-token": prop.details.token
+                    }
+                })
+                .then(async (response) => {
+                    const result = response.data;
+                    if (result.isLoggedIn !== false) {
+                        setStep(2);
+                    }
+                    else {
+                        alert("You need to login as an admin to get access!!")
+                        history.push("/userlogin2");
+                    }
+                })
+                .catch((e) => {
+                    setFail(true);
+                    console.log("error ===>", e);
+                });
+            // window.location.reload(false);
+        }
     };
-    
+
     const [From, setFrom] = useState("")
     const [To, setTo] = useState("")
     const [DepartureDate, setDepartureDate] = useState("")
@@ -128,9 +150,8 @@ export default function UpateFlight(prop) {
     const clickedTo = (value, e) => {
         setWordEntered2(value.name);
         setFilteredData2([]);
-        setFrom(value.iata);
+        setTo(value.iata);
     };
-
 
     const nextStep = () => {
         setStep(step => step + 1)
@@ -139,7 +160,7 @@ export default function UpateFlight(prop) {
     const prevStep = () => {
         console.log("PREVIOUS STEP")
         console.log(step)
-        setStep(x => x- 1)
+        setStep(x => x - 1)
         console.log(step)
 
     };
@@ -147,33 +168,50 @@ export default function UpateFlight(prop) {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/flightById/' + flight.id).then(
-            res => {
-                const data = res.data;
-                setWordEntered(data.From);
-                setWordEntered2(data.To);
-                setFrom(data.From);
-                setTo(data.To);
-                setArrivalDate(data.ArrivalDate.substring(0, 10));
-                setArrivalTime(data.ArrivalTime);
-                setDepartureDate(data.DepartureDate.substring(0, 10));
-                setDepartureTime(data.DepartureTime);
-                setBusinessSeats(data.BusinessSeats);
-                setBusinessBags(data.BusinessBags);
-                setEconomySeats(data.EconomySeats);
-                setEconomyBags(data.EconomyBags);
-                setFirstSeats(data.FirstSeats);
-                setFirstBags(data.FirstBags);
-                setFlightNo(data.FlightNumber);
-                setBusinessPrice(parseInt(data.PriceBusiness.$numberDecimal));
-                setEconomyPrice(parseInt(data.PriceEconomy.$numberDecimal));
-                setFirstPrice(parseInt(data.PriceFirst.$numberDecimal));
+        if (prop.details.UserID === "") {
+            alert("You need to login as an admin to get access!!")
+            history.push("/userlogin2");
+        }
+        else {
+            axios.get('http://localhost:8080/flightById/' + flight.id,
+                {
+                    headers: {
+                        "x-access-token": prop.details.token
+                    }
+                }).then(
+                    res => {
+                        const result = res.data;
+                        if (result.isLoggedIn !== false) {
+                            const data = res.data;
+                            setWordEntered(data.From);
+                            setWordEntered2(data.To);
+                            setFrom(data.From);
+                            setTo(data.To);
+                            setArrivalDate(data.ArrivalDate.substring(0, 10));
+                            setArrivalTime(data.ArrivalTime);
+                            setDepartureDate(data.DepartureDate.substring(0, 10));
+                            setDepartureTime(data.DepartureTime);
+                            setBusinessSeats(data.BusinessSeats);
+                            setBusinessBags(data.BusinessBags);
+                            setEconomySeats(data.EconomySeats);
+                            setEconomyBags(data.EconomyBags);
+                            setFirstSeats(data.FirstSeats);
+                            setFirstBags(data.FirstBags);
+                            setFlightNo(data.FlightNumber);
+                            setBusinessPrice(parseInt(data.PriceBusiness.$numberDecimal));
+                            setEconomyPrice(parseInt(data.PriceEconomy.$numberDecimal));
+                            setFirstPrice(parseInt(data.PriceFirst.$numberDecimal));
 
-                console.log(data)
-            }
-        ).catch(err => { console.log(err) })
+                            console.log(data)
+                        } else {
+                            alert("You need to login as an admin to get access!!")
+                            history.push("/userlogin2");
+                        }
+                    }
+                ).catch(err => { console.log(err) })
 
 
+        }
     }
         , []);
 
@@ -195,8 +233,10 @@ export default function UpateFlight(prop) {
                 </Box>
 
                 <form id='createFlightForm2' class="row g-3" noValidate onSubmit={onSubmit}>
-
-                    <h3>Edit Flight <FlightTakeoffIcon /></h3>
+                    {step < 2 &&
+                        <CancelCreateFlight />
+                    }
+                    <h3 style={{ marginTop: "-6%" }}>Edit Flight <FlightTakeoffIcon /></h3>
                     <Stepper activeStep={step}>
                         {steps.map((label, index) => {
                             const stepProps = {};
@@ -246,7 +286,7 @@ export default function UpateFlight(prop) {
                                                         class="form-control flex-fill"
                                                         name='FlightNumber'
                                                         value={FlightNo}
-                                                        onChange={(e) => {  setFlightNo(e.target.value.toLowerCase()) }}
+                                                        onChange={(e) => { setFlightNo(e.target.value.toLowerCase()) }}
                                                     />
                                                 </FloatingLabel>
                                             </div>
@@ -280,10 +320,10 @@ export default function UpateFlight(prop) {
                                                         }}
                                                         >
                                                             {filteredData.slice(0, 15).map((value, key) => {
-                                                                return (<a  onClick={(e) => clicked(value, e)} target="_blank"
-                                                                            onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
-                                                                            onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
-                                                                        >
+                                                                return (<a onClick={(e) => clicked(value, e)} target="_blank"
+                                                                    onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
+                                                                    onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
+                                                                >
                                                                     <p>{value.name} </p>
                                                                 </a>
                                                                 );
@@ -321,10 +361,10 @@ export default function UpateFlight(prop) {
                                                         }}
                                                         >
                                                             {filteredData2.slice(0, 15).map((value, key) => {
-                                                                return (<a  onClick={(e) => clickedTo(value, e)} target="_blank"
-                                                                            onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
-                                                                            onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
-                                                                        >
+                                                                return (<a onClick={(e) => clickedTo(value, e)} target="_blank"
+                                                                    onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
+                                                                    onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
+                                                                >
                                                                     <p>{value.name} </p>
                                                                 </a>
                                                                 );
@@ -341,14 +381,14 @@ export default function UpateFlight(prop) {
                                                     <input
                                                         onKeyDown={(e) => e.preventDefault()}
                                                         type='date'
-//                                                        min={DateString}
+                                                        //                                                        min={DateString}
                                                         // min = "2021-11-07"
                                                         class="form-control flex-fill"
                                                         placeholder={DepartureDate}
                                                         name='DepartureDate'
                                                         //  className='form-control'
                                                         value={DepartureDate}
-                                                        onChange={(e) => {setDepartureDate(e.target.value)}}
+                                                        onChange={(e) => { setDepartureDate(e.target.value) }}
                                                     />
                                                 </FloatingLabel>
                                             </div>
@@ -438,14 +478,19 @@ export default function UpateFlight(prop) {
                                                         min='0'
                                                         //  className='form-control'
                                                         value={EconomySeats}
-                                                        onChange={ (e) =>{
-                                                            if (e.target.value < 0) {
-                                                                    setEconomySeats('0')                                                    
+                                                        onChange={(e) => {
+                                                            if (e.target.value > 54) {
+                                                                setEconomySeats('54')
                                                             }
                                                             else {
-                                                                setEconomySeats(e.target.value)                                                    
+                                                                if (e.target.value < 0) {
+                                                                    setEconomySeats('0')
+                                                                }
+                                                                else {
+                                                                    setEconomySeats(e.target.value)
+                                                                }
                                                             }
-                                                         }}
+                                                        }}
                                                     />                        </FloatingLabel>
 
                                             </div>
@@ -459,14 +504,14 @@ export default function UpateFlight(prop) {
                                                         min='0'
                                                         //  className='form-control'
                                                         value={EconomyPrice}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setEconomyPrice('0')                                                    
+                                                                setEconomyPrice('0')
                                                             }
                                                             else {
-                                                                setEconomyPrice(e.target.value)                                                    
+                                                                setEconomyPrice(e.target.value)
                                                             }
-                                                         }}
+                                                        }}
                                                     />
                                                 </FloatingLabel>
 
@@ -482,14 +527,14 @@ export default function UpateFlight(prop) {
                                                         min='0'
                                                         //  className='form-control'
                                                         value={EconomyBags}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setEconomyBags('0')                                                    
+                                                                setEconomyBags('0')
                                                             }
                                                             else {
-                                                                setEconomyBags(e.target.value)                                                    
+                                                                setEconomyBags(e.target.value)
                                                             }
-                                                         }}                                                  />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
 
@@ -508,14 +553,19 @@ export default function UpateFlight(prop) {
                                                         name='BusinessSeats'
                                                         //  className='form-control'
                                                         value={BusinessSeats}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setBusinessSeats('0')                                                    
+                                                                setBusinessSeats('0')
                                                             }
                                                             else {
-                                                                setBusinessSeats(e.target.value)                                                    
+                                                                if (e.target.value > 36) {
+                                                                    setBusinessSeats('36')
+                                                                }
+                                                                else {
+                                                                    setBusinessSeats(e.target.value)
+                                                                }
                                                             }
-                                                         }}                                                        />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -527,14 +577,14 @@ export default function UpateFlight(prop) {
                                                         name='BusinessPrice'
                                                         //  className='form-control'
                                                         value={BusinessPrice}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setBusinessPrice(0)                                                    
+                                                                setBusinessPrice(0)
                                                             }
                                                             else {
-                                                                setBusinessPrice(e.target.value)                                                    
+                                                                setBusinessPrice(e.target.value)
                                                             }
-                                                         }}                                                      />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -546,14 +596,14 @@ export default function UpateFlight(prop) {
                                                         min='0'
                                                         //  className='form-control'
                                                         value={BusinessBags}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setBusinessBags('0')                                                    
+                                                                setBusinessBags('0')
                                                             }
                                                             else {
-                                                                setBusinessBags(e.target.value)                                                    
+                                                                setBusinessBags(e.target.value)
                                                             }
-                                                         }}                                                       />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                         </div>
@@ -569,14 +619,19 @@ export default function UpateFlight(prop) {
                                                         name='FirstSeats'
                                                         //  className='form-control'
                                                         value={FirstSeats}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setFirstSeats('0')                                                    
+                                                                setFirstSeats('0')
                                                             }
                                                             else {
-                                                                setFirstSeats(e.target.value)                                                    
+                                                                if (e.target.value > 12) {
+                                                                    setFirstSeats('12')
+                                                                }
+                                                                else {
+                                                                    setFirstSeats(e.target.value)
+                                                                }
                                                             }
-                                                         }}                                                     />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -588,14 +643,14 @@ export default function UpateFlight(prop) {
                                                         name='FirstPrice'
                                                         //  className='form-control'
                                                         value={FirstPrice}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setFirstPrice('0')                                                    
+                                                                setFirstPrice('0')
                                                             }
                                                             else {
-                                                                setFirstPrice(e.target.value)                                                    
+                                                                setFirstPrice(e.target.value)
                                                             }
-                                                         }}                                                     />
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -608,25 +663,25 @@ export default function UpateFlight(prop) {
                                                         min='0'
                                                         //  className='form-control'
                                                         value={FirstBags}
-                                                        onChange={ (e) =>{
+                                                        onChange={(e) => {
                                                             if (e.target.value < 0) {
-                                                                    setFirstBags('0')                                                    
+                                                                setFirstBags('0')
                                                             }
                                                             else {
-                                                                setFirstBags(e.target.value)                                                    
+                                                                setFirstBags(e.target.value)
                                                             }
-                                                         }}/>
+                                                        }} />
                                                 </FloatingLabel>
                                             </div>
                                         </div>
 
-                                        <Button variant="primary" onClick={ e => prevStep()} >
+                                        <Button variant="primary" onClick={e => prevStep()} >
                                             Previous
                                         </Button>
 
                                         <Button variant="primary"
-                                                type="submit"
-                                                style={{ marginLeft: "84.5%", marginBottom: "15px", marginTop: "-38px" }}>
+                                            type="submit"
+                                            style={{ marginLeft: "84.5%", marginBottom: "15px", marginTop: "-38px" }}>
                                             Submit
                                         </Button>
                                         <hl />
@@ -929,16 +984,16 @@ export default function UpateFlight(prop) {
                         
                     */}
 
-<Box sx={{ width: '100%' }}>
-                    <Collapse in={fail}>
-                        <Alert severity="error"
-                            sx={{ mb: 2 }}
-                        >
-                            Please Enter All Details Correctly!
-                        </Alert>
-                    </Collapse>
+                    <Box sx={{ width: '100%' }}>
+                        <Collapse in={fail}>
+                            <Alert severity="error"
+                                sx={{ mb: 2 }}
+                            >
+                                Please Enter All Details Correctly!
+                            </Alert>
+                        </Collapse>
 
-                </Box>
+                    </Box>
 
 
 
@@ -947,3 +1002,5 @@ export default function UpateFlight(prop) {
         </div>
     );
 }
+
+export default connect(mapStateToProps)(UpateFlight);
