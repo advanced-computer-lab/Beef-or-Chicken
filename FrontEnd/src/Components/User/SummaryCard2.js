@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     paper: {
 
         borderRadius: "15px",
-        width: "353px",
-        height: "640px",
+        width: "405px",
+        height: "670px",
         overflow: "auto",
 
 

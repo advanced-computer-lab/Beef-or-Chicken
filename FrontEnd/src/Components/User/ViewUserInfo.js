@@ -127,7 +127,7 @@ class viewUserInfo extends Component {
 
             <div style={{ backgroundImage: `url(${flightsback})`, minHeight: "100vh", backgroundSize: "cover" }}>
                 <Header />
-                <div style={{ marginBottom: "-40px" }}></div>
+                <div style={{ marginBottom: "-100px" }}></div>
                 <div class="padding">
 
 

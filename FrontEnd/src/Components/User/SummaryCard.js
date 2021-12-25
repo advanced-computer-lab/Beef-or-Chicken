@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     paper: {
 
         borderRadius: "15px",
-        width: "353px",
+        width: "363px",
         height: "590px",
 
 

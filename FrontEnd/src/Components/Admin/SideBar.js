@@ -119,7 +119,7 @@ export default function SwipeableTemporaryDrawer() {
                 <Link to="/Create">
                     <ListItem button key='Create Flights' onClick={handleSubmit()}>
                     <AddCircleIcon/>&nbsp;
-                        <ListItemText primary='Create Flights' />
+                        <ListItemText primary='Create Flight' />
                     </ListItem>
                 </Link>
             </List>
