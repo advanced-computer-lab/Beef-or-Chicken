@@ -159,7 +159,7 @@ app.post('/login', (req, res) => {
 
 
 
-app.post('/passwordCheck', (req, res) => {
+app.post('/batates', (req, res) => {
   const userLoggedIn = req.body
   console.log("userLoggedIn",req.body)
   userModel.findOne({ username: userLoggedIn.username })
@@ -184,6 +184,30 @@ console.log("dbUser.password: ",dbUser.password)
             })
           }
         })
+    })
+
+    app.post('/passwordCheck', verifyJWT, async (req, res) => {
+      try {
+        let user = await userModel.findOne({ username: req.user.username }).exec();
+        console.log(user);
+        user.changePassword(
+          req.body.oldpassword,
+          req.body.newpassword,
+          function (err) {
+            if (err) {
+              console.log(err);
+              console.log("inccorect old password");
+              res.sendStatus(401);
+            } else {
+              console.log("password changed");
+              res.sendStatus(200);
+            }
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        res.sendStatus(401);
+      }
     })
 
 

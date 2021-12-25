@@ -6,23 +6,23 @@ import './ViewUserInfo.css'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useHistory } from "react-router-dom";
-import Header from "./Header";
-import { connect } from 'react-redux';
+// import bcrypt from 'bcrypt'
+
 
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        
+
     };
 };
-
 const mapDispatchToState = (dispatch) => {
     return {
         setUserID: (UserID) => {
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         marginTop: "-30px",
         justifyContent: "center",
-        color:"black",
+        color: "black",
     },
 
-    rectangle:{
+    rectangle: {
         // padding: "30%",
         // width: "30%",
         // height: "50%",
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
         // background:"#FFFFFF",
 
         padding: theme.spacing(3, 2),
-        marginLeft:"33%",
+        marginLeft: "33%",
         height: "75%",
         width: "30%",
         textAlign: 'center',
@@ -62,20 +62,19 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '0px 4px 8px 0 rgba(0.25, 0.25, 0.25, 0.25)',
     },
 
-    padding:{
+    padding: {
 
-        paddingTop:"10%",
+        paddingTop: "10%",
     }
 }));
 
-export default connect(mapStateToProps, mapDispatchToState)(UpdateUserInfo);
-function UpdateUserInfo(prop) {
-
-
-function ChangePassword(prop) {
+export default connect(mapStateToProps, mapDispatchToState)(ChangePassword);
+function ChangePassword(prop,{ details  }) {
     // console.log(props.details)
     //const user = userr
     //console.log("USER HENNNAA",user)
+    console.log("prop",prop)
+    console.log("prop.details",prop.details)
     //console.log("PROP: ",prop);
     const user = prop.match.params
     //console.log("User: ", user)
@@ -83,56 +82,80 @@ function ChangePassword(prop) {
 
     const [CurrentPassword, setCurrentPassword] = useState("");
     const [newPassword, setnewPassword] = useState("");
-  
-    const onSubmit = e => { 
-        
-    e.preventDefault();
-    //console.log("fel submit ya croissant")
-        let url = `http://localhost:8080/searchUserByID/${user.id}`;
+    let history = useHistory();
+    const onSubmit = e => {
+      
+        e.preventDefault();
+        //console.log("fel submit ya croissant")
+        let url = `http://localhost:8080/UserByID/${user.id}`;
 
-        axios.get(url)
-        .then(async (response) => {
-            //console.log("response ya croissant", response)
-            //response.data.password = await bcrypt.hash(response.data.password, 10);
-            //console.log("response.data.password ya croissant: ", response.data)
-
-            let body2 = {
-                'username':response.data.username,
-                'password': response.data.password,
+        axios.get(url, {
+            headers: {
+                "x-access-token": prop.details.token
             }
-
-            let url2 = `http://localhost:8080/passwordCheck`;
-
-            axios.post(url2,body2)
+        })
             .then(async (response) => {
-                console.log("response croissant",response)
-                if(response.data.message=="correct password"){
-                    //alert("Password mazboota")
-                    let url3 = `http://localhost:8080/changePassword/${user.id}`;
-                    let body = {
-                        'password': newPassword,
+                //console.log("response ya croissant", response)
+                //response.data.password = await bcrypt.hash(response.data.password, 10);
+                //console.log("response.data.password ya croissant: ", response.data)
+                const result = response.data;
+                if (result.isLoggedIn !== false) {
+                    let body2 = {
+                        'username': response.data.username,
+                        'password': CurrentPassword,
                     }
-                    axios.patch(url3, body)
-                    .then(async () => {
-                    //console.log("Tmam ya croissant")
-                    alert("Password Changed Successfully!")
-                    })
-        
-                    .catch((e) => {
-                        //alert("Password doesn't match minimum requirments!")
-                        alert("7aga 3'alat")
-                        console.log("error ===>", e);
-                    });
+
+                    let url2 = `http://localhost:8080/passwordCheck`;
+                    console.log("BODY 2 HENA", body2)
+
+                    axios.post(url2, body2, {
+                        headers: {
+                            "x-access-token": prop.details.token
+                        }})
+                        .then(async (response) => {
+                            const result = response.data;
+                             if (result.isLoggedIn !== false) {
+                            console.log("response croissant", response)
+                            if (response.data.message == "correct password") {
+                                //alert("Password mazboota")
+                                let url3 = `http://localhost:8080/changePassword/${user.id}`;
+                                let body = {
+                                    'password': newPassword,
+                                }
+                                axios.patch(url3, body)
+                                    .then(async () => {
+                                        //console.log("Tmam ya croissant")
+                                        alert("Password Changed Successfully!")
+                                    })
+
+                                    .catch((e) => {
+                                        //alert("Password doesn't match minimum requirments!")
+                                        alert("7aga 3'alat")
+                                        console.log("error ===>", e);
+                                    });
+
+                            }
+                        }
+                        else{
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
+                        }
+                        )
+
+                        .catch((e) => {
+                            alert("url2bayez")
+                            console.log("error ===>", e);
+                        });
 
                 }
-            })
-
-            .catch((e) => {
-                alert("url2bayez")
-                console.log("error ===>", e);
+                else {
+                    alert("You need to login to edit your profile!")
+                    history.push("/userlogin2");
+                }
             });
 
-        });
+
 
     };
 
@@ -145,17 +168,17 @@ function ChangePassword(prop) {
     // const [open, setOpen] = React.useState(false);
     // const [info, setInfo] =React.useState({firstName:"",lastName:"",email:"",passportNumber:""});
     // // let history = useHistory();
-    
+
     // const [firstName, setFirstName] = useState("")
     // const [lastName, setLastName] = useState("")
     // const [passportNumber, setPassportNumber] = useState("")
     // const [email, setEmail] = useState("")
 
 
-    
+
 
     // useEffect(() => {
-        
+
     //     axios.get('http://localhost:8080/searchUserByID/'+ user.id ).then(
     //         res => {
     //             console.log(res.data )
@@ -171,13 +194,13 @@ function ChangePassword(prop) {
     //         .catch(err => {
     //             console.log('Error');
     //         })
-                
-            
+
+
     //     }
     //         , []);
 
 
-            
+
 
     // const onSubmit = e => {   
     //     let url = `http://localhost:8080/user/${user.id}`;
@@ -195,7 +218,7 @@ function ChangePassword(prop) {
     //             // history.push("/usersflight");
     //         })
     //         .catch((e) => {
-                
+
     //             console.log("ana hena")
     //             console.log("error ===>", e);
     //         });
@@ -211,53 +234,53 @@ function ChangePassword(prop) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${flightsback})`, height: "130vh", backgroundSize: "cover" }}>
-                <Header />
+        <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
+            <SideBar />
             <div className={classes.padding}>
-           
-<div className={classes.rectangle}>
-<Box 
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 5, width: '25ch' ,color: "black"},
-      }}
-      
-      noValidate
-      autoComplete="off"
-    >
-     
-    <h3 class="colorHeader">
-    <VpnKeyIcon></VpnKeyIcon> Change My Password      
-    </h3>
+
+                <div className={classes.rectangle}>
+                    <Box
+                        component="form"
+                        sx={{
+                            '& .MuiTextField-root': { m: 5, width: '25ch', color: "black" },
+                        }}
+
+                        noValidate
+                        autoComplete="off"
+                    >
+
+                        <h3 class="colorHeader">
+                            <VpnKeyIcon></VpnKeyIcon> Change My Password
+                        </h3>
 
 
-      <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Current Password</label>
-                    <input
-                        type='password'
-                        class="form-control flex-fill"
-                        name='Current Password'
-                        // className='form-control'
-                        
-                        onChange={event => { setCurrentPassword(event.target.value) }}
-                    />
-                </div>
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">Current Password</label>
+                            <input
+                                type='password'
+                                class="form-control flex-fill"
+                                name='Current Password'
+                                // className='form-control'
+
+                                onChange={event => { setCurrentPassword(event.target.value) }}
+                            />
+                        </div>
 
 
 
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">New Password</label>
-                    <input
-                        type='password'
-                        class="form-control flex-fill"
-                        name='new password'
-                        // className='form-control'
-                        onChange={event => { setnewPassword(event.target.value)}}
-                    />
-                </div>
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">New Password</label>
+                            <input
+                                type='password'
+                                class="form-control flex-fill"
+                                name='new password'
+                                // className='form-control'
+                                onChange={event => { setnewPassword(event.target.value) }}
+                            />
+                        </div>
 
 
-                <Button
+                        <Button
                             style={{ background: "#10404c ", color: "wheat", marginTop: "10%", marginRight: "50%" }}
                             classname={classes.button2}
                             variant="contained"
@@ -268,10 +291,10 @@ function ChangePassword(prop) {
                             onClick={(e) => { onSubmit(e) }}
                         >
                             Change
-</Button>
-   
+                        </Button>
 
-                    {/* <div class="rectangle3">
+
+                        {/* <div class="rectangle3">
                     <Link to={  { pathname: `/ViewUserInfo/` } }>
                         
                      
@@ -284,7 +307,7 @@ function ChangePassword(prop) {
                 
                     </Link> */}
 
-                {/* <button class="rectangle2"
+                        {/* <button class="rectangle2"
                 onClick={() => {
                     this.props.history.goBack();
                 }}
@@ -292,10 +315,10 @@ function ChangePassword(prop) {
                 Back
             </button> */}
 
-                    
-                  {/* </div> */}
 
-                  {/* <div class= "rectangle3">
+                        {/* </div> */}
+
+                        {/* <div class= "rectangle3">
                   <input   onClick={() => {onSubmit() }}
                     class="btn btn-primary"
                     type="submit"
@@ -311,14 +334,13 @@ function ChangePassword(prop) {
 
 
 
-                
 
-    </Box>
-    </div>
-        </div>
+
+                    </Box>
+                </div>
+            </div>
         </div>
 
     );
 }
 
-}
