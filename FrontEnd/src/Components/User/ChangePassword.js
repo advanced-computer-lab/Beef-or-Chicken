@@ -63,13 +63,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 function ChangePassword(userr) {
-    // console.log(props.details)
     const user = userr
+    // console.log(props.details)
+    //const user = userr
     console.log("USER HENNNAA",user)
 
 
+
+
     
-    let history = useHistory();
+    //let history = useHistory();
     const [CurrentPassword, setCurrentPassword] = useState("");
     const [newPassword, setnewPassword] = useState("");
     const onSubmit = (event) => {
@@ -77,7 +80,7 @@ function ChangePassword(userr) {
 
         let url = `http://localhost:8080/searchUserByID/${user.id}`;
 
-        //console.log("b3d el url")
+        console.log("b3d el url")
        // event.preventDefault();
         // const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console  

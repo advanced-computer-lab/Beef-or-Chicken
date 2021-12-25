@@ -83,14 +83,14 @@ const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
         token: state.DetailsReducer.details.token,
-        user: state.DetailsReducer.details.user,
-        test: state.DetailsReducer.details,
+        user: state.DetailsReducer.details,
+        //test: state.DetailsReducer.details,
     };
     
     
 };
 
-console.log("ana el detaiillss",test);
+//console.log("ana el detaiillss",UserID);
 /*
 const mapDispatchToState = (dispatch) => {
     return {
