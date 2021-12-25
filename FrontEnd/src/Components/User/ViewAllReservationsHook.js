@@ -565,7 +565,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                             <Button
                                                 variant="outlined" size="medium" color="primary"
 
-                                                onClick={() => { handleEdit(2) }} >Edit Flight</Button>
+                                                onClick={() => { handleEdit(2) }} >Edit Seats</Button>
                                             <Button sx={{ mt: 2 }}
                                                 variant="outlined" size="medium" color="primary"
 
@@ -733,7 +733,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                             <Button
                                                 variant="outlined" size="medium" color="primary" margin={5}
 
-                                                onClick={() => { handleEdit(1) }} >Edit Flight</Button>
+                                                onClick={() => { handleEdit(1) }} >Edit Seats</Button>
                                             <DeleteButton reservation={reservation._id} />
 
                                             <Button sx={{ mt: 2 }}
