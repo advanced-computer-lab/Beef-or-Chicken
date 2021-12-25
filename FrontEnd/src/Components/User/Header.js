@@ -218,7 +218,6 @@ function Header({ UserID }) {
                 </nav>
             </div>
             <nav className={classes.nav} >
-                <img src={logo} alt="logohear" className={classes.logo} />
 
                 {auth && (
                     <div className={classes.profile}>

@@ -37,7 +37,7 @@ function PaymentPage() {
     };
     return (
 
-        <div style={{ backgroundImage: `url(${ResultBack})`, height: "100vh", backgroundSize: "cover" }}>
+        <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "130vh", backgroundSize: "cover" }}>
 
             <div className={classes.page}>
                 <div className={classes.results}>

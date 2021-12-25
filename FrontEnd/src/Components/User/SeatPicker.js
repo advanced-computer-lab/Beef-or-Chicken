@@ -353,10 +353,10 @@ class SeatPicker extends Component {
     render() {
 
         return (
-            <div >
-                <Header />
                 <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent: "center", display: "flex", width: "100%", overflowX: "hidden", backgroundSize: "cover" }}>
-                    <div style={{ paddingTop: "100px" }}>
+                <Header />
+            <div >
+                    <div style={{ paddingTop: "130px" }}>
                         <Grid container spacing={0}>
                             <Grid item xs={9}>
                                 <Card className="paper" sx={{ minWidth: 275 }}>

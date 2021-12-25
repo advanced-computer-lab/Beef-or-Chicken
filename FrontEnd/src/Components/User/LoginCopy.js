@@ -34,9 +34,9 @@ function DepartingResults() {
 
     return (
 
-        <div>
+        <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "120vh", backgroundSize: "cover" }}>
 <Header/>
-            <div className={classes.page}  style={{ backgroundImage: `url(${ResultBack})`, minHeight: "120vh", backgroundSize: "cover" }}>
+            <div className={classes.page} >
                 <div className={classes.results}>
                     <LoginCard />
 
