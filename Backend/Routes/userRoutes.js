@@ -159,9 +159,11 @@ app.post('/login', (req, res) => {
 
 
 
-app.post('/passwordCheck', (req, res) => {
+app.post('/password', async(req, res) => {
   const userLoggedIn = req.body
-  console.log("userLoggedIn",req.body)
+ // console.log("userLoggedIn",req.body)
+  console.log("userLoggedIn",userLoggedIn.password)
+userLoggedIn.password = await bcrypt.hash(req.body.password, 10);
   userModel.findOne({ username: userLoggedIn.username })
     .then(dbUser => {
       if (!dbUser) {
@@ -170,9 +172,12 @@ app.post('/passwordCheck', (req, res) => {
           message: "Invalid Username or Password"
         })
       }
-console.log("userLoggedIn.password: ",userLoggedIn.password)
+//console.log("userLoggedIn.password: ",userLoggedIn.password)
 console.log("dbUser.password: ",dbUser.password)
+console.log("dbUser.userName: ",dbUser.username)
+console.log("encrypted passwroddd",userLoggedIn.password)
           if (userLoggedIn.password == dbUser.password) {
+            console.log("encrypted passwroddd",userLoggedIn.password)
              // console.log("res",res)
               return res.json({
                 message: "correct password"
@@ -185,6 +190,31 @@ console.log("dbUser.password: ",dbUser.password)
           }
         })
     })
+
+
+    app.put("/passwordCheck", verify, async (req, res) => {
+      try {
+        let user = await userModel.findOne({ username: req.user.username }).exec();
+        console.log(user);
+        user.changePassword(
+          req.body.oldpassword,
+          req.body.newpassword,
+          function (err) {
+            if (err) {
+              console.log(err);
+              console.log("inccorect old password");
+              res.sendStatus(401);
+            } else {
+              console.log("password changed");
+              res.sendStatus(200);
+            }
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        res.sendStatus(401);
+      }
+    })   
 
 
 

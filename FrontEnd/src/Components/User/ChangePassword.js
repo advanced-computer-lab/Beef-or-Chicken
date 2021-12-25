@@ -85,10 +85,11 @@ function ChangePassword(prop) {
 
             let body2 = {
                 'username':response.data.username,
-                'password': response.data.password,
+                'password': CurrentPassword,
             }
 
             let url2 = `http://localhost:8080/passwordCheck`;
+            console.log("BODY 2 HENA",body2)
 
             axios.post(url2,body2)
             .then(async (response) => {
