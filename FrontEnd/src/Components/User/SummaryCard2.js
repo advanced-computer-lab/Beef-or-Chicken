@@ -122,8 +122,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     partition2: {
-        background: "#10404c",
-        color: "wheat",
+        // background: "#10404c",
+        // color: "wheat",
         height: "40px",
         width: "100%",
         // marginRight: "60px",
@@ -322,6 +322,7 @@ function SimplePaper({ details }) {
                         <Typography className={classes.text5}> Passengers :  {passengers(details.Adults, details.children)}</Typography>
                         {/* } */}
                     </div>
+                    <hr className={classes.line2}></hr>
                     <div className={classes.partition2}>
                         <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
 

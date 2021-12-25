@@ -232,7 +232,7 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
 
     const details = detail
     const offer = detail.departingOffers
-    const oldPrice = details.ReturnPrice
+    const oldPrice = details.DeparturePrice
     //const departuretime = offer[0].DepartureTime
     // setAllOffers([]);
     //  console.log("testtty: ", props.offer.allOffers.data)

@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { Checkmark } from 'react-checkmark'
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { connect } from "react-redux";
 import './PaymentCard.css'
 import {
@@ -25,7 +26,7 @@ const CARD_OPTIONS = {
     style: {
         base: {
             iconColor: "#c4f0ff",
-            color: "#fff",
+            color: "#fce883",
             fontWeight: 500,
             fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
             fontSize: "16px",
@@ -34,7 +35,7 @@ const CARD_OPTIONS = {
                 color: "#fce883"
             },
             "::placeholder": {
-                color: "#87bbfd"
+                color: "#10404c"
             }
         },
         invalid: {
@@ -141,18 +142,20 @@ const ResetButton = ({ onClick }) => (
 );
 
 const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, setOrigin, setOriginName, setDestination, setDestinationName }) => {
-    console.log(props)
+    console.log(props.details.ReturnPrice)
+
     const stripe = useStripe();
     const elements = useElements();
-    const type = 0
+    const type = props.type.type
+    console.log("type", type)
     useEffect(() => {
 
         if (type == 1)
-            setPrice(props.details.details.ReturnPrice + props.details.details.DeparturePrice)
+            setPrice(props.details.ReturnPrice + props.details.DeparturePrice)
         else if (type == 2)
-            setPrice(props.details.details.DeparturePrice)
+            setPrice(props.details.DeparturePrice)
         else
-            setPrice(props.details.details.ReturnPrice)
+            setPrice(props.details.ReturnPrice)
 
     }
         , []);
@@ -169,7 +172,7 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
         name: ""
     });
     let history = useHistory();
-    console.log("h ", props.details.details.TotalPrice)
+    //console.log("h ", props.details.details.TotalPrice)
     const setPrice1 = () => {
         console.log("hiiiii", props.details.details.infants_on_lap)
         if (props.details.details.infants_in_seat == 1) {
@@ -286,7 +289,9 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
             <div className="ResultMessage">
                 <Checkmark size='xxLarge' />
             </div>
-            <ReturnToHomeButton />
+            <div style={{ marginRight: "6%", marginTop: "40%" }}>
+                <ReturnToHomeButton />
+            </div>
             {/* <ResetButton onClick={reset} /> */}
         </div>
     ) : (
@@ -488,11 +493,12 @@ const mapDispatchToState = (dispatch) => {
 
 
 export default connect(mapStateToProps)(PaymentCard);
-function PaymentCard(props, { details }) {
+function PaymentCard({ details }) {
     const classes = useStyles();
-    console.log("yala nbawaz el payment ", props)
-    // const type = props.match.params
-
+    //console.log("yala nbawaz el payment ", props)
+    const type = useParams();
+    console.log("yala nbawaz el payment ", type)
+    //const {token} = useParams();
     return (
         // <div className="AppWrapper">
         //     <Elements stripe={stripePromise}>
@@ -509,7 +515,7 @@ function PaymentCard(props, { details }) {
 
                     <div style={{ marginTop: "50px" }} >
                         <Elements stripe={stripePromise}>
-                            <CheckoutForm details={details} />
+                            <CheckoutForm details={details} type={type} />
                         </Elements>
                     </div>
                 </CardContent>
