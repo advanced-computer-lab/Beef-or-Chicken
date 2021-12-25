@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import FlightIcon from '@mui/icons-material/Flight';
 import moment, { duration } from 'moment'
 import ReturnToHomeButton from './ReturnToHomeButton.js'
+import Button from '@mui/material/Button';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         wordWrap: "break-word",
         // overflow,
         marginLeft: "38%",
-        paddingTop: "7%",
+        // paddingTop: "7%",
         '& > *': {
             // margin: theme.spacing(1),
             // width: theme.spacing(16),
@@ -31,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
 
         borderRadius: "15px",
         width: "353px",
-        height: "640px",
-        overflow: "auto",
+        height: "660px",
+        //overflow: "auto",
+        overflowY: "auto"
 
 
     },
@@ -122,8 +124,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     partition2: {
-        background: "#10404c",
-        color: "wheat",
+        // background: "#10404c",
+        // color: "wheat",
         height: "40px",
         width: "100%",
         // marginRight: "60px",
@@ -137,8 +139,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     button: {
-        marginTop: "5%",
-        marginRight: "5%"
+        marginTop: "-58%",
+        marginLeft: "125%"
 
     },
 
@@ -185,7 +187,14 @@ function SimplePaper({ details }) {
         let duration = f.substring(0, 2) + " hr " + f.substring(3, 5) + " min"
         return duration
     }
-
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        // this.props.getPassengerInfo(this.state.passengerInfo);
+        console.log("yala ya koko mattanahsh")
+        //  this.history.push("/");
+        window.location.assign("/payment");
+        //this.props.history.push("/payment");
+    };
     const passengers = (adults, children) => {
         //console.log
         var p = " "
@@ -322,13 +331,24 @@ function SimplePaper({ details }) {
                         <Typography className={classes.text5}> Passengers :  {passengers(details.Adults, details.children)}</Typography>
                         {/* } */}
                     </div>
+                    <hr className={classes.line2}></hr>
                     <div className={classes.partition2}>
                         <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
 
                     </div>
                     {/* <hr className={classes.line2}></hr> */}
+                    {/* <hr className={classes.line2}></hr> */}
                     <div className={classes.button}>
-                        <ReturnToHomeButton />
+                        <Button
+                            type="submit"
+                            onClick={handleSubmit}
+                            style={{ background: "#10404c ", color: "wheat", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", marginLeft: "0%", position: 'absolute' }}
+                        //variant="outlined"
+                        >
+                            {" "}
+                            Proceed to payment{" "}
+                        </Button>
+
                     </div>
                 </CardContent>
             </Card>

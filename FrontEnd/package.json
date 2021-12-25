@@ -30,6 +30,9 @@
     "date-fns": "^2.26.0",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
+    "dateformat": "^5.0.2",
+    "email-validator": "^2.0.4",
+    "is-phone": "^2.0.0",
     "material-ui-icons": "^1.0.0-beta.36",
     "mock-aws-s3": "^4.0.2",
     "moment": "^2.29.1",
@@ -55,6 +58,7 @@
     "redux-persist": "^6.0.0",
     "rsuite": "^5.2.2",
     "stripe": "^8.195.0",
+    "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
