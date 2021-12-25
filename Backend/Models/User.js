@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var passportLocalMongoose=require("passport-local-mongoose");
 
 const userSchema = new Schema({
     // userID:{
@@ -55,5 +56,6 @@ const userSchema = new Schema({
 
 }, { timestamps: true });
 
+userSchema.plugin(passportLocalMongoose);
 const User = mongoose.model('User', userSchema);
 module.exports = User;
