@@ -63,10 +63,10 @@ function ChangePassword(prop) {
     // console.log(props.details)
     //const user = userr
     //console.log("USER HENNNAA",user)
-    console.log("PROP: ",prop);
+    //console.log("PROP: ",prop);
     const user = prop.match.params
-    console.log("User: ", user)
-    console.log("userID: ", user.id)
+    //console.log("User: ", user)
+    //console.log("userID: ", user.id)
 
     const [CurrentPassword, setCurrentPassword] = useState("");
     const [newPassword, setnewPassword] = useState("");
@@ -81,26 +81,37 @@ function ChangePassword(prop) {
         .then(async (response) => {
             //console.log("response ya croissant", response)
             //response.data.password = await bcrypt.hash(response.data.password, 10);
-            console.log("response.data.password ya croissant: ", response.data)
-
-            let url2 = `http://localhost:8080/passwordCheck`;
-            console.log("7AGA MOYMAZA B3D URL 2")
+            //console.log("response.data.password ya croissant: ", response.data)
 
             let body2 = {
                 'username':response.data.username,
                 'password': response.data.password,
             }
 
-            console.log("body2 hennaaaaa",body2)
-            axios.get(url2,body2)
+            let url2 = `http://localhost:8080/passwordCheck`;
+
+            axios.post(url2,body2)
             .then(async (response) => {
-                console.log("foo2 el if b3d url2 ya rab")
-                console.log("7aga",response.message)
-                if(response.message=="correct password"){
-                    alert("Password mazboota")
-                    console.log("password mazboota")
+                console.log("response croissant",response)
+                if(response.data.message=="correct password"){
+                    //alert("Password mazboota")
+                    let url3 = `http://localhost:8080/changePassword/${user.id}`;
+                    let body = {
+                        'password': newPassword,
+                    }
+                    axios.patch(url3, body)
+                    .then(async () => {
+                    //console.log("Tmam ya croissant")
+                    alert("Password Changed Successfully!")
+                    })
+        
+                    .catch((e) => {
+                        //alert("Password doesn't match minimum requirments!")
+                        alert("7aga 3'alat")
+                        console.log("error ===>", e);
+                    });
+
                 }
-            //alert("Password Changed Successfully!")
             })
 
             .catch((e) => {
@@ -108,29 +119,6 @@ function ChangePassword(prop) {
                 console.log("error ===>", e);
             });
 
-
-
-
-            if(response.data.password==CurrentPassword){             
-            console.log("fel if ya croissant")
-            let url2 = `http://localhost:8080/changePassword/${user.id}`;
-            let body = {
-                'password': { newPassword },
-            }
-            axios.patch(url2, body)
-            .then(async (response) => {
-            alert("Password Changed Successfully!")
-            })
-
-            .catch((e) => {
-                alert("Password doesn't match minimum requirments!")
-                console.log("error ===>", e);
-            });
-        }
-        })
-        .catch((e) => {
-            alert("wrong password!")
-            console.log("error ===>", e);
         });
 
     };
