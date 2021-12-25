@@ -186,6 +186,34 @@ console.log("dbUser.password: ",dbUser.password)
         })
     })
 
+<<<<<<< Updated upstream
+=======
+    app.post('/passwordCheck', verifyJWT, async (req, res) => {
+      try {
+        console.log("Fel check")
+        let user = await userModel.findOne({ username: req.user.username }).exec();
+        console.log("USER: ", user);
+        user.changePassword(
+          req.body.oldpassword,
+          req.body.newpassword,
+          function (err) {
+            if (err) {
+              console.log(err);
+              console.log("inccorect old password");
+              res.sendStatus(401);
+            } else {
+              console.log("password changed");
+              res.sendStatus(200);
+            }
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        res.sendStatus(401);
+      }
+    })
+
+>>>>>>> Stashed changes
 
 
 

@@ -58,15 +58,23 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+<<<<<<< Updated upstream
 
 function ChangePassword(prop) {
     // console.log(props.details)
     //const user = userr
     //console.log("USER HENNNAA",user)
     //console.log("PROP: ",prop);
+=======
+export default connect(mapStateToProps, mapDispatchToState)(ChangePassword);
+function ChangePassword(prop,{ details  }) {
+    // console.log("prop",prop)
+    // console.log("prop.details",prop.details)
+    // //console.log("PROP: ",prop);
+>>>>>>> Stashed changes
     const user = prop.match.params
-    //console.log("User: ", user)
-    //console.log("userID: ", user.id)
+    // //console.log("User: ", user)
+    // //console.log("userID: ", user.id)
 
     const [CurrentPassword, setCurrentPassword] = useState("");
     const [newPassword, setnewPassword] = useState("");
@@ -92,12 +100,24 @@ function ChangePassword(prop) {
 
             axios.post(url2,body2)
             .then(async (response) => {
+<<<<<<< Updated upstream
                 console.log("response croissant",response)
                 if(response.data.message=="correct password"){
                     //alert("Password mazboota")
                     let url3 = `http://localhost:8080/changePassword/${user.id}`;
                     let body = {
                         'password': newPassword,
+=======
+                //console.log("response ya croissant", response)
+                //response.data.password = await bcrypt.hash(response.data.password, 10);
+                //console.log("response.data.password ya croissant: ", response.data)
+                const result = response.data;
+                if (result.isLoggedIn !== false) {
+                    let body2 = {
+                        'username': response.data.username,
+                        'password': CurrentPassword,
+                        'newpassword': newPassword,
+>>>>>>> Stashed changes
                     }
                     axios.patch(url3, body)
                     .then(async () => {
@@ -111,6 +131,58 @@ function ChangePassword(prop) {
                         console.log("error ===>", e);
                     });
 
+<<<<<<< Updated upstream
+=======
+                    let url2 = `http://localhost:8080/passwordCheck`;
+                    console.log("BODY 2 HENA", body2)
+
+                    console.log("prop.details.token",prop.details.token);
+                    axios.post(url2, body2, {
+                        headers: {
+                            "x-access-token": prop.details.token
+                        }})
+                        
+                        .then(async (response) => {
+                            const result = response.data;
+                             if (result.isLoggedIn !== false) {
+                            console.log("response croissant", response)
+                            if (response.data.message == "correct password") {
+                                //alert("Password mazboota")
+                                let url3 = `http://localhost:8080/changePassword/${user.id}`;
+                                let body = {
+                                    'password': newPassword,
+                                }
+                                axios.patch(url3, body)
+                                    .then(async () => {
+                                        //console.log("Tmam ya croissant")
+                                        alert("Password Changed Successfully!")
+                                    })
+
+                                    .catch((e) => {
+                                        //alert("Password doesn't match minimum requirments!")
+                                        alert("7aga 3'alat")
+                                        console.log("error ===>", e);
+                                    });
+
+                            }
+                        }
+                        else{
+                            alert("You need to login to edit your profile!")
+                            history.push("/userlogin2");
+                        }
+                        }
+                        )
+
+                        .catch((e) => {
+                            alert("url2bayez")
+                            console.log("error ===>", e);
+                        });
+
+                }
+                else {
+                    alert("You need to login to edit your profile!")
+                    history.push("/userlogin2");
+>>>>>>> Stashed changes
                 }
             })
 
