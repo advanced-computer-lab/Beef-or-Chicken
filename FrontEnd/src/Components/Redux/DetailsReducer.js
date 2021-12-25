@@ -28,6 +28,9 @@ const initState = {
         TakenSeatsReturn: [],
         DeparturePrice: 0,
         ReturnPrice: 0,
+        TotalPrice: 0,
+        EditingDeparture: 0,
+        EditingReturn: 0,
         DepartingFlight: [],
         ReturnFlight: [],
         DepartingSeats: [],
@@ -35,12 +38,26 @@ const initState = {
         returningOffers: [],
         ReservationID: "",
         errorOccurred: false,
-        token:"",
+        token: "",
         //Reservation :["marky"],
         Reservation: [],
     },
 };
 const DetailsReducer = (state = initState, action) => {
+    if (action.type == 'setEditingDeparture') {
+        state.details.EditingDeparture = action.payload;
+        return {
+            ...state,
+        };
+    }
+
+    if (action.type == 'setEditingReturn') {
+        state.details.EditingReturn = action.payload;
+        return {
+            ...state,
+        };
+    }
+
     if (action.type == 'setReservation') {
         state.details.Reservation = action.payload;
         return {
@@ -98,6 +115,12 @@ const DetailsReducer = (state = initState, action) => {
 
     if (action.type == 'setReturnPrice') {
         state.details.ReturnPrice = action.payload;
+        return {
+            ...state,
+        };
+    }
+    if (action.type == 'setTotalPrice') {
+        state.details.TotalPrice = action.payload;
         return {
             ...state,
         };

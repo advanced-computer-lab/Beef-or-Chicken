@@ -157,15 +157,28 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        // allOffers: state.DetailsReducer.details.allOffers
+        infants_in_seat: state.DetailsReducer.details.infants_in_seat
+    };
+};
+
+const mapDispatchToState = (dispatch) => {
+    return {
+        setInfantsIS: (infants_in_seat) => {
+            dispatch({ type: 'setInfantsIS', payload: infants_in_seat });
+        },
+
+
+        setAllOffers: (allOffers) => {
+            dispatch({ type: 'setAllOffers', payload: allOffers });
+        },
+
+
     };
 };
 
 
-
-
-export default connect(mapStateToProps)(SimplePaper);
-function SimplePaper({ details }) {
+export default connect(mapStateToProps, mapDispatchToState)(SimplePaper);
+function SimplePaper({ details, setInfantsIS }) {
     const classes = useStyles();
 
     const [layOverTime, setlayOverTime] = React.useState("Layover");
@@ -189,7 +202,9 @@ function SimplePaper({ details }) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
+        setInfantsIS(1)
         // this.props.getPassengerInfo(this.state.passengerInfo);
+        console.log("yallaaa ", details.infants_on_lap)
         console.log("yala ya koko mattanahsh")
         //  this.history.push("/");
         window.location.assign("/payment");
@@ -333,7 +348,7 @@ function SimplePaper({ details }) {
                     </div>
                     <hr className={classes.line2}></hr>
                     <div className={classes.partition2}>
-                        <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
+                        <Typography className={classes.text4}> Total Price : EGP {details.DeparturePrice}</Typography>
 
                     </div>
                     {/* <hr className={classes.line2}></hr> */}
@@ -343,7 +358,6 @@ function SimplePaper({ details }) {
                             type="submit"
                             onClick={handleSubmit}
                             style={{ background: "#10404c ", color: "wheat", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", marginLeft: "0%", position: 'absolute' }}
-                        //variant="outlined"
                         >
                             {" "}
                             Proceed to payment{" "}

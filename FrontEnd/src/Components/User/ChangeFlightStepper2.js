@@ -6,8 +6,8 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Search2 from './Search2';
-import ResultCard from './ResultCardEdit'
+import Search2 from './Search3';
+import ResultCard from './ResultCardReturnEdit'
 import SummaryCard3 from './SummaryCard3';
 import SeatPickerTheSequel from './SeatPickerTheSequel';
 import { connect } from 'react-redux';
@@ -71,7 +71,7 @@ function HorizontalLinearStepper({ details }) {
         switch (i) {
             case 0:
                 return <React.Fragment>
-                    <Typography style={{ fontSize: 24, marginTop: "5%", marginLeft: "-55%" }}>Search for a new departing flight </Typography>
+                    <Typography style={{ fontSize: 24, marginTop: "5%", marginLeft: "-55%" }}>Search for a new returning flight </Typography>
                     <Search2 />
 
 
@@ -117,7 +117,7 @@ function HorizontalLinearStepper({ details }) {
 
             case 2: return <React.Fragment>
                 <div>
-                    <SeatPickerTheSequel flight={1} />
+                    <SeatPickerTheSequel flight={2} />
                 </div>
                 <Button
                     style={{ background: "#10404c ", color: "wheat", borderWidth: 1, position: 'absolute', bottom: 100, alignSelf: 'flex-start', marginLeft: "-30%" }}

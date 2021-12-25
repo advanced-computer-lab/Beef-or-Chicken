@@ -28,6 +28,7 @@ import UserLogin from "./Components/User/Login"
 import UserLogin2 from "./Components/User/LoginCopy"
 import UserRegistration from './Components/User/Registration'
 import ChangePage from './Components/User/ChangePage'
+import ChangePage2 from './Components/User/ChangePage2'
 import Payment from "./Components/User/PaymentPage"
 import InfoForm from './Components/User/PassengersFunctional'
 import FullSummaryPage from './Components/User/SummaryPage2'
@@ -53,7 +54,8 @@ function App() {
         <Route exact path="/EditSeats/:flight" component={SeatEditor} />
         <Route exact path="/Summary" component={SummaryPage} />
         <Route exact path="/pass" component={InfoForm} />
-        <Route exact path="/ChangeFlight" component={ChangePage} />
+        <Route exact path="/ChangeDepFlight" component={ChangePage} />
+        <Route exact path="/ChangeRetFlight" component={ChangePage2} />
         <Route exact path="/ViewAllReservations" component={ViewAllReservations} />
         {/* add /:id */}
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} /> 
