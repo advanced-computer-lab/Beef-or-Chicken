@@ -146,9 +146,9 @@ const ResetButton = ({ onClick }) => (
 const handleMail = (props) => {
 
 
-    const details = props.details.details;
+    const details = props.details;
     
-    console.log("croissant 1", details);
+    console.log("croissant 1", props.details);
 
    
     const departure = details.DepartingFlight;

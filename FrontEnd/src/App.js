@@ -63,7 +63,7 @@ function App() {
         <Route exact path="/ChangePassword/:id" component={ChangePassword} /> 
         <Route exact path="/UpdateUserInfo/:id" component={UpdateUserInfoNew} />
         <Route exact path="/login" component={UserLogin2} />
-        <Route exact path="/Payment" component={Payment} />
+        <Route exact path="/Payment/:type" component={Payment} />
         {/* add /:id */}
         <Route exact path="/ViewUserInfo" component={ViewUserInfo} />
         <Route exact path="/Userlogin" component={UserLogin2} />
