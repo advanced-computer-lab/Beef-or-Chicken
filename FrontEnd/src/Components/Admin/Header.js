@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         paddingLeft: "100px",
         paddingTop: "20px",
-        paddingBottom: "10px"
+        // paddingBottom: "10px"
 
     },
     side: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
         align: "left",
         marginTop: "25px"
     },
-    
+
     profile2: {
         width: "50px",
         height: "80px",
@@ -78,7 +78,7 @@ const Header = () => {
                 <img src={logo} alt="logohear" className={classes.logo} />
 
                 <div className={classes.profile2}>
-                        <LogoutButton  />                        
+                    <LogoutButton />
                 </div>
             </nav>
         </div>
