@@ -354,7 +354,7 @@ class SeatPicker extends Component {
 
         return (
                 <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent: "center", display: "flex", width: "100%", overflowX: "hidden", backgroundSize: "cover" }}>
-                <Header />
+                {/* <Header /> */}
             <div >
                     <div style={{ paddingTop: "130px" }}>
                         <Grid container spacing={0}>

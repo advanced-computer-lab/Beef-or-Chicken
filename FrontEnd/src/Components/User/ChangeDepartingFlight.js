@@ -129,6 +129,8 @@ function IconLabelButtons({ details, Reservation, setReservation, setDepartingFl
                                 console.log("respnose: ", res)
                                 console.log("gamed louji!")
                                 setReturnFlight(res.data);
+                                console.log("returning",res.data)
+                                history.push("/ChangeDepFlight")
                                 // if (type == 1)
                                 //     history.push('/EditSeats/1');
                                 // else if (type == 2)
@@ -156,7 +158,7 @@ function IconLabelButtons({ details, Reservation, setReservation, setDepartingFl
 
 
 
-        history.push("/ChangeDepFlight")
+       
 
         // console.log("props.reservation:" ,props.Reservation)
         // need to set flights too

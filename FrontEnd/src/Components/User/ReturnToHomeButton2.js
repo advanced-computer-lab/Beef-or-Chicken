@@ -99,13 +99,13 @@ function IconLabelButtons({ setAdult, setCabinClass, setChildren, details, setOr
 
     const func = async (e) => {
         e.preventDefault();
-        setOrigin("")
-        setOriginName("")
-        setDestination("")
-        setDestinationName("")
-        setCabinClass('Economy')
-        setAdult(1)
-        setChildren(0)
+        // setOrigin("")
+        // setOriginName("")
+        // setDestination("")
+        // setDestinationName("")
+        // setCabinClass('Economy')
+        // setAdult(1)
+        // setChildren(0)
         console.log("detailsssssss------->: ", details)
         history.push('/');
         // })
