@@ -218,6 +218,7 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
     let history = useHistory();
     console.log("OFFRAAATTTAAA: ", detail)
     const offer = detail.returningOffers
+    const oldPrice = details.ReturnPrice
     //const departuretime = offer[0].DepartureTime
 
     console.log("RETURN: ", details.Adults)
@@ -227,16 +228,16 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
         console.log("offersssss: ", offer)
         // let sum = offer.PriceEconomy.$numberDecimal * sum + details.children
         switch (details.cabin_class) {
+
             case "Economy":
                 console.log("adults: ", details.Adults)
-                console.log("children price: ", offer.PriceEconomy.$numberDecimal * details.children * 0.7)
-                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
+                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             case "Business":
-                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
+                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             case "First Class":
-                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
+                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             default:
             // code block
@@ -295,7 +296,7 @@ function DetailedAccordion({ detail, setReturnFlight, setSelectedReturningFlight
 
         <div className={classes.root}>
             <div className={classes.column}>
-                <Typography className={classes.title}>Returning flights</Typography>
+                {/* <Typography className={classes.title}>Returning flights</Typography> */}
                 {/* <Typography className={classes.title1}>Total price includes taxes + fees for 1 adult. Additional bag fees and other fees may apply.</Typography> */}
             </div>
             {offer.map((offers) => (

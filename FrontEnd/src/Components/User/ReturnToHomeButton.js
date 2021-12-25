@@ -52,6 +52,7 @@ const mapStateToProps = (state) => {
         cabin_class: state.DetailsReducer.details.cabin_class,
         Adults: state.DetailsReducer.details.Adults,
         children: state.DetailsReducer.details.children,
+
     };
 };
 
@@ -141,7 +142,7 @@ function IconLabelButtons({ setAdult, setCabinClass, setChildren, details, setOr
                             // startIcon={<SearchIcon />}
                             onClick={(e) => { func(e) }}
                         >
-                            Home
+                            confirm
                         </Button>
 
                     </div>

@@ -1,6 +1,7 @@
 
 
 import React, { useState } from "react";
+import { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { loadStripe } from "@stripe/stripe-js";
 import Typography from '@material-ui/core/Typography';
@@ -143,7 +144,21 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
     console.log(props)
     const stripe = useStripe();
     const elements = useElements();
+    const type = 0
+    useEffect(() => {
+
+        if (type == 1)
+            setPrice(props.details.details.ReturnPrice + props.details.details.DeparturePrice)
+        else if (type == 2)
+            setPrice(props.details.details.DeparturePrice)
+        else
+            setPrice(props.details.details.ReturnPrice)
+
+    }
+        , []);
+
     const [error, setError] = useState(null);
+    const [price, setPrice] = useState(0);
     const [cardComplete, setCardComplete] = useState(false);
     const [paid, setPaid] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -154,6 +169,30 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
         name: ""
     });
     let history = useHistory();
+    console.log("h ", props.details.details.TotalPrice)
+    const setPrice1 = () => {
+        console.log("hiiiii", props.details.details.infants_on_lap)
+        if (props.details.details.infants_in_seat == 1) {
+
+            return props.details.details.ReturnPrice
+        }
+        else if (props.details.details.infants_on_lap == 1) {
+            return props.details.details.DeparturePrice
+        }
+        else {
+            return props.details.details.ReturnPrice + props.details.details.DeparturePrice
+        }
+    }
+    // if (props.details.details.infants_in_seat==1) {
+    //     setPrice(props.details.details.ReturnPrice)
+    // }
+    // else if (props.details.details.infants_on_lap==1) {
+    //     setPrice(props.details.details.DeparturePrice)
+    // }
+    // else {
+    //     setPrice(props.details.details.ReturnPrice + props.details.details.DeparturePrice)
+    // }
+
     const classes = useStyles();
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -187,7 +226,7 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
             setPaymentMethod(payload.paymentMethod);
             let body = {
                 email: billingDetails.email,
-                amount: props.details.details.ReturnPrice + props.details.details.DeparturePrice,
+                amount: price,
 
             }
 
@@ -303,7 +342,7 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
             </fieldset>
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
             <SubmitButton processing={processing} error={error} disabled={!stripe}>
-                EGP {props.details.details.ReturnPrice + props.details.details.DeparturePrice}
+                EGP {price}
             </SubmitButton>
         </form>
     );
@@ -410,6 +449,7 @@ const mapStateToProps = (state) => {
         cabin_class: state.DetailsReducer.details.cabin_class,
         Adults: state.DetailsReducer.details.Adults,
         children: state.DetailsReducer.details.children,
+
     };
 };
 
@@ -448,8 +488,11 @@ const mapDispatchToState = (dispatch) => {
 
 
 export default connect(mapStateToProps)(PaymentCard);
-function PaymentCard(details) {
+function PaymentCard(props, { details }) {
     const classes = useStyles();
+    console.log("yala nbawaz el payment ", props)
+    // const type = props.match.params
+
     return (
         // <div className="AppWrapper">
         //     <Elements stripe={stripePromise}>

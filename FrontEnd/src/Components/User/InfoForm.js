@@ -73,7 +73,7 @@ export class InfoForm extends Component {
         // this.props.getPassengerInfo(this.state.passengerInfo);
         console.log("yala ya koko mattanahsh")
         //  this.history.push("/");
-        window.location.assign("/payment");
+        window.location.assign("/payment/1");
         //this.props.history.push("/payment");
     };
     // scrollDown = () => {
