@@ -442,10 +442,7 @@ const mapDispatchToProps = (dispatch) => {
         setTakenSeatsDeparture: (TakenSeatsDeparture) => {
             dispatch({ type: 'setTakenSeatsDeparture', payload: TakenSeatsDeparture });
         },
-
-
-
-
+    
     };
 };
 

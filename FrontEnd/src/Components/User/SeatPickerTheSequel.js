@@ -432,6 +432,8 @@ const mapStateToProps = (state) => ({
     details: state.DetailsReducer.details,
     TakenSeatsReturn: state.DetailsReducer.TakenSeatsReturn,
     TakenSeatsDeparture: state.DetailsReducer.TakenSeatsDeparture,
+    DepartingFlight: state.DetailsReducer.DepartingFlight,
+    ReturnFlight: state.DetailsReducer.ReturnFlight,
 });
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -441,6 +443,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         setTakenSeatsDeparture: (TakenSeatsDeparture) => {
             dispatch({ type: 'setTakenSeatsDeparture', payload: TakenSeatsDeparture });
+        },
+        setDepartingFlight: (DepartingFlight) => {
+            dispatch({ type: 'setDepartingFlight', payload: DepartingFlight });
+        },
+        setReturnFlight: (ReturnFlight) => {
+            dispatch({ type: 'setReturnFlight', payload: ReturnFlight });
         },
 
 
