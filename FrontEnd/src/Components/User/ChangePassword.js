@@ -99,13 +99,16 @@ function ChangePassword(prop,{ details  }) {
                 //response.data.password = await bcrypt.hash(response.data.password, 10);
                 //console.log("response.data.password ya croissant: ", response.data)
                 const result = response.data;
+                console.log("response",response)
                 if (result.isLoggedIn !== false) {
                     let body2 = {
                         'username': response.data.username,
-                        'password': CurrentPassword,
+                        'oldpassword': CurrentPassword,
+                        'newpassword':newPassword,
+
                     }
 
-                    let url2 = `http://localhost:8080/passwordCheck`;
+                    let url2 = `http://localhost:8080/passwordCheck/${user.id}`;
                     console.log("BODY 2 HENA", body2)
 
                     axios.post(url2, body2, {

@@ -102,6 +102,7 @@ app.patch("/user/:id", verifyJWT ,async (request, response) => {  //updateUser
     if (request.body.email.email != "") {
       q.email = request.body.email.email
     }
+    
 
     console.log(q);
     console.log(request.params.id);
@@ -186,28 +187,60 @@ console.log("dbUser.password: ",dbUser.password)
         })
     })
 
-    app.post('/passwordCheck', verifyJWT, async (req, res) => {
+    app.post('/passwordCheck/:id', verifyJWT, async (req, res) => {
       try {
-        let user = await userModel.findOne({ username: req.user.username }).exec();
+        const user = await userModel.findOne({ username: req.user.username }).exec();
         console.log(user);
-        user.changePassword(
-          req.body.oldpassword,
-          req.body.newpassword,
-          function (err) {
-            if (err) {
-              console.log(err);
-              console.log("inccorect old password");
-              res.sendStatus(401);
-            } else {
-              console.log("password changed");
-              res.sendStatus(200);
-            }
+        let oldPassword = await bcrypt.hash(req.body.oldpassword, 10);
+        let newPassword = await bcrypt.hash(req.body.newpassword, 10);
+        console.log("old" , oldPassword)
+        console.log("new" , newPassword)
+        console.log("user.password",user.password)
+        bcrypt.compare( req.body.oldpassword, user.password)
+        .then(isCorrect => {
+          if (!isCorrect) {
+            throw 'Parameter is not a number!';
+            
+          //   console.log("correct")
+          //  newPassword,
+          //   user.changePassword(
+          //     req.user.username,
+          //     oldPassword,
+          //     newPassword,
+          //     function (err) {
+          //       if (err) {
+          //         console.log(err);
+          //         console.log("inccorect old password");
+          //         res.sendStatus(401);
+          //       } else {
+          //         console.log("password changed");
+          //         res.sendStatus(200);
+          //       }
+          //     }
+          //   );
+
+
+            //console.log("token", token)
           }
-        );
+        })
+          let q = {}
+          q.password = newPassword
+          console.log(q)
+          console.log("user id " ,req.params.id)
+          await userModel.findOneAndUpdate({username: req.user.username}, q);
+            
+             console.log("updated")
+             res.send();
+         
+       
+      
       } catch (error) {
         console.log(error);
         res.sendStatus(401);
       }
+       
+
+        
     })
 
 
