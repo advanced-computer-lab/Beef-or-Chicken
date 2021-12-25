@@ -158,6 +158,62 @@ app.post('/login', (req, res) => {
 
 
 
+
+app.get('/passwordCheck', (req, res) => {
+  console.log("araf")
+  const userLoggedIn = req.body
+  console.log("araf2",userLoggedIn)
+  userModel.findOne({ username: userLoggedIn.username })
+    .then(dbUser => {
+      console.log("araf3")
+      if (!dbUser) {
+        console.log("araf4")
+        return res.json({
+          message: "Invalid Username or Password"
+        })
+      }
+
+      bcrypt.compare(userLoggedIn.password, dbUser.password)
+        .then(isCorrect => {
+          console.log("abl el if iscorrect")
+          if (isCorrect) {
+            //const payload = {//change password here
+              // id: dbUser._id,
+              // username: dbUser.username,
+              // type:dbUser.type,
+              console.log("7aga gnb res",res)
+              return res.json({
+                message: "correct password"
+              })
+            //}
+            // jwt.sign(
+            //   payload,
+            //   "" + process.env.JWT_SECRET,
+            //   { expiresIn: 86400 },
+            //   (err, token) => {
+            //     if (err) return res.json({ message: err })
+            //     return res.json({
+            //       message: "Success",
+            //       token: "Bearer " + token,
+            //       UserID : payload.id,
+            //       type:payload.type
+            //     })
+            //   }
+            // )
+
+            //console.log("token", token)
+          }
+          else {
+            return res.json({
+              message: "Wrong Password"
+            })
+          }
+        })
+    })
+})
+
+
+
 app.post('/register', async (req, res) => {
   const user = req.body;
   console.log(user);

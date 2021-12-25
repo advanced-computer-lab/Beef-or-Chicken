@@ -12,7 +12,7 @@ import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useHistory } from "react-router-dom";
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
 
 
 const mapStateToProps = (state) => {
@@ -80,8 +80,36 @@ function ChangePassword(prop) {
         axios.get(url)
         .then(async (response) => {
             //console.log("response ya croissant", response)
-            response.data.password = await bcrypt.hash(response.data.password, 10);
-            console.log("response.data.password ya croissant: ", response.data.password)
+            //response.data.password = await bcrypt.hash(response.data.password, 10);
+            console.log("response.data.password ya croissant: ", response.data)
+
+            let url2 = `http://localhost:8080/passwordCheck`;
+            console.log("7AGA MOYMAZA B3D URL 2")
+
+            let body2 = {
+                'username':response.data.username,
+                'password': response.data.password,
+            }
+
+            console.log("body2 hennaaaaa",body2)
+            axios.get(url2,body2)
+            .then(async (response) => {
+                console.log("foo2 el if b3d url2 ya rab")
+                console.log("7aga",response.message)
+                if(response.message=="correct password"){
+                    alert("Password mazboota")
+                    console.log("password mazboota")
+                }
+            //alert("Password Changed Successfully!")
+            })
+
+            .catch((e) => {
+                alert("url2bayez")
+                console.log("error ===>", e);
+            });
+
+
+
 
             if(response.data.password==CurrentPassword){             
             console.log("fel if ya croissant")
