@@ -22,8 +22,9 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import ChangeDepartingFlight from './ChangeDepartingFlight';
 // import { Mailer } from 'nodemailer-react';
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
 
 
 //var nodemailer = require('nodemailer');
@@ -61,10 +62,10 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
     let history = useHistory();
     const [open, setOpen] = React.useState(false);
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
     const handleToggle = () => {
-    //   setOpen(!open);
+        //   setOpen(!open);
     };
     console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
@@ -128,7 +129,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                         console.log("idiot!");
                         console.log(error.message);
                     })
-                
+
                 // this.props.history.push(`/Seats/1`);
             })
             .catch(error => {
@@ -161,18 +162,18 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                     .then(res => {
                         //  console.log("respnose: ", res)
                         //console.log("gamed louji!")
-                        
+
                         props.setDepartingFlight(res.data);
-                        
+
                         url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
                         axios
                             .get(url2)
                             .then(res => {
                                 // console.log("respnose: ", res)
-                                
+
                                 props.setReturnFlight(res.data);
-                                
-                                console.log("props:",props)
+
+                                console.log("props:", props)
                                 // HENA 
                                 url2 = `http://localhost:8080/userById/${reservation.UserID}`
                                 axios
@@ -181,16 +182,16 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                                         console.log("respnose: ", res)
                                         console.log("gamed louji!")
                                         let User = res.data
-                                       
-                                       
+
+
                                         url2 = `http://localhost:8080/mail`
                                         let body = {
 
                                             Reservation: reservation,
                                             thisUser: User,
-                                            Departing : props.DepartingFlight,
-                                            Returning : props.ReturnFlight
-                                            
+                                            Departing: props.DepartingFlight,
+                                            Returning: props.ReturnFlight
+
                                         }
                                         axios
                                             .post(url2, body)
@@ -300,7 +301,7 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={open}
-                    //onClick={handleClose}
+                //onClick={handleClose}
                 >
                     <CircularProgress color="inherit" />
                 </Backdrop>
@@ -516,14 +517,14 @@ function ViewAllReservations(props, { Reservation, setReservation, setDepartingF
 
 
                                             <DeleteButton reservation={reservation._id} />
-                        
-                
-                                        
+
+                                            <ChangeDepartingFlight></ChangeDepartingFlight>
+
                                             <Button
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleEdit(2) }} >Edit Flight</Button>
-                                                 <Button sx={{mt: 2}}
+                                            <Button sx={{ mt: 2 }}
                                                 variant="outlined" size="medium" color="primary"
 
                                                 onClick={() => { handleMail() }} >Mail me my itinerary</Button>
