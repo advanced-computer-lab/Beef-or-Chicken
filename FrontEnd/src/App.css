@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  color: blue;
 }
 .form-label{
   color: black;
@@ -67,18 +66,12 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 .form-group {
-  color: #61dafb;
   font: bolder;
   display: block;
   
 }
 .form-group2 {
-  color: #61dafb;
   font: bolder;
   display: flex;
   
@@ -88,15 +81,18 @@ width: 30%;
 position: absolute;
 left: 34.5%;
 /* top: 50%; */
-background-color: #EAF3F2;
 }
 #createFlightForm2{
-  width: 30%;
+  width: 40%;
   position: absolute;
-  left: 34.5%;
-   top: 120%; 
-  background-color: #EAF3F2;
+  left: 30%;
+  top: 25%; 
+  background-color: #FFFFFF;
+  border-radius: 15px 50px;
+  border: 1px outset grey;
+  padding: 20px;
   }
+
 
 @keyframes App-logo-spin {
   from {

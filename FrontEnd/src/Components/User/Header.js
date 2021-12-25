@@ -1,14 +1,19 @@
 import logo from '../../images/BOC.png'
-import MenuList from "@material-ui/core/MenuList";
 import { makeStyles } from "@material-ui/core/styles";
-import { fabClasses } from '@mui/material';
-import { height } from '@mui/system';
 import SideBar from './SideBar'
+import { useHistory } from "react-router-dom";
+import { connect } from 'react-redux';
+import * as React from 'react';
+import IconButton from '@mui/material/IconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import LogoutButton from './LogoutButton'
+import LoginIcon from '@mui/icons-material/Login';
+
+
 const useStyles = makeStyles((theme) => ({
     logo: {
-        // display: 'flex',
-        // justifyContent: 'center',
-        // flexWrap: 'wrap',
         width: "80px",
         height: "80px",
         position: "absolute",
@@ -18,10 +23,8 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         marginRight: theme.spacing(2),
         width: "100%",
-
         height: "200px",
         overflow: "hidden",
-        // overflowy: "auto",
         overflow: 'auto'
     },
     down: {
@@ -55,9 +58,79 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         align: "left",
         marginTop: "25px"
+    },
+
+    profile2: {
+        width: "80px",
+        height: "80px",
+        position: "absolute",
+        top: "19px",
+        right: "35px",
+    },
+    profile: {
+        width: "80px",
+        height: "80px",
+        position: "absolute",
+        top: "19px",
+        right: "0px",
     }
 }));
-const Header = () => {
+
+
+
+const mapStateToProps = (state) => {
+    return {
+        UserID: state.DetailsReducer.details.UserID,
+        token: state.DetailsReducer.details.token,
+    };
+};
+/*
+const mapDispatchToState = (dispatch) => {
+    return {
+        setUserID: (UserID) => {
+            dispatch({ type: 'setUserID', payload: UserID });
+        },
+        setToken: (token) => {
+            dispatch({ type: 'setToken', payload: token });
+        },  
+    };
+};
+*/
+export default connect(mapStateToProps)(Header);
+
+
+function Header({ UserID }) {
+    let history = useHistory();
+    let init = false;
+    if (UserID !== "") {
+        init = true;
+    }
+    const [auth, setAuth] = React.useState(init);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const viewProfile = () => {
+        history.push("/ViewUserinfo");
+    };
+    const login = () => {
+        history.push("/userlogin2");
+    };
+
+    const editProfile = () => {
+        history.push("/UpdateUserInfo/" + { UserID });
+    };
+
+
+
     const classes = useStyles();
     return (
         <div className={classes.navbar}>
@@ -67,17 +140,64 @@ const Header = () => {
             <nav className={classes.nav} >
                 <img src={logo} alt="logohear" className={classes.logo} />
 
+                {auth && (
+                    <div className={classes.profile}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle sx={{ fontSize: 40, color: "#FFFFFF" }} />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                marginTop: '-160px',
+                                marginRight: '-3%'
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
 
-                <div className="username">
-                    {/* <img src={avatar} alt="logohear" className="avatar" /> */}
-                    {/* <h1>User name</h1> */}
-                    {/* <img src={dropdown} alt="" className="dropdownicon"/> */}
-                </div>
+
+                            <MenuItem onClick={viewProfile}>Profile</MenuItem>
+                            <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
+                            <LogoutButton />
+                        </Menu>
+                    </div>
+                )}
+                {!auth &&
+
+                    <div className={classes.profile2}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={login}
+                            color="inherit"
+                        >
+                            <LoginIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
+                           <a style={{fontSize :16 , color : "#FFFFFF"}}>
+                               &nbsp;Login
+                               </a>
+                        </IconButton>
+                    </div>
+
+                }
+
+
             </nav>
         </div>
     )
 }
 
-
-
-export default Header

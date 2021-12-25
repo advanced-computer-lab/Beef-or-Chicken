@@ -1,11 +1,16 @@
 import React, { Component, useState, useEffect } from 'react';
+import axios from 'axios';
 import './ViewAllReservations.css'
 import Accordion from 'react-bootstrap/Accordion'
+import Backdrop from '@mui/material/Backdrop';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteButton from './DeleteButton'
+import Button from '@material-ui/core/Button';
+import MailButton from './MailButton';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import CircularProgress from '@mui/material/CircularProgress';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -16,6 +21,14 @@ import ChildCareIcon from '@mui/icons-material/ChildCare';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+// import { Mailer } from 'nodemailer-react';
+import nodemailer from "nodemailer";
+
+
+//var nodemailer = require('nodemailer');
+//const nodemailer = require("nodemailer");
+//import Button from 'react-bootstrap/Button';
 //BACKEND DEPENDENT COMMENTED => BACKEND
 const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
@@ -23,6 +36,8 @@ const mapStateToProps = (state) => {
         origin: state.DetailsReducer.details.origin,
         origin_name: state.DetailsReducer.details.origin_name,
         Reservation: state.DetailsReducer.details.Reservation,
+        DepartingFlight: state.DetailsReducer.details.DepartingFlight,
+        ReturnFlight: state.DetailsReducer.details.ReturnFlight,
     };
 };
 const mapDispatchToState = (dispatch) => {
@@ -30,18 +45,32 @@ const mapDispatchToState = (dispatch) => {
         setReservation: (Reservation) => {
             dispatch({ type: 'setReservation', payload: Reservation });
         },
+        setDepartingFlight: (DepartingFlight) => {
+            dispatch({ type: 'setDepartingFlight', payload: DepartingFlight });
+        },
+        setReturnFlight: (ReturnFlight) => {
+            dispatch({ type: 'setReturnFlight', payload: ReturnFlight });
+        },
 
 
     };
     // console.log(origin)
 };
 export default connect(mapStateToProps, mapDispatchToState)(ViewAllReservations);
-function ViewAllReservations({ props, Reservation, setReservation }) {
-
+function ViewAllReservations(props, { Reservation, setReservation, setDepartingFlight, setReturnFlight, DepartingFlight, ReturnFlight }) {
+    let history = useHistory();
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+    //   setOpen(!open);
+    };
+    console.log("props: ", props)
     const [flightType, setFlightType] = React.useState(0);
     // const [departure, setDeparture] = useState();
     // const [returnFlight, setReturnFlight] = useState();
-
+    console.log("reservation from details: ", Reservation)
     const reservation = props.reservation;
     const departure = props.departureFlight;
     const returnFlight = props.returnFlight;
@@ -56,10 +85,151 @@ function ViewAllReservations({ props, Reservation, setReservation }) {
     if (reservation.TakenSeatsArriving.length === 0) {
         Object.assign(reservation, { TakenSeatsArriving: ["None"] })
     }
-    const handleEdit = () => {
-        setReservation("whatever");
+
+    const handleEdit = (type) => { //1 is departing and 2 is returning
+
+        console.log(props)
+        setOpen(true)
+        let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+        axios
+            .get(url2)
+            .then(res => {
+                console.log("respnose: ", res)
+                console.log("gamed louji!")
+                props.setReservation(res.data);
+                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                axios
+                    .get(url2)
+                    .then(res => {
+                        console.log("respnose: ", res)
+                        console.log("gamed louji!")
+                        props.setDepartingFlight(res.data);
+                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                        axios
+                            .get(url2)
+                            .then(res => {
+                                console.log("respnose: ", res)
+                                console.log("gamed louji!")
+                                props.setReturnFlight(res.data);
+                                if (type == 1)
+                                    history.push('/EditSeats/1');
+                                else if (type == 2)
+                                    history.push('/EditSeats/2');
+
+                                // this.props.history.push(`/Seats/1`);
+                            })
+                            .catch(error => {
+                                console.log("idiot!");
+                                console.log(error.message);
+                            })
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+                
+                // this.props.history.push(`/Seats/1`);
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+
+
+
+        // console.log("props.reservation:" ,props.Reservation)
+        // need to set flights too
 
     };
+
+
+    const handleMail = () => {
+
+        let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+        axios
+            .get(url2)
+            .then(res => {
+                //console.log("respnose: ", res)
+                console.log("gamed louji!")
+                props.setReservation(res.data);
+                url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+                axios
+                    .get(url2)
+                    .then(res => {
+                        //  console.log("respnose: ", res)
+                        //console.log("gamed louji!")
+                        
+                        props.setDepartingFlight(res.data);
+                        
+                        url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                        axios
+                            .get(url2)
+                            .then(res => {
+                                // console.log("respnose: ", res)
+                                
+                                props.setReturnFlight(res.data);
+                                
+                                console.log("props:",props)
+                                // HENA 
+                                url2 = `http://localhost:8080/userById/${reservation.UserID}`
+                                axios
+                                    .get(url2)
+                                    .then(res => {
+                                        console.log("respnose: ", res)
+                                        console.log("gamed louji!")
+                                        let User = res.data
+                                       
+                                       
+                                        url2 = `http://localhost:8080/mail`
+                                        let body = {
+
+                                            Reservation: reservation,
+                                            thisUser: User,
+                                            Departing : props.DepartingFlight,
+                                            Returning : props.ReturnFlight
+                                            
+                                        }
+                                        axios
+                                            .post(url2, body)
+                                            .then(res => {
+                                                console.log("ba3atna el mail: ", res)
+                                                console.log("gamed louji!")
+
+                                                // this.props.history.push(`/Seats/1`);
+                                            })
+                                    })
+
+                                // this.props.history.push(`/Seats/1`);
+                            })
+                            .catch(error => {
+                                console.log("idiot!");
+                                console.log(error.message);
+                            })
+                        // this.props.history.push(`/Seats/1`);
+                    })
+                    .catch(error => {
+                        console.log("idiot!");
+                        console.log(error.message);
+                    })
+
+                // this.props.history.push(`/Seats/1`);
+            })
+            .catch(error => {
+                console.log("idiot!");
+                console.log(error.message);
+            })
+
+
+
+        ////////////////////////////////
+
+
+
+    }
+
 
     const flightDuration = (initDate, finalDate, initTime, finalTime) => {
         let init = moment(initDate.substring(0, 10) + " " + initTime + ":00");
@@ -110,7 +280,7 @@ function ViewAllReservations({ props, Reservation, setReservation }) {
         axios.get('http://localhost:8080/flightById/' + props.reservation.ReturnFlightID).then(
             Result =>    {setReturnFlight([Result.data]);
                 console.log(returnFlight);
-
+ 
                     }
                         ).catch(err => { console.log(err) })
         }
@@ -127,6 +297,13 @@ function ViewAllReservations({ props, Reservation, setReservation }) {
 
         return (
             <div>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={open}
+                    //onClick={handleClose}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <Accordion className="accordion" >
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>
@@ -339,6 +516,18 @@ function ViewAllReservations({ props, Reservation, setReservation }) {
 
 
                                             <DeleteButton reservation={reservation._id} />
+                        
+                
+                                        
+                                            <Button
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleEdit(2) }} >Edit Flight</Button>
+                                                 <Button sx={{mt: 2}}
+                                                variant="outlined" size="medium" color="primary"
+
+                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
+
 
                                         </form>
                                     </div>
@@ -498,9 +687,17 @@ function ViewAllReservations({ props, Reservation, setReservation }) {
 
 
 
+                                            <Button
+                                                variant="outlined" size="medium" color="primary" margin={5}
 
+                                                onClick={() => { handleEdit(1) }} >Edit Flight</Button>
                                             <DeleteButton reservation={reservation._id} />
+                                            <Button sx={{mt: 2}}
+                                                variant="outlined" size="medium" color="primary"
 
+                                                onClick={() => { handleMail() }} >Mail me my itinerary</Button>
+
+                                            {/*  */}
                                         </form>
                                     </div>
 

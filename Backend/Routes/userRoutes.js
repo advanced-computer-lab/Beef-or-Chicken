@@ -73,7 +73,16 @@ app.post("/searchUser", async (request, response) => {  //search with Criteria
     response.status(500).send(error);
   }
 });
+app.get("/userById/:id", async (request, response) => {
+  const user = await userModel.findById(request.params.id);
 
+  try {
+    response.send(user);
+  }
+  catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 app.patch("/user/:id", async (request, response) => {  //updateUser
   try {
@@ -104,19 +113,13 @@ app.patch("/user/:id", async (request, response) => {  //updateUser
 });
 
 
-
-
-
-
-
-
 app.post('/login', (req, res) => {
   const userLoggedIn = req.body
-  userModel.findOne({ email: userLoggedIn.email })
+  userModel.findOne({ username: userLoggedIn.username })
     .then(dbUser => {
       if (!dbUser) {
         return res.json({
-          message: "Invalid Username or Pass"
+          message: "Invalid Username or Password"
         })
       }
       bcrypt.compare(userLoggedIn.password, dbUser.password)
@@ -125,6 +128,7 @@ app.post('/login', (req, res) => {
             const payload = {
               id: dbUser._id,
               username: dbUser.username,
+                  type:dbUser.type
             }
             jwt.sign(
               payload,
@@ -134,7 +138,9 @@ app.post('/login', (req, res) => {
                 if (err) return res.json({ message: err })
                 return res.json({
                   message: "Success",
-                  token: "Bearer " + token
+                  token: "Bearer " + token,
+                  UserID : payload.id,
+                  type:payload.type
                 })
               }
             )
@@ -154,37 +160,71 @@ app.post('/login', (req, res) => {
 
 app.post('/register', async (req, res) => {
   const user = req.body;
-  //const takenUsername = await userModel.findOne({ user: user.username })
-  const takenEmail = await userModel.findOne({ email: user.email })
-  console.log(takenEmail)
-  console.log(user)
+  console.log(user);
+  const takenUsername = await userModel.findOne({ username: user.username })
+ console.log(takenUsername);
 
-  if (takenEmail) {
-    res.json({ message: "username or password taken" })
-  }
-  else {
-    console.log("hahashing")
-    // const hashedPassword = await new Promise((resolve, reject) => {
-    user.password = await bcrypt.hash(req.body.password, 10);
-    //   })
-    console.log("done hashing")
+    if(takenUsername){
+      res.json({ message: "username taken" })
+    }else {
+      user.password = await bcrypt.hash(req.body.password, 10);
+  
+      const dbUser = new userModel({
+        username: user.username,
+        email: user.email.toLowerCase(),
+        password: user.password,
+        type: 1,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        passportNumber: user.passportNumber,
+        reservations: [],
+        address : user.address,
+        telephone1: user.telephone1,   
+        telephone2: user.telephone2
+      }
+      )
+      dbUser.save()
 
-    const dbUser = new userModel({
-      //username: user.name.toLowerCase(),
-      email: user.email.toLowerCase(),
-      password: user.password,
-      type: 1,
-      firstName: "marky",
-      lastName: "mark",
-      passportNumber: "07775000",
-      reservations: []
+      const payload = {
+        id: dbUser._id,
+        username: dbUser.username,
+      }
+      jwt.sign(
+        payload,
+        "" + process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err })
+          return res.json({
+            token: "Bearer "+token,
+            message :"success",
+            UserId : payload.id
+          })
+        }
+      )
+
     }
-    )
-    console.log("hashedpass", user.password)
-    dbUser.save()
-    res.json({ message: "Success" })
   }
+  
+)
+
+
+app.post('/CheckUsername', async (req, res) => {
+  const user = req.body;
+  console.log(user);
+  const takenUsername = await userModel.findOne({ username: user.username })
+console.log(takenUsername)
+    if(takenUsername){
+      res.json({ message: "taken" })
+    }else {
+      res.json({ message: "not" })
+      }
+  
+  
 })
+
+
+
 
 //pure habdddddd
 //TO BE TESTEEEDDDDDD test test test

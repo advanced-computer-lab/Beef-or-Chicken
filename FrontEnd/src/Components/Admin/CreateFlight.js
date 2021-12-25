@@ -2,16 +2,27 @@ import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
 import Form from "react-bootstrap/Form";
-// import Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./Header"
 import { useAlert } from 'react-alert'
 import OurAlert from "./OurAlert"
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
-import Button from '@mui/material/Button';
+import ResultTest from "../../images/ResultTest.png";
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import Typography from '@mui/material/Typography';
+import { useHistory } from "react-router-dom";
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import * as airports from "airportsjs";
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+
 import CloseIcon from '@mui/icons-material/Close';
 
 // number of Economy seats, number of Business class seats,
@@ -38,88 +49,70 @@ class CreateFlight extends Component {
             CurrentDate: new Date(),
             DateString: date,
             CurrentDeparture: '',
-            EconomyPrice:'',
-            BusinessPrice:'',
-            FirstPrice:'',
-            EconomyBags:'',
-            BusinessBags:'',
-            FirstBags:'',
+            EconomyPrice: '',
+            BusinessPrice: '',
+            FirstPrice: '',
+            EconomyBags: '',
+            BusinessBags: '',
+            FirstBags: '',
             open: false,
             fail: false,
+            step: 0,
+            filteredData :[],
+            wordEntered :'',
+            filteredData2 :[],
+            wordEntered2 :'',
             // flag : false,
 
         };
-        console.log("date =>", date)
-        // console.log("batates")
-        //  console.log("date ==> ",this.state.CurrentDate)
-        //  console.log(this.state.CurrentDate.getFullYear() + '-' + (this.state.CurrentDate.getMonth() + 1) + '-' + this.state.CurrentDate.getDate())
+
     }
+    steps = ['', ''];
 
-    /////////////////////////
-    // handleValidation() {
-    //     let fields = this.state.fields;
-    //     let errors = {};
-    //     let formIsValid = true;
+    handleFilter = (event) => {
+        const searchWord = event.target.value;
+        this.setState({ wordEntered: searchWord })
+        const newFilter = airports.searchByAirportName(searchWord)
+        if (searchWord === "") {
+            this.setState({ filteredData: [] })
+        } else {
+            this.setState({ filteredData: newFilter })
+        }
+    };
 
-    //     //Name
-    //     if (!fields["From"]) {
-    //       formIsValid = false;
-    //       errors["name"] = "Cannot be empty";
-    //     }
+    handleFilter2 = (event) => {
+        const searchWord = event.target.value;
+        this.setState({ wordEntered2: searchWord })
+        const newFilter = airports.searchByAirportName(searchWord)
+        if (searchWord === "") {
+            this.setState({ filteredData2: [] })
+        } else {
+            this.setState({ filteredData2: newFilter })
+        }
+    };
 
-    //     if (typeof fields["name"] !== "undefined") {
-    //       if (!fields["name"].match(/^[a-zA-Z]+$/)) {
-    //         formIsValid = false;
-    //         errors["name"] = "Only letters";
-    //       }
-    //     }
+    clicked = (value, e) => {
+        this.setState({ wordEntered: value.name })
+        this.setState({ filteredData: [] })
+        this.setState({ From: value.iata })
+    };
 
-    //     //Email
-    //     if (!fields["email"]) {
-    //       formIsValid = false;
-    //       errors["email"] = "Cannot be empty";
-    //     }
-
-    //     if (typeof fields["email"] !== "undefined") {
-    //       let lastAtPos = fields["email"].lastIndexOf("@");
-    //       let lastDotPos = fields["email"].lastIndexOf(".");
-
-    //       if (
-    //         !(
-    //           lastAtPos < lastDotPos &&
-    //           lastAtPos > 0 &&
-    //           fields["email"].indexOf("@@") == -1 &&
-    //           lastDotPos > 2 &&
-    //           fields["email"].length - lastDotPos > 2
-    //         )
-    //       ) {
-    //         formIsValid = false;
-    //         errors["email"] = "Email is not valid";
-    //       }
-    //     }
-
-    //     this.setState({ errors: errors });
-    //     return formIsValid;
-    //   }
-
-    //   contactSubmit(e) {
-    //     e.preventDefault();
-
-    //     if (this.handleValidation()) {
-    //       alert("Form submitted");
-    //     } else {
-    //       alert("Form has errors.");
-    //     }
-    //   }
-
-    //   handleChange(field, e) {
-    //     let fields = this.state.fields;
-    //     fields[field] = e.target.value;
-    //     this.setState({ fields });
-    //   }
+    clickedTo = (value, e) => {
+        this.setState({ wordEntered2: value.name })
+        this.setState({ filteredData2: [] })
+        this.setState({ To: value.iata })
+    };
 
 
-    //////////////////////////
+    nextStep = () => {
+        this.setState({ step: this.state.step + 1 })
+
+    };
+
+    prevStep = () => {
+        this.setState({ step: this.state.step - 1 })
+    };
+
     onChange2 = e => {
         if (e.target.value < 0) {
             this.setState({ [e.target.name]: '0' })
@@ -133,55 +126,39 @@ class CreateFlight extends Component {
 
         this.setState({
             [e.target.name]: e.target.value
-        }, () => {
-            console.log()
-            console.log("edited target")
-            //  console.log("from state: ", this.state.From)
-            //  console.log("batates")
-            //  console.log("departure date string" , this.state.DepartureDate)
-            console.log("currentDeparture before editing: ", this.state.CurrentDeparture)
-            // //setState
-            // this.setState({CurrentDeparture:(new Date(  this.state.DepartureDate.substring(0,4) , 
-            // this.state.DepartureDate.substring(5,7),this.state.DepartureDate.substring(8,10)))})
-
-            // this.setState({CurrentDeparture:new Date( this.state.CurrentDeparture.getFullYear(), this.state.CurrentDeparture.getMonth()-1, this.state.CurrentDeparture.getDate()-1) })
-            // this.setState({CurrentDeparture: this.state.CurrentDeparture.getFullYear()+ "-" + ("0" + ( this.state.CurrentDeparture.getMonth() + 1)).slice(-2) + "-" + ("0" +  this.state.CurrentDeparture.getDate()).slice(-2) })
-
-            //using this.state
-            // this.state.CurrentDeparture =  (new Date(  this.state.DepartureDate.substring(0,4) , 
-            // this.state.DepartureDate.substring(5,7),this.state.DepartureDate.substring(8,10)))
-
-            // this.state.CurrentDeparture = new Date( this.state.CurrentDeparture.getFullYear(), this.state.CurrentDeparture.getMonth()-1, this.state.CurrentDeparture.getDate()-1)
-
-            //this.state.CurrentDeparture =   this.state.CurrentDeparture.getFullYear()+ "-" + ("0" + ( this.state.CurrentDeparture.getMonth() + 1)).slice(-2) + "-" + ("0" +  this.state.CurrentDeparture.getDate()).slice(-2)
-
-            console.log("currentDeparture after editing: ", this.state.CurrentDeparture)
-
-            // console.log("target.name: ", e.target.name),
-
-
-            // console.log("departureDate: ", this.state.DepartureDate),
-            // console.log(this.state.CurrentDeparture),
-        });
-
-
-
-
-        // console.log("departure date", new Date(date.getFullYear(),date.getMonth(),date.getDate()-1))
-
-
-
-
-
+        }, () => { });
         //this.state.From=e.target.value
-
-
-        // console.log(e.target.name)
-        // console.log(e.target.value)
-        // console.log("open: ",this.state.open)
     };
 
+    clearForm = () => {
+        this.setState({
+            From: '',
+            To: '',
+            DepartureDate: '',
+            ArrivalDate: '',
+            EconomySeats: '',
+            BusinessSeats: '',
+            FirstSeats: '',
+            DepartureTime: '',
+            ArrivalTime: '',
+            FlightNumber: '',
+            EconomyPrice: '',
+            BusinessPrice: '',
+            FirstPrice: '',
+            EconomyBags: '',
+            BusinessBags: '',
+            FirstBags: '',
+            step: 0,
+            open: true,
+            fail: false,
+            filteredData :[],
+            wordEntered :'',
+            filteredData2 :[],
+            wordEntered2 :'',
+        })
 
+
+    }
 
     onSubmit = e => {
         e.preventDefault();
@@ -207,14 +184,6 @@ class CreateFlight extends Component {
 
 
         };
-        console.log(data)
-        // console.log(this.state.From)
-        // console.log(this.state.To)
-        // console.log(this.state.)
-        // console.log(this.state.Cabin)
-        // console.log(this.state.SeatsAvailable)
-        // console.log(this.state.DepartureTime)
-        // console.log(this.state.ArrivalTime)
         let url = "http://localhost:8080/createFlight"
 
         axios
@@ -237,9 +206,13 @@ class CreateFlight extends Component {
                     EconomyBags: '',
                     BusinessBags: '',
                     FirstBags: '',
-                    
-                    open: true,
-                    fail: false
+                    step: 2,
+                    open: false,
+                    fail: false,
+                    filteredData :[],
+                    wordEntered :'',
+                    filteredData2 :[],
+                    wordEntered2 :'',
                 },
                     console.log(res))
 
@@ -252,298 +225,502 @@ class CreateFlight extends Component {
 
             .catch(error => {
                 this.setState({ fail: true })
-                // this.state.fail=true;
-                console.log("idiot!");
                 console.log(error.message);
             })
 
-
     };
 
-
+    //handleClose = () => {this.setState({ open: false })}
 
 
     render() {
         return (
-            <div>
+            <div style={{ backgroundImage: `url(${ResultTest})`, minHeight: "820px", backgroundSize: "cover", backgroundRepeat: "repeat-y" }}>
                 <Header />
-                <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit}>
-                    <div class="col-md-6" className='form-group'>
-                        <label class="form-label">From</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='From'
-                            name='From'
-                            //className='form-control'
-                            value={this.state.From}
-                            onChange={this.onChange}
-                        />
+                <div >
+                    <Box sx={{ width: '100%' }}>
+                        <Collapse in={this.state.open}>
+                            <Alert sx={{ mb: 2 }}>
+                                Flight Added!
+                            </Alert>
+                        </Collapse>
 
-                    </div>
+                    </Box>
+                    <Box sx={{ width: '100%' }}>
+                        <Collapse in={this.state.fail}>
+                            <Alert severity="error"
+                                sx={{ mb: 2 }}
+                            >
+                                Please Enter All Details Correctly!
+                            </Alert>
+                        </Collapse>
 
-
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">To</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='To'
-                            name='To'
-                            // className='form-control'
-                            value={this.state.To}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                    </Box>
 
 
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Departure Date</label>
-                        <input
-                            onKeyDown={(e) => e.preventDefault()}
-                            type='date'
-                            min={this.state.DateString}
-                            // min = "2021-11-07"
-                            class="form-control flex-fill"
-                            placeholder='DepartureDate'
-                            name='DepartureDate'
-                            //  className='form-control'
-                            value={this.state.DepartureDate}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                    <form id='createFlightForm2' class="row g-3" noValidate onSubmit={this.onSubmit} >
+                        <h3>Add Flight <FlightTakeoffIcon /></h3>
+                        <Stepper activeStep={this.state.step}>
+                            {this.steps.map((label, index) => {
+                                const stepProps = {};
+                                const labelProps = {};
+                                return (
+                                    <Step key={label} {...stepProps}>
+                                        <StepLabel {...labelProps}>{label}</StepLabel>
+                                    </Step>
+                                );
+                            })}
+                        </Stepper>
+                        {this.state.step === 2 ?
+                            (
+                                 <div>
+                                    <React.Fragment>
+
+                                        <h4 sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}>
+                                            Flight Added Successfully!
+                                        </h4>
+
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                                            <Box sx={{ flex: '1 1 auto' }} />
+                                            <Button variant="primary" style={{ marginRight: "35%" }}
+                                                onClick={() => {
+                                                    this.clearForm();
+                                                    this.props.history.push("/Create");
+                                                }}
+                                            >Add New Flight&nbsp; </Button>
+                                            <Button variant="primary" style={{ marginRight: "4.5%" }}
+                                                onClick={() => {
+                                                    this.clearForm();
+                                                    this.props.history.push("/AllFlights");
+                                                }}
+                                            >View All Flights&nbsp; </Button>
+
+                                        </Box>
+                                    </React.Fragment>
+                                </div>
 
 
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Arrival Date</label>
-                        <input
-                            onKeyDown={(e) => e.preventDefault()}
-                            type='date'
-                            // min = {new Date(this.state.DepartureDate).getDate()-1 }
-                            min={this.state.DepartureDate}
-                            class="form-control flex-fill"
-                            placeholder='ArrivalDate'
-                            name='ArrivalDate'
-                            //  className='form-control'
-                            value={this.state.ArrivalDate}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                            ) : (
+                                <div>
 
-                    <div class="col-md-6" className='form-group form-inline'>
-                        <label class="form-label">Departure Time</label>
-                        <input
-                            type='time'
-                            class="form-control flex-fill"
-                            placeholder='DepartureTime'
-                            name='DepartureTime'
-                            //  className='form-control'
-                            value={this.state.DepartureTime}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                                    {this.state.step === 0 ?
+                                        <div>
+                                            <div className=" row">
+                                                <div className='form-group mb-4' >
+                                                    <FloatingLabel label="Flight Number">
+                                                        <input
+                                                            type='text'
+                                                            class="form-control flex-fill"
+                                                            name='FlightNumber'
+                                                            value={this.state.FlightNumber}
+                                                            onChange={this.onChange}
+                                                        />
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+                                            <bl />
 
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4 form-group">
 
+                                                    <FloatingLabel label="From" >
+                                                        <input
+                                                            class="form-control flex-fill"
+                                                            id="filled-basic"
+                                                            name='From'
+                                                            value={this.state.wordEntered}
+                                                            onChange={(event) => { this.handleFilter(event) }}
+                                                            type="search"
+                                                            variant="filled"
+                                                            InputProps={{
+                                                                startAdornment: <InputAdornment position="start"></InputAdornment>,
+                                                            }} />
+                                                        {this.state.filteredData.length !== 0 && (
+                                                            <div style = {{ position: "absolute",
+                                                                            left: "0px",
+                                                                            top: "58px",
+                                                                            zIndex: "1",
+                                                                            backgroundColor:"#FFFFFF",
+                                                                            border: "0.8px groove #F0F0F0",
+                                                                            paddingTop : "15px"
+                                                                        }}
+                                                            >
+                                                                {this.state.filteredData.slice(0, 15).map((value, key) => {
+                                                                    return (<a onClick={(e) => this.clicked(value, e)} target="_blank" 
+                                                                                onMouseOver={(e) =>e.target.style.background = "#F0F0F0"}
+                                                                                onMouseOut= {(e) =>e.target.style.background = "#FFFFFF"}
+                                                                            >
+                                                                        <p>{value.name} </p>
+                                                                    </a>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
 
-                    <div class="col-md-4" className='form-group form-inline'>
-                        <label class="form-label">Arrival Time</label>
-                        <input
-                            type='time'
-                            class="form-control flex-fill"
-                            placeholder='ArrivalTime'
-                            name='ArrivalTime'
-                            //  className='form-control'
-                            value={this.state.ArrivalTime}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">Economy</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div class="col-md-4" className='form-group2 form-inline'>
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Seats Available'
-                            name='EconomySeats'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomySeats}
-                            onChange={this.onChange2}
-                        />
-                       
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Price Per Seat'
-                            name='EconomyPrice'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomyPrice}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Bags Allowed'
-                            name='EconomyBags'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.EconomyBags}
-                            onChange={this.onChange2}
-                        />
-                    </div>
-
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">Business</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div class="col-md-4" className='form-group2 form-inline'>
-                       
-                        <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Seats Available'
-                            name='BusinessSeats'
-                            //  className='form-control'
-                            value={this.state.BusinessSeats}
-                            onChange={this.onChange2}
-                        />
-                         <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Price Per Seat'
-                            name='BusinessPrice'
-                            //  className='form-control'
-                            value={this.state.BusinessPrice}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Bags Allowed'
-                            name='BusinessBags'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.BusinessBags}
-                            onChange={this.onChange2}
-                        />
-                    </div>
-
-                    <div className='form-labelGroup' >
-                    <label class="form-labelLeft">First Class</label>
-                    <label class="form-labelCenter">Price</label>
-                    <label class="form-labelRight">Bags</label>
-                    </div>
-                    <div className='form-group2 form-inline'>
-                        
-                        <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Seats Available'
-                            name='FirstSeats'
-                            //  className='form-control'
-                            value={this.state.FirstSeats}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            min='0'
-                            class="form-control flex-fill"
-                            placeholder='Price Per Seat'
-                            name='FirstPrice'
-                            //  className='form-control'
-                            value={this.state.FirstPrice}
-                            onChange={this.onChange2}
-                        />
-                        <input
-                            type='number'
-                            class="form-control flex-fill"
-                            placeholder='Bags Allowed'
-                            name='FirstBags'
-                            min='0'
-                            //  className='form-control'
-                            value={this.state.FirstBags}
-                            onChange={this.onChange2}
-                        />
-                    </div>
+                                                    </FloatingLabel>
+                                                </div>
 
 
-                    <div class="form-group form-inline" className='form-group'>
-                        <label class="form-label">Flight Number</label>
-                        <input
-                            type='text'
-                            class="form-control flex-fill"
-                            placeholder='Flight Number'
-                            name='FlightNumber'
-                            //  className='form-control'
-                            value={this.state.FlightNumber}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                                                <div className="col-md-6 col-12 mb-4 form-group form-inline">
+                                                    {/* <div class="col-md-6" className='form-group form-inline'>*/}
+                                                    <FloatingLabel label="To" >
+                                                        <input
+                                                            class="form-control flex-fill"
+                                                            id="filled-basic"
+                                                            name='To'
+                                                            value={this.state.wordEntered2}
+                                                            onChange={(event) => { this.handleFilter2(event) }}
+                                                            type="search"
+                                                            variant="filled"
+                                                            InputProps={{
+                                                                startAdornment: <InputAdornment position="start"></InputAdornment>,
+                                                            }} />
+                                                        {this.state.filteredData2.length !== 0 && (
+                                                            <div style={{
+                                                                position: "absolute",
+                                                                left: "0px",
+                                                                top: "58px",
+                                                                zIndex: "1",
+                                                                backgroundColor: "#FFFFFF",
+                                                                border: "0.8px groove #F0F0F0",
+                                                                paddingTop: "15px"
+                                                            }}
+                                                            >
+                                                                {this.state.filteredData2.slice(0, 15).map((value, key) => {
+                                                                    return (<a onClick={(e) => this.clickedTo(value, e)} target="_blank"
+                                                                        onMouseOver={(e) => e.target.style.background = "#F0F0F0"}
+                                                                        onMouseOut={(e) => e.target.style.background = "#FFFFFF"}
+                                                                    >
+                                                                        <p>{value.name} </p>
+                                                                    </a>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
 
 
-                    <input
-                        class="btn btn-primary"
-                        type="submit"
-
-                    />
-                    {/* <OurAlert flag={this.flag}></OurAlert> */}
 
 
-                </form>
-                <Box sx={{ width: '100%' }}>
-                    <Collapse in={this.state.open}>
-                        <Alert
-                            //   action={
-                            // <IconButton
-                            //   aria-label="close"
-                            //   color="inherit"
-                            //   size="small"
-                            //   onClick={ this.setAlertFalse()
-                            //  }
-                            // >
-                            //   <CloseIcon fontSize="inherit" />
-                            // </IconButton>
-                            //   }
-                            sx={{ mb: 2 }}
-                        >
-                            Flight Added!
-                        </Alert>
-                    </Collapse>
 
-                </Box>
-                <Box sx={{ width: '100%' }}>
-                    <Collapse in={this.state.fail}>
-                        <Alert severity="error"
-                            //   action={
-                            // <IconButton
-                            //   aria-label="close"
-                            //   color="inherit"
-                            //   size="small"
-                            //   onClick={ this.setAlertFalse()
-                            //  }
-                            // >
-                            //   <CloseIcon fontSize="inherit" />
-                            // </IconButton>
-                            //   }
-                            sx={{ mb: 2 }}
-                        >
-                            Please Enter All Details Correctly!
-                        </Alert>
-                    </Collapse>
 
-                </Box>
 
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4 form-group form-group form-inline">
+                                                    <FloatingLabel label="Departure Date" >
+                                                        <input
+                                                            onKeyDown={(e) => e.preventDefault()}
+                                                            type='date'
+                                                            min={this.state.DateString}
+                                                            // min = "2021-11-07"
+                                                            class="form-control flex-fill"
+                                                            placeholder='DepartureDate'
+                                                            name='DepartureDate'
+                                                            //  className='form-control'
+                                                            value={this.state.DepartureDate}
+                                                            onChange={this.onChange}
+                                                        />
+                                                    </FloatingLabel>
+                                                </div>
+
+                                                <div className="col-md-6 col-12 mb-4 form-group form-inline">
+
+                                                    {/*<div class="col-md-6" className='form-group form-inline'>*/}
+                                                    <FloatingLabel label="Arrival Date" >
+                                                        <input
+                                                            onKeyDown={(e) => e.preventDefault()}
+                                                            type='date'
+                                                            // min = {new Date(this.state.DepartureDate).getDate()-1 }
+                                                            min={this.state.DepartureDate}
+                                                            class="form-control flex-fill"
+                                                            placeholder='ArrivalDate'
+                                                            name='ArrivalDate'
+                                                            //  className='form-control'
+                                                            value={this.state.ArrivalDate}
+                                                            onChange={this.onChange}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-6 col-12 mb-4 form-group form-group form-inline">
+                                                    <FloatingLabel label="Departure Time" >
+                                                        <input
+                                                            type='time'
+                                                            class="form-control flex-fill"
+                                                            placeholder='DepartureTime'
+                                                            name='DepartureTime'
+                                                            //  className='form-control'
+                                                            value={this.state.DepartureTime}
+                                                            onChange={this.onChange}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+
+
+
+                                                <div className="col-md-6 col-12 mb-4 form-group form-inline">
+                                                    <FloatingLabel label="Arrival Time" >
+                                                        <input
+                                                            type='time'
+                                                            class="form-control flex-fill"
+                                                            placeholder='ArrivalTime'
+                                                            name='ArrivalTime'
+                                                            //  className='form-control'
+                                                            value={this.state.ArrivalTime}
+                                                            onChange={this.onChange}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+
+                                            <Button variant="primary"
+                                                disabled={this.state.FlightNumber === "" ||
+                                                    this.state.ArrivalDate === "" ||
+                                                    this.state.DepartureDate === "" ||
+                                                    this.state.From === "" ||
+                                                    this.state.To === "" ||
+                                                    this.state.ArrivalTime === "" ||
+                                                    this.state.DepartureTime === ""}
+                                                    onClick={this.nextStep}
+                                                    style={{ marginLeft: "82.5%", marginBottom: "15px" }}
+                                                    >
+                                                Continue
+                                            </Button>
+                                        </div>
+
+:
+                                        <div>
+
+                                            <h6>Economy Class</h6>
+                                            <div className="row">
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Seats Available" >
+                                                        <input
+                                                            type='number'
+                                                            class="form-control flex-fill"
+                                                            name='EconomySeats'
+                                                            min='0'
+                                                            //  className='form-control'
+                                                            value={this.state.EconomySeats}
+                                                            onChange={this.onChange2}
+                                                            />                        </FloatingLabel>
+
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Price" >
+
+                                                        <input
+                                                            type='number'
+                                                            class="form-control flex-fill"
+                                                            name='EconomyPrice'
+                                                            min='0'
+                                                            //  className='form-control'
+                                                            value={this.state.EconomyPrice}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+
+                                                </div>
+
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Baggage" >
+
+                                                        <input
+                                                            type='number'
+                                                            class="form-control flex-fill"
+                                                            name='EconomyBags'
+                                                            min='0'
+                                                            //  className='form-control'
+                                                            value={this.state.EconomyBags}
+                                                            onChange={this.onChange2}
+                                                        />
+                                                    </FloatingLabel>
+                                                </div>
+
+
+                                            </div>
+
+                                            <hr />
+                                            <h6>Business Class</h6>
+                                            <div className="row">
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Seats Available" >
+                                                        <input
+                                                            type='number'
+                                                            min='0'
+                                                            class="form-control flex-fill"
+                                                            name='BusinessSeats'
+                                                            //  className='form-control'
+                                                            value={this.state.BusinessSeats}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Price" >
+                                                        <input
+                                                            type='number'
+                                                            min='0'
+                                                            class="form-control flex-fill"
+                                                            name='BusinessPrice'
+                                                            //  className='form-control'
+                                                            value={this.state.BusinessPrice}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Baggage" >
+                                                        <input
+                                                            type='number'
+                                                            class="form-control flex-fill"
+                                                            name='BusinessBags'
+                                                            min='0'
+                                                            //  className='form-control'
+                                                            value={this.state.BusinessBags}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <h6>First Class</h6>
+                                            <div className="row">
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Seats Available" >
+                                                        <input
+                                                            type='number'
+                                                            min='0'
+                                                            class="form-control flex-fill"
+                                                            name='FirstSeats'
+                                                            //  className='form-control'
+                                                            value={this.state.FirstSeats}
+                                                            onChange={this.onChange2}
+                                                        />
+                                                    </FloatingLabel>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Price" >
+                                                        <input
+                                                            type='number'
+                                                            min='0'
+                                                            class="form-control flex-fill"
+                                                            name='FirstPrice'
+                                                            //  className='form-control'
+                                                            value={this.state.FirstPrice}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                                <div className="col-md-4 mb-4">
+                                                    <FloatingLabel label="Bagagge">
+
+                                                        <input
+                                                            type='number'
+                                                            class="form-control flex-fill"
+                                                            name='FirstBags'
+                                                            min='0'
+                                                            //  className='form-control'
+                                                            value={this.state.FirstBags}
+                                                            onChange={this.onChange2}
+                                                            />
+                                                    </FloatingLabel>
+                                                </div>
+                                            </div>
+
+                                            {/*   <input
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    />
+                                */}
+                                            <Button variant="primary" onClick={this.prevStep} >
+                                                Previous
+                                            </Button>
+
+                                            <Button variant="primary"
+                                                type="submit"
+                                                style={{ marginLeft: "84.5%", marginBottom: "15px", marginTop: "-38px" }}
+                                                disabled={
+                                                    this.state.EconomyBags === "" ||
+                                                    this.state.EconomyPrice === "" ||
+                                                    this.state.EconomySeats === "" ||
+                                                    this.state.BusinessBags === "" ||
+                                                    this.state.BusinessPrice === "" ||
+                                                    this.state.BusinessSeats === "" ||
+                                                    this.state.FirstBags === "" ||
+                                                    this.state.FirstPrice === "" ||
+                                                    this.state.FirstSeats === ""
+                                                }
+                                                >
+                                                Submit
+                                            </Button>
+
+
+                                            <hl />
+
+
+
+                                        </div>
+
+}
+                                </div>
+                            )}
+
+                        {/* <OurAlert flag={this.flag}></OurAlert> */}
+
+                    </form>
+                </div>
             </div>
         );
     }
 }
 
 export default CreateFlight;
+
+
+
+
+
+/*
+<Dialog
+    open={this.state.open}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+>
+    <DialogTitle id="alert-dialog-title">
+        {"Flight Added Successfully!"}&nbsp;&nbsp;<FlightTakeoffIcon />&nbsp;
+    </DialogTitle>
+
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+            <Alert action={
+                <IconButton aria-label="close" color="inherit" size="small" onClick={this.handleClose}>
+                    <CloseIcon fontSize="inherit" />
+                </IconButton>}
+                sx={{ mb: 2 }}
+            ><AlertTitle> <strong>Flight Added Successfully!&nbsp;&nbsp;<FlightTakeoffIcon />&nbsp;</strong> </AlertTitle>
+            </Alert>
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button variant="primary" style={{ marginRight: "82px" }}
+            onClick={() => {
+                this.clearForm();
+                this.props.history.push("/AllFlights");
+            }}>View All Flights
+        </Button>
+        <Button variant="primary" style={{}}
+            onClick={() => {
+                this.clearForm();
+                this.props.history.push("/Create");
+            }}
+            autoFocus>
+            + Flight</Button>
+    </DialogActions>
+</Dialog>
+            */
