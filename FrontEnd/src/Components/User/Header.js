@@ -83,14 +83,13 @@ const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
         token: state.DetailsReducer.details.token,
-        user: state.DetailsReducer.details.user,
-        test: state.DetailsReducer.details,
+      //  user: state.DetailsReducer.details.user,
     };
     
     
 };
 
-console.log("ana el detaiillss",test);
+//console.log("ana el detaiillss",UserID);
 /*
 const mapDispatchToState = (dispatch) => {
     return {
@@ -136,8 +135,8 @@ function Header({ UserID }) {
         history.push("/ViewUserInfo/" + { UserID });
     };
 
-    const changePassword = (user) => {
-        history.push("/ChangePassword/" + { UserID });
+    const changePassword = () => {
+        history.push(`/ChangePassword/${UserID}`);
     };
 
 
