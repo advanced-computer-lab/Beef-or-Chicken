@@ -72,56 +72,56 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
       q.TakenSeatsDeparting = request.body.seatsDeparting
     if (request.body.seatsReturning != null)
       q.TakenSeatsArriving = request.body.seatsReturning
-    if (request.body.email == true) {
+    // if (request.body.email == true) {
 
-      console.log("f email true", q)
-      await reservationModel.findByIdAndUpdate(reservationId, q);
+    //   console.log("f email true", q)
+       await reservationModel.findByIdAndUpdate(reservationId, q);
 
-      //send mail with itineraire
-      //IF PAID
-      //const seats = await reservationModel.findById(ReservationId);
-      const reservation = await reservationModel.findById(reservationId);
-      const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
-      const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
-      const User = await userModel.findById(reservation.UserID);
-      const totalPrice = reservation.TotalPrice.toString();
+    //   //send mail with itineraire
+    //   //IF PAID
+    //   //const seats = await reservationModel.findById(ReservationId);
+    //   const reservation = await reservationModel.findById(reservationId);
+    //   const DepartureFlight = await flightModel.findById(reservation.DepartureFlightID);
+    //   const ReturnFlight = await flightModel.findById(reservation.ReturnFlightID);
+    //   const User = await userModel.findById(reservation.UserID);
+    //   const totalPrice = reservation.TotalPrice.toString();
 
-      let transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "BeefOrChickenACL@gmail.com",
-          pass: "beeforchicken"
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-      });
-
-
-      let mailOptions = {
-
-        from: "BeefOrChickenACL@gmail.com",
-        to: User.email,
-        subject: "Reservation confirmation",
-        text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ",
-      };
-      console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
-      console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
-      transporter.sendMail(mailOptions, function (err, success) {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log("Mail sent successfully");
-        }
-      });
+    //   let transporter = nodemailer.createTransport({
+    //     service: "gmail",
+    //     auth: {
+    //       user: "BeefOrChickenACL@gmail.com",
+    //       pass: "beeforchicken"
+    //     },
+    //     tls: {
+    //       rejectUnauthorized: false,
+    //     },
+    //   });
 
 
-    }
-    if (request.body.email != true) {
+    //   let mailOptions = {
 
-      console.log("f email false", q)
-      await reservationModel.findByIdAndUpdate(reservationId, q);
-    }
+    //     from: "BeefOrChickenACL@gmail.com",
+    //     to: User.email,
+    //     subject: "Reservation confirmation",
+    //     text: "Dear " + User.firstName + ", \nyour reservation with Beef or Chicken airlines has been confirmed, please find below your itinerary details: \nBooking number: " + reservation.Number + " \nDeparture flight details: \nDeparture Date: " + DepartureFlight.DepartureDate + " \nDeparture Time: " + DepartureFlight.DepartureTime + " \nArrival Date: " + DepartureFlight.ArrivalDate + " \nArrival Time: " + DepartureFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsDeparting + " \n\nReturn flight details: \nDeparture Date: " + ReturnFlight.DepartureDate + " \nDeparture Time: " + ReturnFlight.DepartureTime + " \nArrival Date: " + ReturnFlight.ArrivalDate + " \nArrival Time: " + ReturnFlight.ArrivalTime + " \nCabin: " + reservation.CabinType + " \nChosen Seats: " + reservation.TakenSeatsArriving + " \nTotal price: " + totalPrice + " EGP. \nWe wish you a safe flight! ",
+    //   };
+    //   console.log("TakenSeatsArriving", reservation.TakenSeatsArriving);
+    //   console.log("TakenSeatsdeparting", reservation.TakenSeatsDeparting);
+    //   transporter.sendMail(mailOptions, function (err, success) {
+    //     if (err) {
+    //       console.log(err)
+    //     } else {
+    //       console.log("Mail sent successfully");
+    //     }
+    //   });
+
+
+    // }
+    // if (request.body.email != true) {
+
+    //   console.log("f email false", q)
+    //   await reservationModel.findByIdAndUpdate(reservationId, q);
+    // }
 
 
 
@@ -135,21 +135,10 @@ app.patch("/reserveSeats", async (request, response) => {  //updateUser
 
 app.post("/mail", async (request, response) => {
   try {
-
-    // console.log("Request: ", request.body)
-    //var q = {}
-
-    //var reservationId= request.body.reservationId;
-    // if (request.body.seatsDeparting != null)
-    //   q.TakenSeatsDeparting =  request.body.seatsDeparting
-    // if (request.body.seatsReturning != null)
-    //   q.TakenSeatsArriving = request.body.seatsReturning
-
-
     //send mail with itineraire
     //IF PAID
     //const seats = await reservationModel.findById(ReservationId);
-    console.log("ana el request ya ninja", request.body)
+    console.log("el request", request.body)
     const reservation = request.body.Reservation;
 
     const User = request.body.thisUser;
@@ -198,6 +187,8 @@ app.post("/mail", async (request, response) => {
     response.status(5000).send(error);
   }
 });
+
+
 
 // app.patch("/addSeatsToFlights", async (request, response) => {  //updateUser
 //   try {
