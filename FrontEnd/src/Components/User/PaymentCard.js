@@ -139,7 +139,91 @@ const ResetButton = ({ onClick }) => (
     </button>
 );
 
-const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, setOrigin, setOriginName, setDestination, setDestinationName }) => {
+
+
+const handleMail = (props) => {
+
+
+    const details = props.details.details;
+    
+    console.log("croissant 1", details);
+
+   
+    const reservation = details.Reservation;
+    const departure = details.DepartingFlight;
+    const returnFlight = details.ReturnFlight;
+    //const userName = details.userName;
+
+    console.log("reservation croissant: ",reservation);
+    console.log("departure croissant: ",departure);
+    console.log("return croissant: ",returnFlight);
+    //console.log(userName);
+
+
+    let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+    axios
+        .get(url2)
+        .then(res => {
+            //props.setReservation(res.data);
+            url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
+            axios
+                .get(url2)
+                .then(res => {                    
+                   // props.setDepartingFlight(res.data);                 
+                    url2 = `http://localhost:8080/flightById/${reservation.ReturnFlightID}`
+                    axios
+                        .get(url2)
+                        .then(res => {                            
+                            //props.setReturnFlight(res.data);                 
+                            //console.log("props:",props)
+                            // HENA 
+                            url2 = `http://localhost:8080/userById/${reservation.UserID}`
+                            axios
+                                .get(url2)
+                                .then(res => {
+                                    console.log("respnose: ", res)
+                                    console.log("gamed louji!")
+                                    let User = res.data
+                                   
+                                   
+                                    url2 = `http://localhost:8080/mail`
+                                    let body = {
+
+                                        Reservation: reservation,
+                                        thisUser: User,
+                                        Departing : departure,
+                                        Returning : returnFlight
+                                        
+                                    }
+                                    axios
+                                        .post(url2, body)
+                                        .then(res => {
+                                            console.log("ba3atna el mail: ", res)
+                                            // this.props.history.push(`/Seats/1`);
+                                        })
+                                })
+                        })
+                        .catch(error => {
+                            console.log("idiot!");
+                            console.log(error.message);
+                        })
+                })
+                .catch(error => {
+                    console.log("idiot!");
+                    console.log(error.message);
+                })
+        })
+        .catch(error => {
+            console.log("idiot!");
+            console.log(error.message);
+        })
+
+
+
+    ////////////////////////////////
+}
+
+const CheckoutForm = (props) => {
     console.log(props)
     const stripe = useStripe();
     const elements = useElements();
@@ -191,6 +275,8 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
 
             }
 
+
+
             console.log("220 ", body)
             let url = "http://localhost:8080/payment"
 
@@ -198,9 +284,9 @@ const CheckoutForm = (props, { setAdult, setCabinClass, setChildren, details, se
                 .post(url, body)
                 .then(res => {
                     console.log("respnose: ", res)
-                    console.log("gamed louji!")
                     setPaid(true);
-
+                    handleMail(props);
+                    console.log("ya croissant")
                 })
                 .catch(error => {
                     console.log("idiot!");
@@ -387,6 +473,17 @@ const CARD_ELEMENT_OPTIONS = {
     },
 };
 
+// const mapStateToProps = (state) => {
+//     //console.log(state.DetailsReducer.details.destination)
+//     return {
+//         origin: state.DetailsReducer.details.origin,
+//         origin_name: state.DetailsReducer.details.origin_name,
+//         Reservation: state.DetailsReducer.details.Reservation,
+//         DepartingFlight: state.DetailsReducer.details.DepartingFlight,
+//         ReturnFlight: state.DetailsReducer.details.ReturnFlight,
+//     };
+// };
+
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 // const mapStateToProps = (state) => {
 //     console.log("state.DetailsReducer.details")
@@ -399,7 +496,8 @@ const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 
 const mapStateToProps = (state) => {
-    //console.log(state.DetailsReducer.details.destination)
+    console.log("state.DetailsReducer.details")
+    console.log("Croissant:", state.DetailsReducer.details)
     return {
         details: state.DetailsReducer.details,
         allOffers: state.DetailsReducer.details.allOffers,

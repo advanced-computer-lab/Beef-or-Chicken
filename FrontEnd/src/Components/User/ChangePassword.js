@@ -60,11 +60,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 65,
         backgroundColor: "#f5f5f5",
         boxShadow: '0px 4px 8px 0 rgba(0.25, 0.25, 0.25, 0.25)',
-
-
     },
-
-
 
     padding:{
 
@@ -75,36 +71,68 @@ const useStyles = makeStyles((theme) => ({
 export default connect(mapStateToProps, mapDispatchToState)(UpdateUserInfo);
 function UpdateUserInfo(prop) {
 
+
+function ChangePassword(prop) {
+    // console.log(props.details)
+    //const user = userr
+    //console.log("USER HENNNAA",user)
+    //console.log("PROP: ",prop);
     const user = prop.match.params
+    //console.log("User: ", user)
+    //console.log("userID: ", user.id)
 
-    let history = useHistory();
+    const [CurrentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setnewPassword] = useState("");
+  
+    const onSubmit = e => { 
+        
+    e.preventDefault();
+    //console.log("fel submit ya croissant")
+        let url = `http://localhost:8080/searchUserByID/${user.id}`;
 
-    
-    const [password, setPassword] = useState("");
-    const onSubmit = (event) => {
-        event.preventDefault();
-      
-        let body = {
-            'password': { password },
-        }
+        axios.get(url)
+        .then(async (response) => {
+            //console.log("response ya croissant", response)
+            //response.data.password = await bcrypt.hash(response.data.password, 10);
+            //console.log("response.data.password ya croissant: ", response.data)
 
-        let url = "http://localhost:8080/searchUser"
+            let body2 = {
+                'username':response.data.username,
+                'password': response.data.password,
+            }
 
-        axios
-            .post(url, body)
-            .then(res => {
-               if (res.data[0].type == 1) {
-                    prop.UserID = res.data[0]._id
-                    history.push('/Summary');
-                }
-                else {
-                    console.log("not user")
+            let url2 = `http://localhost:8080/passwordCheck`;
+
+            axios.post(url2,body2)
+            .then(async (response) => {
+                console.log("response croissant",response)
+                if(response.data.message=="correct password"){
+                    //alert("Password mazboota")
+                    let url3 = `http://localhost:8080/changePassword/${user.id}`;
+                    let body = {
+                        'password': newPassword,
+                    }
+                    axios.patch(url3, body)
+                    .then(async () => {
+                    //console.log("Tmam ya croissant")
+                    alert("Password Changed Successfully!")
+                    })
+        
+                    .catch((e) => {
+                        //alert("Password doesn't match minimum requirments!")
+                        alert("7aga 3'alat")
+                        console.log("error ===>", e);
+                    });
+
                 }
             })
-            .catch(error => {
-                console.log("idiot!");
-                console.log(error.message);
-            })
+
+            .catch((e) => {
+                alert("url2bayez")
+                console.log("error ===>", e);
+            });
+
+        });
 
     };
 
@@ -211,7 +239,7 @@ function UpdateUserInfo(prop) {
                         name='Current Password'
                         // className='form-control'
                         
-                        onChange={event => { setPassword(event.target.value) }}
+                        onChange={event => { setCurrentPassword(event.target.value) }}
                     />
                 </div>
 
@@ -224,28 +252,24 @@ function UpdateUserInfo(prop) {
                         class="form-control flex-fill"
                         name='new password'
                         // className='form-control'
-                        onChange={event => { setPassword(event.target.value)}}
+                        onChange={event => { setnewPassword(event.target.value)}}
                     />
                 </div>
 
 
+                <Button
+                            style={{ background: "#10404c ", color: "wheat", marginTop: "10%", marginRight: "50%" }}
+                            classname={classes.button2}
+                            variant="contained"
 
-                <div class="padding">
-                    </div>
-                    <div class="changepassword">
+                            size="small"
+                            className={classes.button}
 
-                  <input onClick={() => {onSubmit() }}
-                    class="btn btn-primary"
-                    type="submit"
-                    variant="outlined"
-                   size="medium"
-                    // color="blue"
-                    class="btn btn-primary"
-                    type="submit"
-                    value="change"
-                // className="btn btn-outline-warning btn-block mt-4"
-                    /> 
-                    </div>
+                            onClick={(e) => { onSubmit(e) }}
+                        >
+                            Change
+</Button>
+   
 
                     {/* <div class="rectangle3">
                     <Link to={  { pathname: `/ViewUserInfo/` } }>
@@ -297,3 +321,4 @@ function UpdateUserInfo(prop) {
     );
 }
 
+}

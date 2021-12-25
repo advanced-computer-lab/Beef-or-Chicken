@@ -86,8 +86,13 @@ const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
         token: state.DetailsReducer.details.token,
+      //  user: state.DetailsReducer.details.user,
     };
+    
+    
 };
+
+//console.log("ana el detaiillss",UserID);
 /*
 const mapDispatchToState = (dispatch) => {
     return {
@@ -133,13 +138,13 @@ function Header({ UserID }) {
     const register = () => {
         history.push("/Register");
     };
-
+// check hena tany el dollar sign
     const editProfile = () => {
         history.push("/UpdateUserInfoNew/" + UserID );
     };
 
     const changePassword = () => {
-        history.push("/ChangePassword/" + UserID );
+        history.push(`/ChangePassword/${UserID}`);
     };
 
 

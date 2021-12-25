@@ -157,6 +157,38 @@ app.post('/login', (req, res) => {
 })
 
 
+
+
+app.post('/passwordCheck', (req, res) => {
+  const userLoggedIn = req.body
+  console.log("userLoggedIn",req.body)
+  userModel.findOne({ username: userLoggedIn.username })
+    .then(dbUser => {
+      if (!dbUser) {
+        console.log("!DBUSER")
+        return res.json({
+          message: "Invalid Username or Password"
+        })
+      }
+console.log("userLoggedIn.password: ",userLoggedIn.password)
+console.log("dbUser.password: ",dbUser.password)
+          if (userLoggedIn.password == dbUser.password) {
+             // console.log("res",res)
+              return res.json({
+                message: "correct password"
+              })
+          }
+          else {
+            return res.json({
+              message: "Wrong Password"
+            })
+          }
+        })
+    })
+
+
+
+
 app.post('/register', async (req, res) => {
   const user = req.body;
   console.log(user);
@@ -211,6 +243,27 @@ app.post('/register', async (req, res) => {
 app.get('/CheckAdmin',verifyJWTAdmin ,  async (req, res) => {
       res.json({ message: "ADMIN" })
 })
+
+app.patch('/changePassword/:id', async (req, res) => {
+  const user = req.body;
+  
+//console.log("req.body.password", req.body.password);
+ user.password = await bcrypt.hash(req.body.password, 10);
+ //console.log("encrypted user.password",user.password);
+ try {
+  var q = {}
+  
+  q.password = user.password
+  //console.log("q.password CROISSANT",q.password)
+
+  //console.log("req.params CROISSANT",req.params.id)
+  await userModel.findByIdAndUpdate(req.params.id, q);
+  res.send();
+} catch (error) {
+  res.status(500).send(error);
+}
+  }
+  )
 
 
 app.post('/CheckUsername', async (req, res) => {
