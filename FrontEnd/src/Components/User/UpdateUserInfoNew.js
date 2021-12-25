@@ -105,7 +105,7 @@ function UpdateUserInfo(prop,{ details , setUserID , setToken }) {
             history.push("/userlogin2");
         }
         else{
-        axios.get('http://localhost:8080/searchUserByID/'+ user.id ,
+        axios.get('http://localhost:8080/UserByID/'+ user.id ,
         {
             headers: {
               "x-access-token" : prop.details.token

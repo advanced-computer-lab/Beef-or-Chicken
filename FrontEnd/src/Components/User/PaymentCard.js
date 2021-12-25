@@ -149,21 +149,21 @@ const handleMail = (props) => {
     console.log("croissant 1", details);
 
    
-    const reservation = details.Reservation;
     const departure = details.DepartingFlight;
     const returnFlight = details.ReturnFlight;
     //const userName = details.userName;
 
-    console.log("reservation croissant: ",reservation);
+   // console.log("reservation croissant: ",reservation);
     console.log("departure croissant: ",departure);
     console.log("return croissant: ",returnFlight);
     //console.log(userName);
 
 
-    let url2 = `http://localhost:8080/reservationByID/${reservation._id}`
+    let url2 = `http://localhost:8080/reservationByID/${details.ReservationID}`
     axios
         .get(url2)
         .then(res => {
+            const reservation = res.data
             //props.setReservation(res.data);
             url2 = `http://localhost:8080/flightById/${reservation.DepartureFlightID}`
             axios

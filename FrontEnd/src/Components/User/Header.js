@@ -205,10 +205,10 @@ function Header({ UserID }) {
                                 onClick={login}
                                 color="inherit"
                             >
-                                <LoginIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
+                                {/* <LoginIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
                                 <a style={{ fontSize: 16, color: "#FFFFFF" }}>
                                     &nbsp;Login
-                                </a>
+                                </a> */}
                             </IconButton>
                         </div>
 

@@ -65,8 +65,10 @@ class ViewAllReservations extends Component {
     */
    
    async componentDidMount() {
+       console.log(this.state.token)
        const response = await axios.get
-                    ('http://localhost:8080/usersflight/' + this.state.userId ,
+       
+                    (`http://localhost:8080/usersflight/${this.state.userId}` ,
                     {
                         headers: {
                           "x-access-token" : this.state.token
@@ -81,7 +83,7 @@ class ViewAllReservations extends Component {
        if(result.isLoggedIn !== false){
            console.log(result);
             this.setState({ reservations: result });
-            const responseUser = await axios.get('http://localhost:8080/searchUserByID/' + this.state.userId ,
+            const responseUser = await axios.get(`http://localhost:8080/UserByID/${this.state.userId}` ,
              {
                 headers: {
                   "x-access-token" : this.state.token

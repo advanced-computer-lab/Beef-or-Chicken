@@ -61,7 +61,7 @@ class viewUserInfo extends Component {
         if (this.state.id != "" && this.state.id != null) {
             let url =
                 axios
-                    .get(`http://localhost:8080/searchUserByID/${this.state.id}`,
+                    .get(`http://localhost:8080/UserByID/${this.state.id}`,
                         {
                             headers: {
                                 "x-access-token": this.props.details.token
@@ -75,6 +75,7 @@ class viewUserInfo extends Component {
                             })
                         }
                         else {
+                            console.log("from token")
                             alert("You need to login to view your profile!")
                             this.props.history.push("/Userlogin2");
                          }
