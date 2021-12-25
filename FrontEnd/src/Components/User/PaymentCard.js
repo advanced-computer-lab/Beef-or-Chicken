@@ -16,7 +16,9 @@ import {
 } from "@stripe/react-stripe-js";
 import "./styles.css";
 import { Card, CardContent } from '@material-ui/core';
-
+import Button from "@material-ui/core/Button";
+import { useHistory } from "react-router-dom";
+import ReturnToHomeButton from './ReturnToHomeButton2'
 const CARD_OPTIONS = {
     iconStyle: "solid",
     style: {
@@ -235,6 +237,7 @@ const CheckoutForm = (props) => {
         phone: "",
         name: ""
     });
+    let history = useHistory();
     const classes = useStyles();
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -304,6 +307,24 @@ const CheckoutForm = (props) => {
         });
     };
 
+    // const func = async (e) => {
+    //     e.preventDefault();
+    //     setOrigin("")
+    //     setOriginName("")
+    //     setDestination("")
+    //     setDestinationName("")
+    //     setCabinClass('Economy')
+    //     setAdult(1)
+    //     setChildren(0)
+    //     console.log("detailsssssss------->: ", details)
+    //     history.push('/');
+    //     // })
+    //     // .catch(error => {
+    //     //     console.log("idiot!");
+    //     //     console.log(error.message);
+    //     // })
+    // }
+
     return paid ? (
         <div className="Result">
             <div className="ResultTitle" role="alert">
@@ -312,7 +333,8 @@ const CheckoutForm = (props) => {
             <div className="ResultMessage">
                 <Checkmark size='xxLarge' />
             </div>
-            <ResetButton onClick={reset} />
+            <ReturnToHomeButton />
+            {/* <ResetButton onClick={reset} /> */}
         </div>
     ) : (
         <form className={classes.form} onSubmit={handleSubmit}>
@@ -463,14 +485,65 @@ const CARD_ELEMENT_OPTIONS = {
 // };
 
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+// const mapStateToProps = (state) => {
+//     console.log("state.DetailsReducer.details")
+//     console.log(state.DetailsReducer.details)
+//     return {
+//         details: state.DetailsReducer.details,
+//         // allOffers: state.DetailsReducer.details.allOffers
+//     };
+// };
+
+
 const mapStateToProps = (state) => {
     console.log("state.DetailsReducer.details")
     console.log("Croissant:", state.DetailsReducer.details)
     return {
         details: state.DetailsReducer.details,
-        // allOffers: state.DetailsReducer.details.allOffers
+        allOffers: state.DetailsReducer.details.allOffers,
+        origin: state.DetailsReducer.details.origin,
+        origin_name: state.DetailsReducer.details.origin_name,
+        destination: state.DetailsReducer.details.destination,
+        destination_name: state.DetailsReducer.details.destination_name,
+        cabin_class: state.DetailsReducer.details.cabin_class,
+        Adults: state.DetailsReducer.details.Adults,
+        children: state.DetailsReducer.details.children,
     };
 };
+
+const mapDispatchToState = (dispatch) => {
+    return {
+
+        setCabinClass: (cabin_class) => {
+            dispatch({ type: 'setCabinClass', payload: cabin_class });
+        },
+        setAdult: (Adults) => {
+            dispatch({ type: 'setAdult', payload: Adults });
+        },
+        setChildren: (children) => {
+            dispatch({ type: 'setChildren', payload: children });
+        },
+        setOrigin: (origin) => {
+            dispatch({ type: 'setOrigin', payload: origin });
+        },
+
+        setOriginName: (origin_name) => {
+            dispatch({ type: 'setOriginName', payload: origin_name });
+        },
+
+        setDestination: (destination) => {
+            dispatch({ type: 'setDestination', payload: destination });
+        },
+
+        setDestinationName: (destination_name) => {
+            dispatch({ type: 'setDestinationName', payload: destination_name });
+        },
+
+
+
+    };
+};
+
 
 export default connect(mapStateToProps)(PaymentCard);
 function PaymentCard(details) {

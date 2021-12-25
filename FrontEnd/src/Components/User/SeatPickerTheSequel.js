@@ -41,14 +41,14 @@ class SeatPicker extends Component {
     constructor(props) {
 
         super(props);
-        // console.log("before: ", this.props)
+        console.log("before: ", props)
 
 
         this.state = {
 
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
-            flight: this.props.match.params.flight,
+            flight: this.props.flight,
             // ReservationId: this.props.history.location.state.ReservationId,
             ReservationId: this.props.details.ReservationID,
             seats: [],
@@ -256,8 +256,8 @@ class SeatPicker extends Component {
 
                 this.props.setTakenSeatsDeparture(this.state.DepartureSeats)
                 console.log("details departure---->", this.props.details)
-                this.settingArrays()
-                this.props.history.push(`/Seats/2`);
+                //this.settingArrays()
+                //this.props.history.push(`/Seats/2`);
 
 
 
@@ -337,8 +337,8 @@ class SeatPicker extends Component {
                     this.props.setTakenSeatsReturn(this.state.returnSeats)
                     console.log("details return---->", this.props.details)
                     console.log(this.props.TakenSeatsReturn)
-                    this.props.history.push('/FullSummaryPage');
-                    alert("Trip Reserved Successfully!")
+                    // this.props.history.push('/FullSummaryPage');
+                    //alert("Trip Reserved Successfully!")
 
 
 
@@ -360,8 +360,8 @@ class SeatPicker extends Component {
 
         return (
             <div >
-                <Header />
-                <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent: "center", display: "flex", width: "100%", overflowX: "hidden", backgroundSize: "cover" }}>
+
+                <div >
                     <div style={{ paddingTop: "100px" }}>
                         <Grid container spacing={0}>
                             <Grid item xs={9}>

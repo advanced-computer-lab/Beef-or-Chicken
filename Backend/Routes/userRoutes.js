@@ -160,51 +160,23 @@ app.post('/login', (req, res) => {
 
 
 app.post('/passwordCheck', (req, res) => {
-  console.log("araf")
   const userLoggedIn = req.body
-  console.log("araf2",userLoggedIn)
+  console.log("userLoggedIn",req.body)
   userModel.findOne({ username: userLoggedIn.username })
     .then(dbUser => {
-      console.log("araf3")
       if (!dbUser) {
-        console.log("araf4")
+        console.log("!DBUSER")
         return res.json({
           message: "Invalid Username or Password"
         })
       }
-
-      console.log("inpassword", userLoggedIn.password, "password from data base", dbUser.password)
-
-      bcrypt.compare(userLoggedIn.password, dbUser.password)
-        .then(isCorrect => {
-          console.log("abl el if iscorrect")
-          console.log(isCorrect)
-          if (isCorrect) {
-            //const payload = {//change password here
-              // id: dbUser._id,
-              // username: dbUser.username,
-              // type:dbUser.type,
-              console.log("7aga gnb res",res)
+console.log("userLoggedIn.password: ",userLoggedIn.password)
+console.log("dbUser.password: ",dbUser.password)
+          if (userLoggedIn.password == dbUser.password) {
+             // console.log("res",res)
               return res.json({
                 message: "correct password"
               })
-            //}
-            // jwt.sign(
-            //   payload,
-            //   "" + process.env.JWT_SECRET,
-            //   { expiresIn: 86400 },
-            //   (err, token) => {
-            //     if (err) return res.json({ message: err })
-            //     return res.json({
-            //       message: "Success",
-            //       token: "Bearer " + token,
-            //       UserID : payload.id,
-            //       type:payload.type
-            //     })
-            //   }
-            // )
-
-            //console.log("token", token)
           }
           else {
             return res.json({
@@ -213,7 +185,7 @@ app.post('/passwordCheck', (req, res) => {
           }
         })
     })
-})
+
 
 
 
@@ -269,34 +241,24 @@ app.post('/register', async (req, res) => {
 
 
 
-app.post('/changePassword/:id', async (req, res) => {
+app.patch('/changePassword/:id', async (req, res) => {
   const user = req.body;
-  console.log(user);
-  //const takenUsername = await userModel.findOne({ username: user.username })
- //console.log(takenUsername);
-
- user.password = await bcrypt.hash(req.body.newPassword, 10);
+  
+//console.log("req.body.password", req.body.password);
+ user.password = await bcrypt.hash(req.body.password, 10);
+ //console.log("encrypted user.password",user.password);
  try {
-
-  console.log("Request: ", request.body)
   var q = {}
-
-  if (request.body.newPassword.newPassword != "") {
-    q.newPassword = user.password
-  }
   
+  q.password = user.password
+  //console.log("q.password CROISSANT",q.password)
 
-  console.log(q);
-  console.log(request.params.id);
-  await userModel.findByIdAndUpdate(request.params.id, q);
-  response.send();
+  //console.log("req.params CROISSANT",req.params.id)
+  await userModel.findByIdAndUpdate(req.params.id, q);
+  res.send();
 } catch (error) {
-  response.status(500).send(error);
+  res.status(500).send(error);
 }
-
-
-      
-  
   }
   )
 
