@@ -83,8 +83,7 @@ const mapStateToProps = (state) => {
     return {
         UserID: state.DetailsReducer.details.UserID,
         token: state.DetailsReducer.details.token,
-        user: state.DetailsReducer.details,
-        //test: state.DetailsReducer.details,
+      //  user: state.DetailsReducer.details.user,
     };
     
     
@@ -136,8 +135,8 @@ function Header({ UserID }) {
         history.push("/ViewUserInfo/" + { UserID });
     };
 
-    const changePassword = (user) => {
-        history.push("/ChangePassword/" + { UserID });
+    const changePassword = () => {
+        history.push(`/ChangePassword/${UserID}`);
     };
 
 

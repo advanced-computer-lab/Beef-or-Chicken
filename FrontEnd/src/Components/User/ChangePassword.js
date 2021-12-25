@@ -12,6 +12,7 @@ import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useHistory } from "react-router-dom";
+import bcrypt from 'bcrypt'
 
 
 const mapStateToProps = (state) => {
@@ -49,11 +50,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 65,
         backgroundColor: "#f5f5f5",
         boxShadow: '0px 4px 8px 0 rgba(0.25, 0.25, 0.25, 0.25)',
-
-
     },
-
-
 
     padding:{
 
@@ -62,81 +59,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function ChangePassword(userr) {
-    const user = userr
+function ChangePassword(prop) {
     // console.log(props.details)
     //const user = userr
-    console.log("USER HENNNAA",user)
+    //console.log("USER HENNNAA",user)
+    console.log("PROP: ",prop);
+    const user = prop.match.params
+    console.log("User: ", user)
+    console.log("userID: ", user.id)
 
-
-
-
-    
-    //let history = useHistory();
     const [CurrentPassword, setCurrentPassword] = useState("");
     const [newPassword, setnewPassword] = useState("");
-    const onSubmit = (event) => {
-      //  console.log("abl el url")
-
+  
+    const onSubmit = e => { 
+        
+    e.preventDefault();
+    //console.log("fel submit ya croissant")
         let url = `http://localhost:8080/searchUserByID/${user.id}`;
-
-        console.log("b3d el url")
-       // event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console  
-
-
-
-
-        let body = {
-            'username':{this:user.username},
-            'password': { CurrentPassword },
-            
-
-        }
-
-
-        console.log("body: 7AGA MOMYAZA ", body)
-        //let url = "http://localhost:8080/searchUser"
 
         axios.get(url)
         .then(async (response) => {
+            //console.log("response ya croissant", response)
+            response.data.password = await bcrypt.hash(response.data.password, 10);
+            console.log("response.data.password ya croissant: ", response.data.password)
 
-
-
-
-            if(response.password==CurrentPassword){
-                console.log("gowa le if")
-            console.log("abl el url")
-            let url = `http://localhost:8080/changePassword/${user.id}`;
-            console.log("b3d el url")
-
+            if(response.data.password==CurrentPassword){             
+            console.log("fel if ya croissant")
+            let url2 = `http://localhost:8080/changePassword/${user.id}`;
             let body = {
-                
                 'password': { newPassword },
             }
-
-
-            axios.patch(url, body)
+            axios.patch(url2, body)
             .then(async (response) => {
-                console.log("Password Changed Successfully!")
             alert("Password Changed Successfully!")
-
             })
 
             .catch((e) => {
-                console.log("Password doesn't match minimum requirments!")
                 alert("Password doesn't match minimum requirments!")
-                console.log("ana hena")
                 console.log("error ===>", e);
             });
         }
-            // history.push("/usersflight");
         })
         .catch((e) => {
-            console.log("wrong password!")
             alert("wrong password!")
-            console.log("ana hena")
             console.log("error ===>", e);
         });
 
@@ -263,23 +228,19 @@ function ChangePassword(userr) {
                 </div>
 
 
+                <Button
+                            style={{ background: "#10404c ", color: "wheat", marginTop: "10%", marginRight: "50%" }}
+                            classname={classes.button2}
+                            variant="contained"
 
-                <div class="padding">
-                    </div>
-                    <div class="changepassword">
+                            size="small"
+                            className={classes.button}
 
-                  <input onClick={() => {onSubmit() }}
-                    class="btn btn-primary"
-                    type="submit"
-                    variant="outlined"
-                   size="medium"
-                    // color="blue"
-                    class="btn btn-primary"
-                    type="submit"
-                    value="change"
-                // className="btn btn-outline-warning btn-block mt-4"
-                    /> 
-                    </div>
+                            onClick={(e) => { onSubmit(e) }}
+                        >
+                            Change
+</Button>
+   
 
                     {/* <div class="rectangle3">
                     <Link to={  { pathname: `/ViewUserInfo/` } }>
