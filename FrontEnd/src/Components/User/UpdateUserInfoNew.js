@@ -6,7 +6,7 @@ import './ViewUserInfo.css'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import SideBar from './SideBar'
 import { Link } from 'react-router-dom';
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
     //console.log(state.DetailsReducer.details.destination)
     return {
         details: state.DetailsReducer.details,
-        
+
     };
 };
 
@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         marginTop: "-30px",
         justifyContent: "center",
-        color:"black",
+        color: "black",
     },
 
-    rectangle:{
+    rectangle: {
         // padding: "30%",
         // width: "30%",
         // height: "50%",
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         // background:"#FFFFFF",
 
         padding: theme.spacing(3, 2),
-        marginLeft:"33%",
+        marginLeft: "33%",
         height: "75%",
         width: "30%",
         textAlign: 'center',
@@ -54,35 +54,35 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-    padding:{
+    padding: {
 
-        paddingTop:"10%",
+        paddingTop: "10%",
     }
 }));
 
 
 function UpdateUserInfo(prop) {
-
+    console.log(prop)
     const user = prop.match.params
     console.log("User: ", user)
     console.log("userID: ", user.id)
     const [open, setOpen] = React.useState(false);
-    const [info, setInfo] =React.useState({firstName:"",lastName:"",email:"",passportNumber:""});
+    const [info, setInfo] = React.useState({ firstName: "", lastName: "", email: "", passportNumber: "" });
     // let history = useHistory();
-    
+
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [passportNumber, setPassportNumber] = useState("")
     const [email, setEmail] = useState("")
 
 
-    
+
 
     useEffect(() => {
-        
-        axios.get('http://localhost:8080/searchUserByID/'+ user.id ).then(
+
+        axios.get('http://localhost:8080/searchUserByID/' + user.id).then(
             res => {
-                console.log(res.data )
+                console.log(res.data)
                 setFirstName(res.data.firstName)
                 setLastName(res.data.lastName)
                 setEmail(res.data.email)
@@ -95,15 +95,15 @@ function UpdateUserInfo(prop) {
             .catch(err => {
                 console.log('Error');
             })
-                
-            
-        }
-            , []);
 
 
-            
+    }
+        , []);
 
-    const onSubmit = e => {   
+
+
+
+    const onSubmit = e => {
         let url = `http://localhost:8080/user/${user.id}`;
 
         let body = {
@@ -119,7 +119,7 @@ function UpdateUserInfo(prop) {
                 // history.push("/usersflight");
             })
             .catch((e) => {
-                
+
                 console.log("ana hena")
                 console.log("error ===>", e);
             });
@@ -136,112 +136,112 @@ function UpdateUserInfo(prop) {
     return (
 
         <div style={{ backgroundImage: `url(${flightsback})`, height: "100vh", backgroundSize: "cover" }}>
-                <SideBar />
+            <SideBar />
             <div className={classes.padding}>
-           
-<div className={classes.rectangle}>
-<Box 
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 5, width: '25ch' ,color: "black"},
-      }}
-      
-      noValidate
-      autoComplete="off"
-    >
-     
-    <h3 class="colorHeader">
-    <ManageAccountsIcon></ManageAccountsIcon> Edit Account      
-    </h3>
+
+                <div className={classes.rectangle}>
+                    <Box
+                        component="form"
+                        sx={{
+                            '& .MuiTextField-root': { m: 5, width: '25ch', color: "black" },
+                        }}
+
+                        noValidate
+                        autoComplete="off"
+                    >
+
+                        <h3 class="colorHeader">
+                            <ManageAccountsIcon></ManageAccountsIcon> Edit Account
+                        </h3>
 
 
-      <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">First Name</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder= {firstName}
-                        name='First Name'
-                        // className='form-control'
-                        
-                        onChange={event => { setFirstName(event.target.value) }}
-                    />
-                </div>
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">First Name</label>
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                placeholder={firstName}
+                                name='First Name'
+                                // className='form-control'
 
-
-
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Last Name</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder={lastName}
-                        name='Last Name'
-                        // className='form-control'
-                        onChange={event => { setLastName(event.target.value) }}
-                    />
-                </div>
+                                onChange={event => { setFirstName(event.target.value) }}
+                            />
+                        </div>
 
 
 
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">Last Name</label>
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                placeholder={lastName}
+                                name='Last Name'
+                                // className='form-control'
+                                onChange={event => { setLastName(event.target.value) }}
+                            />
+                        </div>
 
 
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Passport Number</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder={passportNumber}
-                        name='Passport Number'
-                        // className='form-control'
-                        onChange={event => { setPassportNumber(event.target.value) }}
-                    />
-                </div>
 
 
-                <div class="col-md-6" className='form-group form-inline'>
-                    <label class="form-label">Email</label>
-                    <input
-                        type='text'
-                        class="form-control flex-fill"
-                        placeholder={email}
-                        name='Email'
-                        // className='form-control'
-                        onChange={event => { setEmail(event.target.value) }}
-                    />
-                </div>    
 
-                <div class="padding">
-                    </div>
-                    <div class="rectangle4">
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">Passport Number</label>
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                placeholder={passportNumber}
+                                name='Passport Number'
+                                // className='form-control'
+                                onChange={event => { setPassportNumber(event.target.value) }}
+                            />
+                        </div>
 
-                  <input   onClick={() => {onSubmit() }}
-                    class="btn btn-primary"
-                    type="submit"
-                    variant="outlined"
-                   size="medium"
-                    // color="blue"
-                    class="btn btn-primary"
-                    type="submit"
-                    value="Update"
-                // className="btn btn-outline-warning btn-block mt-4"
-                    /> 
-                    </div>
 
-                    <div class="rectangle3">
-                    <Link to={  { pathname: `/ViewUserInfo/` } }>
-                        
-                     
-                    <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="Back"
-                    
-                     />   
-                
-                    </Link>
+                        <div class="col-md-6" className='form-group form-inline'>
+                            <label class="form-label">Email</label>
+                            <input
+                                type='text'
+                                class="form-control flex-fill"
+                                placeholder={email}
+                                name='Email'
+                                // className='form-control'
+                                onChange={event => { setEmail(event.target.value) }}
+                            />
+                        </div>
 
-                {/* <button class="rectangle2"
+                        <div class="padding">
+                        </div>
+                        <div class="rectangle4">
+
+                            <input onClick={() => { onSubmit() }}
+                                class="btn btn-primary"
+                                type="submit"
+                                variant="outlined"
+                                size="medium"
+                                // color="blue"
+                                class="btn btn-primary"
+                                type="submit"
+                                value="Update"
+                            // className="btn btn-outline-warning btn-block mt-4"
+                            />
+                        </div>
+
+                        <div class="rectangle3">
+                            <Link to={{ pathname: `/ViewUserInfo/` }}>
+
+
+                                <input
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    value="Back"
+
+                                />
+
+                            </Link>
+
+                            {/* <button class="rectangle2"
                 onClick={() => {
                     this.props.history.goBack();
                 }}
@@ -249,10 +249,10 @@ function UpdateUserInfo(prop) {
                 Back
             </button> */}
 
-                    
-                  </div>
 
-                  {/* <div class= "rectangle3">
+                        </div>
+
+                        {/* <div class= "rectangle3">
                   <input   onClick={() => {onSubmit() }}
                     class="btn btn-primary"
                     type="submit"
@@ -268,11 +268,11 @@ function UpdateUserInfo(prop) {
 
 
 
-                
 
-    </Box>
-    </div>
-        </div>
+
+                    </Box>
+                </div>
+            </div>
         </div>
 
     );

@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import LogoutButton from './LogoutButton'
 import LoginIcon from '@mui/icons-material/Login';
-
+import bg2 from '../../images/HeaderBG.png'
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "9%"
     },
     navbar: {
-        backgroundColor: "#226AC7",
+        backgroundColor: "transparent",
         height: "100px"
     },
     nav: {
@@ -102,6 +102,7 @@ export default connect(mapStateToProps)(Header);
 function Header({ UserID }) {
     let history = useHistory();
     let init = false;
+    console.log("userId ", UserID)
     if (UserID !== "") {
         init = true;
     }
@@ -126,77 +127,81 @@ function Header({ UserID }) {
     };
 
     const editProfile = () => {
-        history.push("/UpdateUserInfo/" + { UserID });
+        //history.push("/UpdateUserInfo/" + { UserID });
+        history.push(`/UpdateUserInfo/${UserID}`);
     };
 
 
 
     const classes = useStyles();
     return (
-        <div className={classes.navbar}>
-            <div className={classes.side}>
-                <SideBar />
+        <div>
+            {/* <div style={{ backgroundImage: `url(${bg2})`, backgroundSize: "cover" }}> */}
+            <div className={classes.navbar}>
+                <div className={classes.side}>
+                    <SideBar />
+                </div>
+                <nav className={classes.nav} >
+                    <img src={logo} alt="logohear" className={classes.logo} />
+
+                    {auth && (
+                        <div className={classes.profile}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle sx={{ fontSize: 40, color: "#FFFFFF" }} />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    marginTop: '-160px',
+                                    marginRight: '-3%'
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
+                            >
+
+
+                                <MenuItem onClick={viewProfile}>Profile</MenuItem>
+                                <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
+                                <LogoutButton />
+                            </Menu>
+                        </div>
+                    )}
+                    {!auth &&
+
+                        <div className={classes.profile2}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={login}
+                                color="inherit"
+                            >
+                                <LoginIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
+                                <a style={{ fontSize: 16, color: "#FFFFFF" }}>
+                                    &nbsp;Login
+                                </a>
+                            </IconButton>
+                        </div>
+
+                    }
+
+
+                </nav>
             </div>
-            <nav className={classes.nav} >
-                <img src={logo} alt="logohear" className={classes.logo} />
-
-                {auth && (
-                    <div className={classes.profile}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle sx={{ fontSize: 40, color: "#FFFFFF" }} />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                marginTop: '-160px',
-                                marginRight: '-3%'
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-
-
-                            <MenuItem onClick={viewProfile}>Profile</MenuItem>
-                            <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
-                            <LogoutButton />
-                        </Menu>
-                    </div>
-                )}
-                {!auth &&
-
-                    <div className={classes.profile2}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={login}
-                            color="inherit"
-                        >
-                            <LoginIcon sx={{ fontSize: 35, color: "#FFFFFF" }} />
-                           <a style={{fontSize :16 , color : "#FFFFFF"}}>
-                               &nbsp;Login
-                               </a>
-                        </IconButton>
-                    </div>
-
-                }
-
-
-            </nav>
         </div>
     )
 }

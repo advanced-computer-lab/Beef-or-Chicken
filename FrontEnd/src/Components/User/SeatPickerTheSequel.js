@@ -41,14 +41,14 @@ class SeatPicker extends Component {
     constructor(props) {
 
         super(props);
-        // console.log("before: ", this.props)
+        console.log("before: ", props)
 
 
         this.state = {
 
             //  id: this.details.DepartingFlight._id,
             id: this.props.details.DepartingFlight._id,
-            flight: this.props.match.params.flight,
+            flight: this.props.flight,
             // ReservationId: this.props.history.location.state.ReservationId,
             ReservationId: this.props.details.ReservationID,
             seats: [],
@@ -271,7 +271,7 @@ class SeatPicker extends Component {
             let body = {
                 reservationId: this.state.ReservationId,
                 seatsReturning: this.state.chosenSeats,
-                email:true
+                email: true
 
             }
             this.state.returnSeats.push(this.state.chosenSeats)
@@ -337,7 +337,7 @@ class SeatPicker extends Component {
                     this.props.setTakenSeatsReturn(this.state.returnSeats)
                     console.log("details return---->", this.props.details)
                     console.log(this.props.TakenSeatsReturn)
-                   // this.props.history.push('/FullSummaryPage');
+                    // this.props.history.push('/FullSummaryPage');
                     //alert("Trip Reserved Successfully!")
 
 
@@ -360,64 +360,64 @@ class SeatPicker extends Component {
 
         return (
             <div >
-                <Header />
-                <div style={{ backgroundImage: `url(${ResultBack})`, minHeight: "100vh", justifyContent:"center", display:"flex",width:"100%" , overflowX:"hidden" ,backgroundSize: "cover" }}>
-                <div style={{ paddingTop: "100px" }}>
-                    <Grid container spacing={0}>
-                        <Grid item xs={9}>
-                            <Card className="paper" sx={{ minWidth: 275 }}>
-                                <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
-                                    Please pick your desired seats from your {flightType} flight
-                                </Typography>
 
-                                <hr />
+                <div >
+                    <div style={{ paddingTop: "100px" }}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={9}>
+                                <Card className="paper" sx={{ minWidth: 275 }}>
+                                    <Typography style={{ marginTop: "10px", fontSize: "18" }} variant="h5" component="h2">
+                                        Please pick your desired seats from your {flightType} flight
+                                    </Typography>
 
-                                <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
-                                    {this.props.details.cabin_class + " class"}
-                                </Typography>
-                                <CardContent raised="true">
-                                    <Grid container spacing={{ xs: 2 }} >
-                                        {Array.from(this.state.seats).map((_, index) => (
-                                            <Grid item xs={2} key={index}>
-                                                <Checkbox
-                                                    //checked={this.state.initEcon[index]}
+                                    <hr />
 
-                                                    checked={this.state.seats[index]}
-                                                    disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
-                                                    icon={<ChairOutlinedIcon />}
-                                                    checkedIcon={<ChairIcon />}
-                                                    onChange={this.handleChange}
-                                                    id={(index)}
-                                                    label={index + 1}
-                                                />
+                                    <Typography style={{ marginTop: "10px", fontSize: "12" }} variant="h6" component="h2">
+                                        {this.props.details.cabin_class + " class"}
+                                    </Typography>
+                                    <CardContent raised="true">
+                                        <Grid container spacing={{ xs: 2 }} >
+                                            {Array.from(this.state.seats).map((_, index) => (
+                                                <Grid item xs={2} key={index}>
+                                                    <Checkbox
+                                                        //checked={this.state.initEcon[index]}
 
-
-                                            </Grid>
+                                                        checked={this.state.seats[index]}
+                                                        disabled={this.state.initial[index] || (!(this.state.seats[index]) && this.state.maxReached)}
+                                                        icon={<ChairOutlinedIcon />}
+                                                        checkedIcon={<ChairIcon />}
+                                                        onChange={this.handleChange}
+                                                        id={(index)}
+                                                        label={index + 1}
+                                                    />
 
 
-                                        ))}
-                                    </Grid>
-                                </CardContent>
-                                <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
-                                    {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
-                                    <Button
-                                        variant="outlined" size="medium" color="primary"
-                                        disabled={!this.state.maxReached}
-                                        onClick={() => { this.handleSubmit() }} >Confirm</Button>
-                                </div>
-                            </Card>
-                        </Grid>
+                                                </Grid>
 
-                        <Grid item xs={1}>
-                            {/* <Paper style={styles.paperContainer}>
+
+                                            ))}
+                                        </Grid>
+                                    </CardContent>
+                                    <div style={{ marginLeft: "35%", marginBottom: "15%" }}>
+                                        {/* <Button style={{ background: "#10404c ", color: "wheat"  }} */}
+                                        <Button
+                                            variant="outlined" size="medium" color="primary"
+                                            disabled={!this.state.maxReached}
+                                            onClick={() => { this.handleSubmit() }} >Confirm</Button>
+                                    </div>
+                                </Card>
+                            </Grid>
+
+                            <Grid item xs={1}>
+                                {/* <Paper style={styles.paperContainer}>
             
                                 </Paper> */}
-                            <img src={allSeats} />
-                            {/* <img src={image} /> */}
-                        </Grid>
+                                <img src={allSeats} />
+                                {/* <img src={image} /> */}
+                            </Grid>
 
-                    </Grid>
-                </div>
+                        </Grid>
+                    </div>
                 </div>
 
 
