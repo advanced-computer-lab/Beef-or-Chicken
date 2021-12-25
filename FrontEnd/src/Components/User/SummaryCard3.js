@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "15px",
         width: "353px",
         height: "660px",
-        overflow: "auto",
+        //overflow: "auto",
+        overflowY: "auto"
 
 
     },
@@ -123,8 +124,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     partition2: {
-        background: "#10404c",
-        color: "wheat",
+        // background: "#10404c",
+        // color: "wheat",
         height: "40px",
         width: "100%",
         // marginRight: "60px",
@@ -138,8 +139,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     button: {
-        marginTop: "5%",
-        marginRight: "5%"
+        marginTop: "-58%",
+        marginLeft: "125%"
 
     },
 
@@ -330,21 +331,24 @@ function SimplePaper({ details }) {
                         <Typography className={classes.text5}> Passengers :  {passengers(details.Adults, details.children)}</Typography>
                         {/* } */}
                     </div>
+                    <hr className={classes.line2}></hr>
                     <div className={classes.partition2}>
                         <Typography className={classes.text4}> Total Price : EGP {details.ReturnPrice + details.DeparturePrice}</Typography>
 
                     </div>
                     {/* <hr className={classes.line2}></hr> */}
+                    {/* <hr className={classes.line2}></hr> */}
                     <div className={classes.button}>
                         <Button
                             type="submit"
                             onClick={handleSubmit}
-                            style={{ background: "#10404c ", color: "wheat", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", marginLeft: "30%" }}
+                            style={{ background: "#10404c ", color: "wheat", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", marginLeft: "0%", position: 'absolute' }}
                         //variant="outlined"
                         >
                             {" "}
                             Proceed to payment{" "}
                         </Button>
+
                     </div>
                 </CardContent>
             </Card>

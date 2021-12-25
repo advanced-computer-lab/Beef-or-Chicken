@@ -266,7 +266,9 @@ function HorizontalLinearStepper({ details }) {
                 </React.Fragment>;
             case 1:
                 return <React.Fragment>
-                    <div><ResultCard /></div>
+                    <div >
+                        <ResultCard />
+                    </div>
                     <Button
                         style={{ background: "#10404c ", color: "wheat", borderWidth: 1, position: 'absolute', bottom: 100, alignSelf: 'flex-start', marginLeft: "-30%" }}
                         disabled={activeStep === 0}
@@ -282,7 +284,7 @@ function HorizontalLinearStepper({ details }) {
 
                 </React.Fragment>
             case 3: return <React.Fragment>
-                <div><SummaryCard3 /></div>
+                <div style={{ marginTop: "5%", marginRight: "3%" }}><SummaryCard3 /></div>
 
                 <Button
                     style={{ background: "#10404c ", color: "wheat", borderWidth: 1, position: 'absolute', bottom: 100, alignSelf: 'flex-start', marginLeft: "-30%" }}
@@ -293,9 +295,9 @@ function HorizontalLinearStepper({ details }) {
                     Back
                 </Button>
                 {/* style={{ background: "#10404c ", color: "wheat", marginTop: "10%", marginLeft: "90%", position: "sticky" }} onClick={handleNext} */}
-                <Button style={{ background: "#10404c ", color: "wheat", borderWidth: 1, position: 'absolute', bottom: 100, alignSelf: 'flex-end', marginLeft: "25%" }} onClick={handleNext}>
+                {/* <Button style={{ background: "#10404c ", color: "wheat", borderWidth: 1, position: 'absolute', bottom: 100, alignSelf: 'flex-end', marginLeft: "25%" }} onClick={handleNext}>
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
+                </Button> */}
             </React.Fragment>
 
             case 2: return <React.Fragment>

@@ -232,6 +232,7 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
 
     const details = detail
     const offer = detail.departingOffers
+    const oldPrice = details.ReturnPrice
     //const departuretime = offer[0].DepartureTime
     // setAllOffers([]);
     //  console.log("testtty: ", props.offer.allOffers.data)
@@ -245,13 +246,13 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
         switch (details.cabin_class) {
             case "Economy":
                 console.log("adults: ", details.Adults)
-                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7)
+                return (offer.PriceEconomy.$numberDecimal * details.Adults) + (offer.PriceEconomy.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             case "Business":
-                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7)
+                return (offer.PriceBusiness.$numberDecimal * details.Adults) + (offer.PriceBusiness.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             case "First Class":
-                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7)
+                return (offer.PriceFirst.$numberDecimal * details.Adults) + (offer.PriceFirst.$numberDecimal * details.children * 0.7) - (oldPrice)
                 break;
             default:
             // code block
