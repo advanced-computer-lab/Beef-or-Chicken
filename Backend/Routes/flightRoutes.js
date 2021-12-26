@@ -97,6 +97,16 @@ app.get("/flightById/:id",verifyJWTAdmin ,async (request, response) => {
     response.status(500).send(error);
   }
 });
+app.get("/flightById2/:id" ,async (request, response) => {
+  const flight = await flightModel.findById(request.params.id);
+
+  try {
+    response.send(flight);
+  }
+  catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 
 app.post("/searchFlights", async (request, response) => {  //search with Criteria

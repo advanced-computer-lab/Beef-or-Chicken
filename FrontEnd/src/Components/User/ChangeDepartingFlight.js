@@ -115,14 +115,14 @@ function IconLabelButtons({ details, Reservation, setReservation, setDepartingFl
                 console.log("respnose: ", res)
                 console.log("gamed louji!")
                 setReservation(res.data);
-                url2 = `http://localhost:8080/flightById/${Reservation.DepartureFlightID}`
+                url2 = `http://localhost:8080/flightById2/${Reservation.DepartureFlightID}`
                 axios
                     .get(url2)
                     .then(res => {
                         console.log("respnose: ", res)
                         console.log("gamed louji!")
                         setDepartingFlight(res.data);
-                        url2 = `http://localhost:8080/flightById/${Reservation.ReturnFlightID}`
+                        url2 = `http://localhost:8080/flightById2/${Reservation.ReturnFlightID}`
                         axios
                             .get(url2)
                             .then(res => {
