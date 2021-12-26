@@ -188,7 +188,7 @@ function Home({ setError, tripType, setTripType, errorOccurred, setCabinClass, c
     }
 
     const Sum = () => {
-        setTotalPassengers(Adults + children + infants_in_seat + infants_on_lap)
+        setTotalPassengers(Adults + children)
         // return newcount1 + newcount2 + newcount3 + newcount4
     }
 

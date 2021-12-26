@@ -247,21 +247,21 @@ class SeatPicker extends Component {
                     console.log("idiot!");
                     console.log(error.message);
                 })
-            this.setState({
-                flight: 2, ReservationId: this.state.ReservationId,
-                chosenSeats: [],
-                currSeats: 0, maxReached: false
-            }, () => {
+            // this.setState({
+            //     flight: 2, ReservationId: this.state.ReservationId,
+            //     chosenSeats: [],
+            //     currSeats: 0, maxReached: false
+            // }, () => {
 
 
-                this.props.setTakenSeatsDeparture(this.state.DepartureSeats)
-                console.log("details departure---->", this.props.details)
-                //this.settingArrays()
-                //this.props.history.push(`/Seats/2`);
+            //     this.props.setTakenSeatsDeparture(this.state.DepartureSeats)
+            //     console.log("details departure---->", this.props.details)
+            //     //this.settingArrays()
+            //     //this.props.history.push(`/Seats/2`);
 
 
 
-            });
+            // });
 
 
 

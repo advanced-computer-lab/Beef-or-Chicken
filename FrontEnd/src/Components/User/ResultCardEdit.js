@@ -22,6 +22,7 @@ import moment, { duration } from 'moment'
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { Select } from '@material-ui/core';
+import Checkbox from '@mui/material/Checkbox';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '65%',
@@ -219,17 +220,23 @@ const mapDispatchToState = (dispatch) => {
         setTotalPrice: (TotalPrice) => {
             dispatch({ type: 'setAllOffers', payload: TotalPrice });
         },
+        setDeparturePrice: (DeparturePrice) => {
+            dispatch({ type: ' setDeparturePrice', payload: DeparturePrice });
+        },
+        setDepartingFlight: (DepartingFlight) => {
+            dispatch({ type: ' setDepartingFlight', payload: DepartingFlight });
+        },
 
 
 
     };
 };
 export default connect(mapStateToProps, mapDispatchToState)(DetailedAccordion);
-function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail, DepartingFlight }) {
+function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail, DepartingFlight,setDepartingFlight,setSelectedDepartingFlightID,setDeparturePrice }) {
     const classes = useStyles();
     console.log("details---->: ", detail)
     console.log("redux alloffers:------> ", detail.departingOffers)
-
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const details = detail
     const offer = detail.departingOffers
     const oldPrice = details.DeparturePrice
@@ -259,51 +266,18 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
         }
     }
 
+  
     const handleSubmit = async (offer) => {
-        let body = {
-            'From': details.destination,
-            'To': details.origin,
-            "DepartureDate": details.return_date,
-            "ArrivalDate": "",
-            "FirstSeats": null,
-            "isReturning": true,
-            "departingArrival": details.DepartingFlight.ArrivalDate,
-            "cabin": details.cabin_class,
-            "BusinessSeats": null,
-            "EconomySeats": null,
-            "ArrivalTime": "",
-            "DepartureTime": "",
-            "FlightNumber": "",
-            "passengers": (details.Adults + details.children),
-        }
-
-        console.log("220 ", body)
-        let url = "http://localhost:8080/searchAvailableFlights"
-
-        axios
-            .post(url, body)
-            .then(res => {
-                console.log("respnose: ", res)
-                console.log("gamed louji!")
-                setReturningOffers(res.data);
-                //details.returningOffers = res.data;
-                allOffers = res.data;
-                // props.details.selectedDepartingFlightID.data = offer._id
-                // console.log("selecteeeeeddddddd: ", props.details.selectedDepartingFlightID.data)
-                console.log("offersssss291: ", offer)
-                console.log("selecteeeeeddddddd292: ", details.selectedDepartingFlightID)
-                let DeparturePrice = price(offer)
-                details.DepartingFlight = offer
-                details.DeparturePrice = DeparturePrice
-                details.selectedDepartingFlightID = offer._id
-                console.log("selecteeeeeddddddd: ", details.selectedDepartingFlightID)
-                //history.push("/ReturningingFlights");
-            })
-            .catch(error => {
-                console.log("idiot!");
-                console.log(error.message);
-            })
-
+        console.log("offersssss291: ", details.TotalPrice)
+        console.log("selecteeeeeddddddd292: ", details)
+        setDepartingFlight(offer)
+        // details.ReturnFlight = offer
+        setSelectedDepartingFlightID(offer._id)
+        // details.selectedReturningFlightID = offer._id
+        let ReturnPrice = price(offer)
+        setDeparturePrice(ReturnPrice)
+        // details.ReturnPrice = ReturnPrice
+        console.log("selecteeeeeddddddd: ", details.ReturnPrice)
 
     };
     const duration = (DepartureTime, DepartureDate, ArrivalTime, ArrivalDate) => {
@@ -428,8 +402,7 @@ function DetailedAccordion({ setAllOffers, allOffers, setReturningOffers, detail
 
                         </AccordionDetails>
                         <AccordionActions className={classes.action}>
-
-                            <Button style={{ background: "#10404c ", color: "wheat" }} variant="outlined" size="medium" color="primary" onClick={() => { handleSubmit(offers) }} >Select flight</Button>
+                        <Typography className={classes.text5}> Select Flight</Typography> <Checkbox  {...label} onChange={() => { handleSubmit(offers) }} />
 
                         </AccordionActions>
                         <Divider />

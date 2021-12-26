@@ -110,8 +110,8 @@ class ViewAllReservations extends Component {
        const userName= this.state.userName;
        
        return (
-                <div>
-
+              
+<div  style={{ backgroundImage: `url(${ResultBack})`, minHeight: "200vh", backgroundSize: "cover" , backgroundRepeat: "repeat-y"}}>
                 <Header />
 {/*
                 <Card className="bg-dark text-white">
@@ -126,8 +126,8 @@ class ViewAllReservations extends Component {
                     </Card.ImgOverlay>
                 </Card>
 */}
-<div  style={{ backgroundImage: `url(${ResultBack})`, minHeight: "200vh", backgroundSize: "cover" , backgroundRepeat: "repeat-y"}}>
 
+<div>
                 {reservations.length === 0 || userName===""?(
                     <div className="accordions2" style={{fontWeight:"bold", color:"#FF0000"}}>
                         <h5>You don't have any reservations!</h5>

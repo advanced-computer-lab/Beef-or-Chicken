@@ -69,7 +69,7 @@ function Paginations(allOffers, details) {
             <GridContainer >
                 {/* {currentArray.map((offer) => { */}
 
-                <GridItem xs={12} style={{ marginTop: "100px" }}>
+                <GridItem xs={12} >
                     {/* <Offer
                   offer={offer}
                   classes={classes}
